@@ -1,0 +1,241 @@
+<!-- ==========================================================
+     PANTALLA DE INICIO DE SESION
+     ========================================================== -->
+<div id="login" class="login">
+  <div class="panel">
+    <h2>Acceso restringido</h2>
+    <div class="aviso" id="loginAviso"></div>
+    <div class="campo">
+      <label for="usuario">Usuario</label>
+      <input type="text" id="usuario" value="admin" autocomplete="username">
+    </div>
+    <div class="campo">
+      <label for="clave">Contrasena</label>
+      <div class="campo-clave">
+        <input type="password" id="clave" autocomplete="current-password" placeholder="Escriba la contrasena">
+        <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('clave', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
+      </div>
+    </div>
+    <button id="btnEntrar" style="width:100%">Entrar</button>
+    <p class="pista">
+      Contrasena inicial por defecto: <code>montes2026</code>.
+      Cambiela en el codigo (CONSTANTE CLAVE) antes de publicar.
+    </p>
+  </div>
+</div>
+
+<!-- ==========================================================
+     PANEL
+     ========================================================== -->
+<div id="panel" class="oculto">
+  <header>
+    <h1>Administracion - Montes Abogados Asociados</h1>
+    <div class="barra">
+      <a href="../JavaScript/pagina-montes.html" target="_blank" rel="noopener">Ver el sitio</a>
+      <button type="button" class="secundario" id="btnSalir">Salir</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="aviso" id="aviso"></div>
+
+    <!-- ---------- EMPRESA ---------- -->
+    <div class="panel">
+      <h2>1. Datos de la empresa</h2>
+      <div class="fila">
+        <div class="campo">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre">
+        </div>
+        <div class="campo">
+          <label for="grupo">Grupo</label>
+          <input type="text" id="grupo">
+        </div>
+      </div>
+      <div class="campo">
+        <label for="colorMarca">Color de marca</label>
+        <div class="color">
+          <input type="color" id="colorMarca">
+          <input type="text" id="colorMarcaTexto" style="max-width:130px">
+          <span class="pista">Se aplica a la barra, los botones y los titulos.</span>
+        </div>
+      </div>
+      <div class="campo">
+        <label for="logo">Logotipo</label>
+        <input type="file" id="logo" accept="image/*">
+        <p class="pista">Se acepta SVG, PNG o JPG. El logotipo queda guardado en este computador.</p>
+        <div id="vistaLogo" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <!-- ---------- CONTACTO ---------- -->
+    <div class="panel">
+      <h2>2. Datos de contacto</h2>
+      <div class="fila">
+        <div class="campo">
+          <label for="telefono">Telefono principal</label>
+          <input type="text" id="telefono">
+        </div>
+        <div class="campo">
+          <label for="telefonoAlterno">Telefono alterno</label>
+          <input type="text" id="telefonoAlterno">
+        </div>
+      </div>
+      <div class="fila">
+        <div class="campo">
+          <label for="correo">Correo principal</label>
+          <input type="text" id="correo">
+        </div>
+        <div class="campo">
+          <label for="correoAlterno">Correo alterno</label>
+          <input type="text" id="correoAlterno">
+        </div>
+      </div>
+      <div class="fila">
+        <div class="campo">
+          <label for="direccion">Direccion Bogota</label>
+          <input type="text" id="direccion">
+        </div>
+        <div class="campo">
+          <label for="direccionEspana">Direccion Madrid</label>
+          <input type="text" id="direccionEspana">
+        </div>
+      </div>
+      <div class="fila">
+        <div class="campo">
+          <label for="sitioWeb">Sitio web</label>
+          <input type="text" id="sitioWeb">
+        </div>
+        <div class="campo">
+          <label for="sitioWebEspana">Sitio web Espana</label>
+          <input type="text" id="sitioWebEspana">
+        </div>
+      </div>
+      <div class="fila">
+        <div class="campo">
+          <label for="horario">Horario</label>
+          <input type="text" id="horario">
+        </div>
+        <div class="campo">
+          <label for="horarioSabado">Horario sabado</label>
+          <input type="text" id="horarioSabado">
+        </div>
+      </div>
+      <div class="campo">
+        <label for="whatsappNumero">Numero de WhatsApp (con codigo de pais, sin +)</label>
+        <input type="text" id="whatsappNumero" placeholder="573007257266">
+      </div>
+    </div>
+
+    <!-- ---------- SERVICIOS ---------- -->
+    <div class="panel">
+      <h2>3. Areas de servicio</h2>
+      <p class="pista" style="margin-bottom:12px">Puede editar el titulo y la descripcion, o quitar un area.</p>
+      <div id="listaServicios"></div>
+      <button class="secundario" id="btnAgregarServicio">Agregar area</button>
+    </div>
+
+    <!-- ---------- EQUIPO ---------- -->
+    <div class="panel">
+      <h2>4. Equipo</h2>
+      <p class="pista" style="margin-bottom:12px">Nombre, cargo, iniciales y la sinopsis. Puede agregar o quitar integrantes.</p>
+      <div id="listaEquipo"></div>
+      <button class="secundario" id="btnAgregarIntegrante">Agregar integrante</button>
+    </div>
+
+    <!-- ---------- PUBLICACIONES ---------- -->
+    <div class="panel">
+      <h2>5. Publicaciones (Actualidad Juridica)</h2>
+      <p class="pista" style="margin-bottom:12px">
+        Aqui se escriben los articulos, las sentencias y las novedades de la firma.
+        Para cada publicacion puede poner una imagen y adjuntar un archivo en PDF.
+        La imagen queda guardada con la publicacion; el archivo en PDF se sube
+        despues a la carpeta "documentos" del alojamiento y el panel anota el
+        nombre del archivo.
+      </p>
+      <div id="listaPublicaciones"></div>
+      <button class="secundario" id="btnAgregarPublicacion">Agregar publicacion</button>
+    </div>
+
+    <!-- ---------- CARRUSEL DE IMAGENES ---------- -->
+    <div class="panel">
+      <h2>Carrusel de imagenes (pagina de inicio)</h2>
+      <p class="pista" style="margin-bottom:12px">
+        Cada diapositiva tiene una imagen, un titulo y un texto, en espanol y en ingles.
+        Las imagenes deben pesar menos de 900 KB (JPG o PNG). El enlace es opcional
+        (por ejemplo contacto.html). Si no hay diapositivas, el carrusel no aparece.
+        Para que lo vean los visitantes, despues de guardar pulse "Descargar datos.json"
+        y suba ese archivo a la carpeta del sitio.
+      </p>
+      <div id="listaCarrusel"></div>
+      <button class="secundario" id="btnAgregarDiapositiva">Agregar diapositiva</button>
+    </div>
+
+    <!-- ---------- SOLICITUDES RECIBIDAS ---------- -->
+    <div class="panel">
+      <h2>6. Solicitudes recibidas</h2>
+      <p class="pista" style="margin-bottom:14px">
+        Aquí aparecen las solicitudes que/enviaron los clientes, ya sea por el formulario
+        de contacto o desde el area "Mi cuenta" del sitio.
+      </p>
+      <div id="listaSolicitudes"></div>
+      <div class="barra" style="margin-top:12px">
+        <button class="secundario" id="btnExportarSolicitudes">Descargar las solicitudes</button>
+        <button class="peligro" id="btnBorrarSolicitudes">Borrar las solicitudes</button>
+      </div>
+    </div>
+
+    <!-- ---------- SEGURIDAD ---------- -->
+    <div class="panel">
+      <h2>7. Seguridad</h2>
+      <p class="pista" style="margin-bottom:14px">
+        Puede cambiar la contraseña con la que entra a este panel. Si se le olvida, use
+        "Restablecer contraseña" para volver a la contraseña inicial.
+      </p>
+
+      <form id="formularioClave" novalidate>
+        <div class="campo">
+          <label for="clave">Contraseña actual</label>
+          <div class="campo-clave">
+            <input type="password" id="claveActual" placeholder="La que usa para entrar">
+            <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('claveActual', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
+          </div>
+        </div>
+        <div class="campo">
+          <label for="clave">Contraseña nueva</label>
+          <div class="campo-clave">
+            <input type="password" id="claveNueva" placeholder="Mínimo 6 caracteres">
+            <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('claveNueva', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
+          </div>
+        </div>
+        <div class="campo">
+          <label for="clave">Repetir la contraseña nueva</label>
+          <div class="campo-clave">
+            <input type="password" id="claveNueva2" placeholder="Repita la contraseña">
+            <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('claveNueva2', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
+          </div>
+        </div>
+        <div class="barra">
+          <button type="submit">Cambiar la contraseña</button>
+          <button type="button" class="peligro" id="btnRestablecerClave">Restablecer contraseña</button>
+        </div>
+        <p class="ayuda" id="avisoClave"></p>
+      </form>
+    </div>
+
+    <!-- ---------- GUARDAR ---------- -->
+    <div class="panel">
+      <h2>8. Guardar los cambios</h2>
+      <p class="pista" style="margin-bottom:14px">
+        Pulse <strong>Guardar cambios</strong> cuando termine de editar. La pagina se actualiza
+        de inmediato y los cambios quedan guardados en este computador.
+      </p>
+      <div class="barra">
+        <button id="btnGuardar">Guardar cambios</button>
+        <button class="secundario" id="btnDescargarDatos">Descargar datos.json</button>
+        <a class="secundario" href="../JavaScript/pagina-montes.html" target="_blank" rel="noopener">Ver el sitio</a>
+        <button class="peligro" id="btnRestablecer">Deshacer todos los cambios</button>
+      </div>
+    </div>
+  </main>
+</div>

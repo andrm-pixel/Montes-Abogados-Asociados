@@ -1,0 +1,175 @@
+
+  :root {
+    --marca: #006cb7;
+    --marca-oscura: #2e3092;
+    --marca-celeste: #00aeef;
+    --fondo: #f0f6fc;
+    --superficie: #ffffff;
+    --texto: #0f2537;
+    --suave: #334e68;
+    --borde: #d5e3f0;
+    --error: #c0392b;
+    --ok: #1b7a42;
+    --degradado-marca: linear-gradient(135deg, var(--marca-oscura) 0%, var(--marca) 65%, var(--marca-celeste) 100%);
+    --sombra-suave: 0 4px 18px rgba(0, 68, 130, 0.07);
+    --sombra-hover: 0 12px 28px rgba(0, 108, 183, 0.14);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--fondo);
+    color: var(--texto);
+    line-height: 1.6;
+  }
+  header {
+    background: var(--degradado-marca);
+    color: #fff;
+    padding: 18px 24px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    box-shadow: 0 4px 16px rgba(11, 31, 66, 0.18);
+  }
+  header h1 { font-size: 19px; font-weight: bold; }
+  header a { color: #fff; font-size: 13px; text-decoration: underline; }
+  main { max-width: 1000px; margin: 0 auto; padding: 26px 20px 60px; }
+  .panel {
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-top: 4px solid var(--marca);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: var(--sombra-suave);
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
+  }
+  .panel:hover {
+    box-shadow: var(--sombra-hover);
+  }
+  .panel h2 { font-size: 16px; color: var(--marca); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--borde); }
+  .campo { margin-bottom: 14px; }
+  .campo label { display: block; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 4px; color: var(--suave); }
+  .campo input, .campo textarea, .campo select {
+    width: 100%; padding: 9px 11px; border: 1px solid var(--borde); border-radius: 6px;
+    font-family: inherit; font-size: 14px; color: var(--texto); background: #fff;
+    outline: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .campo input:focus, .campo textarea:focus, .campo select:focus {
+    border-color: var(--marca);
+    box-shadow: 0 0 0 3px rgba(0, 108, 183, 0.14);
+  }
+  .campo textarea { min-height: 74px; resize: vertical; }
+  .fila { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .tres { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  button {
+    font-family: inherit; font-size: 14px; font-weight: bold; cursor: pointer;
+    border: none; border-radius: 6px; padding: 11px 20px; background: var(--degradado-marca); color: #fff;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+    box-shadow: 0 4px 12px rgba(0, 108, 183, 0.22);
+  }
+  button:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0, 108, 183, 0.32); filter: brightness(1.05); }
+  button.secundario { background: transparent; color: var(--marca); border: 2px solid var(--marca); box-shadow: none; }
+  button.secundario:hover { background: var(--marca); color: #fff; }
+  .barra a.secundario {
+    display: inline-block; padding: 9px 18px; border: 2px solid var(--marca); border-radius: 6px;
+    color: var(--marca); font-size: 14px; font-weight: bold; text-decoration: none;
+    transition: background-color 0.22s ease, color 0.22s ease, transform 0.22s ease;
+  }
+  .barra a.secundario:hover { background: var(--marca); color: #fff; transform: translateY(-2px); }
+  header .barra button.secundario { color: #fff; border-color: #fff; }
+  header .barra button.secundario:hover { background: #fff; color: var(--marca-oscura); }
+  button.peligro { background: var(--error); box-shadow: none; }
+  .barra { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .aviso { padding: 12px 16px; border-radius: 6px; margin-bottom: 16px; font-size: 14px; display: none; }
+  .aviso.ok { display: block; background: #eaf7ef; border-left: 4px solid var(--ok); color: #1b7a42; }
+  .aviso.error { display: block; background: #fdedec; border-left: 4px solid var(--error); color: #a93226; }
+  .item { border: 1px solid var(--borde); border-left: 4px solid var(--marca); border-radius: 8px; padding: 16px; margin-bottom: 12px; background: #f8fbff; transition: background-color 0.2s ease; }
+  .item:hover { background: #ffffff; }
+  .item h3 { font-size: 15px; color: var(--marca); margin-bottom: 8px; }
+  .logo-mini { width: 90px; height: 90px; object-fit: contain; border: 1px dashed var(--borde); border-radius: 6px; background: #fff; padding: 6px; }
+  .color { display: flex; align-items: center; gap: 10px; }
+  .color input[type="color"] { width: 52px; height: 38px; padding: 2px; border: 1px solid var(--borde); border-radius: 4px; background: #fff; }
+  .login { max-width: 380px; margin: 90px auto; }
+  .oculto { display: none; }
+  .pista { font-size: 13px; color: var(--suave); margin-top: 6px; }
+  code { background: #e3f0fb; color: var(--marca); padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+  @media (max-width: 700px) { .fila, .tres { grid-template-columns: 1fr; } }
+
+  /* ---------- El boton con el ojo para ver la contrasena ---------- */
+  .campo-clave {
+    position: relative;
+  }
+
+  .campo-clave input {
+    padding-right: 44px;
+  }
+
+  .campo-clave input::-ms-reveal {
+    display: none;
+  }
+
+  .boton-ver-clave {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+  }
+
+  .btn-ver-clave {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #697276;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  .btn-ver-clave svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+
+  .btn-ver-clave:hover {
+    background: #eef2f4;
+    color: #1a5276;
+  }
+
+  /* Cuando la contrasena esta a la vista se muestra el ojo tachado */
+  .btn-ver-clave .ojo-tachado {
+    display: none;
+  }
+
+  .btn-ver-clave.viendo .ojo {
+    display: none;
+  }
+
+  .btn-ver-clave.viendo .ojo-tachado {
+    display: block;
+  }
+
+  /* Los estilos de las publicaciones */
+  .miniatura {
+    max-width: 180px;
+    max-height: 110px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    display: block;
+    margin-top: 6px;
+  }
+  .vista-imagen, .vista-pdf {
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: #6a727a;
+  }
+
+  /* 3. UTILIDADES */

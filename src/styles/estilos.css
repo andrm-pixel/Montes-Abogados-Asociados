@@ -1,0 +1,3855 @@
+/* =======================================================
+   ESTILOS.CSS  -  la apariencia de todo el sitio
+   -------------------------------------------------------
+   Este archivo esta dividido en bloques. Cada bloque empieza
+   con un comentario que dice que parte del sitio esta pintando.
+
+   El orden es:
+     1. Las variables (los colores y las medidas)
+     2. El reset (se borran los margenes del navegador)
+     3. La barra de navegacion
+     4. La portada, las secciones, los valores, las areas,
+        la cultura, el equipo, el contacto y el formulario
+     5. El pie de pagina
+     6. Las reglas para el celular y la tablet
+     7. Los botones de idioma, el modo oscuro y el recuadro
+        de la cuenta del visitante
+     8. Las paginas de cada area y la pagina de la politica
+
+   Los tres colores de marca son los del logotipo oficial que
+   apruebo la firma: el azul (#006cb7), el azul oscuro (#2e3092)
+   y el celeste (#00aeef).
+
+   Este archivo es una copia: la carpeta JavaScript lleva otra
+   igual. Si se cambia algo, hay que copiarlo a la otra carpeta.
+   ======================================================= */
+
+:root {
+  /* Color de marca (se puede cambiar desde el panel de administracion) */
+  --marca: #006cb7;  /* el color de la firma (el azul del logotipo) */
+  --marca-oscura: #2e3092;  /* el color de la firma cuando esta en modo oscuro */
+  --marca-celeste: #00aeef;  /* el celeste luminoso del logotipo oficial */
+  --marca-marino: #0b2239;  /* azul marino profundo para contrastes elegantes */
+  --azul-hielo: #f0f6fc;  /* fondo azul muy suave para alternar secciones */
+  --azul-suave: #e3f0fb;  /* tono azul claro para iconos, etiquetas y tarjetas */
+  --azul-borde: #cbe0f5;  /* borde sutil con matiz azulado */
+  --gris-900: #0f2537;  /* texto principal con matiz azul pizarra oscuro */
+  --gris-700: #334e68;  /* texto secundario con matiz azulado */
+  --gris-500: #627d98;  /* texto de apoyo y metadatos */
+  --borde: #d5e3f0;  /* borde general de tarjetas y tablas */
+  --degradado-marca: linear-gradient(135deg, var(--marca-oscura) 0%, var(--marca) 60%, var(--marca-celeste) 100%);
+  --degradado-banner: linear-gradient(135deg, #0b1f42 0%, var(--marca-oscura) 38%, var(--marca) 76%, #0095d9 100%);
+  --degradado-tarjeta-azul: linear-gradient(145deg, var(--marca-oscura) 0%, var(--marca) 85%, #0582ca 100%);
+  --sombra-suave: 0 4px 18px rgba(0, 68, 130, 0.07);
+  --sombra-media: 0 10px 28px rgba(0, 68, 130, 0.12);
+  --sombra-hover: 0 16px 36px rgba(0, 108, 183, 0.18);
+  --curva-suave: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Montes Abogados Asociados S.A.S. */
+
+/* Reset */
+* {
+  margin: 0;  /* el espacio por fuera de la caja */
+  padding: 0;  /* el espacio por dentro de la caja */
+  box-sizing: border-box;  /* hace que el ancho y el alto incluyan el borde y el relleno */
+}
+
+html {
+  scroll-behavior: smooth;  /* como se mueve la pagina al bajar (despacio y suave) */
+}
+
+body {
+  font-family: Arial, sans-serif;  /* la tipografia (la letra) que se usa */
+  font-size: 15px;  /* el tamano de la letra */
+  color: var(--gris-900);  /* el color del texto */
+  background-color: #fafdff;  /* el color de fondo de la caja */
+  line-height: 1.7;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+  overflow-x: hidden;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+a {
+  text-decoration: none;  /* el adorno del texto */
+  color: inherit;  /* el color del texto */
+}
+
+ul {
+  list-style: none;  /* el tipo de vineta de la lista */
+}
+
+img {
+  max-width: 100%;  /* el ancho maximo (la caja no pasa de ese ancho) */
+}
+
+/* Navegación */
+
+nav {
+  background-color: rgba(255, 255, 255, 0.94);  /* el color de fondo de la caja */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 3px solid var(--marca);  /* el borde de abajo */
+  border-image: linear-gradient(90deg, var(--marca-oscura), var(--marca), var(--marca-celeste)) 1;
+  position: sticky;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
+  top: 0;  /* la distancia desde arriba, cuando la caja esta pegada */
+  z-index: 100;  /* el orden de las capas (lo que esta mas arriba, tapa a lo de abajo) */
+  box-shadow: 0 4px 20px rgba(0, 68, 130, 0.08);  /* la sombra de la caja */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* La fila de la barra de arriba: logotipo, enlaces y controles. */
+.nav-contenido {
+  max-width: 1100px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  margin: 0 auto;  /* el espacio por fuera de la caja */
+  padding: 0 20px;  /* el espacio por dentro de la caja */
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  justify-content: space-between;  /* como se reparten de izquierda a derecha */
+  height: 70px;  /* el alto de la caja */
+}
+
+.nav-logo {
+  transition: transform 0.3s var(--curva-suave);
+}
+
+.nav-logo:hover {
+  transform: scale(1.05);
+}
+
+.nav-logo img {
+  height: 55px;  /* el alto de la caja */
+  width: auto;  /* el ancho de la caja */
+}
+
+/* La lista de enlaces del menu. */
+.nav-links {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  gap: 5px;  /* el espacio entre los elementos */
+}
+
+.nav-links a {
+  color: var(--gris-900);  /* el color del texto */
+  font-size: 14px;  /* el tamano de la letra */
+  padding: 8px 14px;  /* el espacio por dentro de la caja */
+  border-radius: 6px;  /* las esquinas redondeadas */
+  position: relative;
+  transition: background-color 0.25s var(--curva-suave), color 0.25s var(--curva-suave), transform 0.25s var(--curva-suave), box-shadow 0.25s var(--curva-suave);
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 4px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--marca-celeste);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.28s var(--curva-suave);
+}
+
+.nav-links a[aria-current="page"] {
+  background-color: var(--azul-suave);
+  color: var(--marca);
+  font-weight: bold;
+}
+
+.nav-links a:hover {
+  background: var(--degradado-marca);  /* el color de fondo de la caja */
+  color: #ffffff;  /* el color del texto */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 108, 183, 0.22);
+}
+
+.nav-links a:hover::after {
+  transform: scaleX(1);
+}
+
+/* Banner */
+
+.banner {
+  background-color: var(--marca);  /* el color de fondo de la caja */
+  background-image: var(--degradado-banner);
+  background-size: 200% 200%;
+  animation: fluidoAzulBanner 14s ease infinite;
+  color: #ffffff;  /* el color del texto */
+  padding: 78px 20px;  /* el espacio por dentro de la caja */
+  text-align: center;  /* como se alinea el texto (izquierda, centro o derecha) */
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 -10px 28px rgba(11, 31, 66, 0.18);
+}
+
+.banner::before,
+.banner::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.banner::before {
+  width: 420px;
+  height: 420px;
+  top: -180px;
+  left: -120px;
+  background: radial-gradient(circle, rgba(0, 174, 239, 0.28) 0%, rgba(0, 174, 239, 0) 70%);
+  animation: flotarLuz 9s ease-in-out infinite alternate;
+}
+
+.banner::after {
+  width: 380px;
+  height: 380px;
+  bottom: -160px;
+  right: -100px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 70%);
+  animation: flotarLuz 11s ease-in-out infinite alternate-reverse;
+}
+
+.banner > * {
+  position: relative;
+  z-index: 1;
+}
+
+.banner h1 {
+  font-size: 32px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  margin-bottom: 15px;  /* el espacio por debajo de la caja */
+  text-shadow: 0 2px 12px rgba(11, 31, 66, 0.28);
+  animation: aparecerArriba 0.7s var(--curva-suave) both;
+}
+
+.banner p {
+  font-size: 16px;  /* el tamano de la letra */
+  color: rgba(255, 255, 255, 0.9);  /* el color del texto */
+  max-width: 600px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  margin: 0 auto 30px;  /* el espacio por fuera de la caja */
+  animation: aparecerArriba 0.75s var(--curva-suave) 0.12s both;
+}
+
+.banner a {
+  display: inline-block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  background-color: #ffffff;  /* el color de fondo de la caja */
+  color: var(--marca);  /* el color del texto */
+  padding: 12px 28px;  /* el espacio por dentro de la caja */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  font-size: 14px;  /* el tamano de la letra */
+  border-radius: 6px;  /* las esquinas redondeadas */
+  margin: 5px;  /* el espacio por fuera de la caja */
+  border: 2px solid #ffffff;  /* el borde que rodea la caja (grosor, estilo y color) */
+  box-shadow: 0 6px 18px rgba(11, 31, 66, 0.22);
+  transition: transform 0.28s var(--curva-suave), box-shadow 0.28s var(--curva-suave), background-color 0.28s ease, color 0.28s ease, border-color 0.28s ease;
+  animation: aparecerArriba 0.8s var(--curva-suave) 0.24s both;
+}
+
+.banner a:hover {
+  background-color: var(--marca-oscura);  /* el color de fondo de la caja */
+  color: #ffffff;  /* el color del texto */
+  border-color: var(--marca-celeste);  /* el color del borde */
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(11, 31, 66, 0.35);
+}
+
+.banner a.btn-borde {
+  background-color: rgba(255, 255, 255, 0.08);  /* el color de fondo de la caja */
+  color: #ffffff;  /* el color del texto */
+  border-color: rgba(255, 255, 255, 0.65);  /* el color del borde */
+  backdrop-filter: blur(4px);
+}
+
+.banner a.btn-borde:hover {
+  background-color: rgba(255, 255, 255, 0.2);  /* el color de fondo de la caja */
+  border-color: #ffffff;
+}
+
+/* Secciones */
+
+.seccion {
+  padding: 60px 20px;  /* el espacio por dentro de la caja */
+}
+
+/* Lo mismo que .seccion, pero con fondo gris: se usa para alternar el color de las secciones. */
+.seccion-gris {
+  background-color: var(--azul-hielo);  /* el color de fondo de la caja */
+  background-image: linear-gradient(180deg, #f3f8fd 0%, #eaf3fb 100%);
+}
+
+/* Lo mismo que .seccion, pero con fondo azul: es la seccion de la cultura de la firma. */
+.seccion-azul {
+  background-color: var(--marca);  /* el color de fondo de la caja */
+  background-image: var(--degradado-banner);
+  color: #ffffff;  /* el color del texto */
+  position: relative;
+  overflow: hidden;
+}
+
+/* El ancho maximo del contenido. Todo el texto de la pagina va dentro de esta caja, que se centra. */
+.contenedor {
+  max-width: 1100px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  margin: 0 auto;  /* el espacio por fuera de la caja */
+}
+
+/* El titulo grande de cada seccion (Inicio, Contacto, Equipo...). */
+.titulo-seccion {
+  font-size: 26px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: var(--marca);  /* el color del texto */
+  margin-bottom: 10px;  /* el espacio por debajo de la caja */
+  letter-spacing: -0.2px;
+}
+
+.seccion-azul .titulo-seccion {
+  color: #ffffff;  /* el color del texto */
+}
+
+/* El dibujito corto de color bajo los titulos: es la marca de la firma. */
+.linea-azul {
+  width: 56px;  /* el ancho de la caja */
+  height: 4px;  /* el alto de la caja */
+  background: linear-gradient(90deg, var(--marca-oscura), var(--marca), var(--marca-celeste));  /* el color de fondo de la caja */
+  border-radius: 4px;
+  margin-bottom: 25px;  /* el espacio por debajo de la caja */
+  transition: width 0.4s var(--curva-suave);
+  animation: expandirLinea 0.8s var(--curva-suave) both;
+}
+
+.seccion:hover .linea-azul {
+  width: 78px;
+}
+
+.seccion-azul .linea-azul {
+  background: linear-gradient(90deg, #ffffff, var(--marca-celeste));  /* el color de fondo de la caja */
+}
+
+/* El texto de apoyo que va debajo de un titulo. */
+.subtitulo-gris {
+  color: var(--gris-700);  /* el color del texto */
+  margin-bottom: 35px;  /* el espacio por debajo de la caja */
+  max-width: 600px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+}
+
+/* Quiénes somos */
+
+.dos-columnas {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  gap: 40px;  /* el espacio entre los elementos */
+  align-items: flex-start;  /* como se alinean de arriba hacia abajo */
+}
+
+.dos-columnas .col-texto {
+  flex: 1;  /* la forma de crecer dentro de la fila */
+}
+
+.dos-columnas .col-texto p {
+  color: var(--gris-700);  /* el color del texto */
+  margin-bottom: 15px;  /* el espacio por debajo de la caja */
+}
+
+.dos-columnas .col-azul {
+  width: 320px;  /* el ancho de la caja */
+  flex-shrink: 0;  /* cuanto se encoge el elemento si no hay espacio */
+  background-color: var(--marca);  /* el color de fondo de la caja */
+  background-image: var(--degradado-tarjeta-azul);
+  color: #ffffff;  /* el color del texto */
+  padding: 30px 25px;  /* el espacio por dentro de la caja */
+  border-radius: 10px;  /* las esquinas redondeadas */
+  box-shadow: var(--sombra-media);
+  border: 1px solid rgba(0, 174, 239, 0.28);
+  transition: transform 0.35s var(--curva-suave), box-shadow 0.35s var(--curva-suave);
+}
+
+.dos-columnas .col-azul:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sombra-hover);
+}
+
+.col-azul h3 {
+  font-size: 18px;  /* el tamano de la letra */
+  margin-bottom: 15px;  /* el espacio por debajo de la caja */
+  color: #ffffff;  /* el color del texto */
+}
+
+.col-azul ul {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  flex-direction: column;  /* hacia donde se acomodan los elementos (en fila o en columna) */
+  gap: 10px;  /* el espacio entre los elementos */
+}
+
+.col-azul ul li {
+  font-size: 14px;  /* el tamano de la letra */
+  color: rgba(255, 255, 255, 0.9);  /* el color del texto */
+  padding-left: 16px;  /* el espacio por dentro, a la izquierda */
+  position: relative;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
+}
+
+.col-azul ul li::before {
+  content: "•";  /* el texto que se pone antes o despues del elemento (por ejemplo, una comilla) */
+  color: var(--marca-celeste);  /* el color del texto */
+  position: absolute;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
+  left: 0;  /* la distancia desde la izquierda, cuando la caja esta pegada */
+}
+
+/* Valores */
+
+.valores-grid {
+  display: grid;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  grid-template-columns: 1fr 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
+  gap: 15px;  /* el espacio entre los elementos */
+  margin-top: 25px;  /* el espacio por encima de la caja */
+}
+
+/* La tarjeta de uno de los seis valores de la firma. */
+.valor-item {
+  background-color: var(--azul-hielo);  /* el color de fondo de la caja */
+  border: 1px solid var(--azul-borde);
+  border-left: 4px solid var(--marca);  /* el borde de la izquierda (la franja de color de las tarjetas) */
+  padding: 16px 18px;  /* el espacio por dentro de la caja */
+  border-radius: 0 8px 8px 0;  /* las esquinas redondeadas */
+  box-shadow: var(--sombra-suave);
+  transition: transform 0.3s var(--curva-suave), box-shadow 0.3s var(--curva-suave), background-color 0.3s ease, border-left-color 0.3s ease;
+}
+
+.valor-item:hover {
+  transform: translateX(6px);
+  background-color: #ffffff;
+  border-left-color: var(--marca-celeste);
+  box-shadow: var(--sombra-media);
+}
+
+.valor-item strong {
+  display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  color: var(--marca);  /* el color del texto */
+  font-size: 14px;  /* el tamano de la letra */
+  margin-bottom: 4px;  /* el espacio por debajo de la caja */
+}
+
+.valor-item span {
+  font-size: 13px;  /* el tamano de la letra */
+  color: var(--gris-700);  /* el color del texto */
+}
+
+/* Servicios */
+
+.servicios-grid {
+  display: grid;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  grid-template-columns: repeat(3, 1fr);  /* cuantas columnas tiene la rejilla y de que ancho son */
+  gap: 20px;  /* el espacio entre los elementos */
+}
+
+/* La tarjeta de un area de practica. */
+.servicio-card {
+  background-color: #ffffff;  /* el color de fondo de la caja */
+  border: 1px solid var(--borde);  /* el borde que rodea la caja (grosor, estilo y color) */
+  border-top: 4px solid var(--marca);  /* el borde de arriba (la franja de color de las tarjetas) */
+  padding: 25px 20px;  /* el espacio por dentro de la caja */
+  border-radius: 0 0 8px 8px;  /* las esquinas redondeadas */
+  box-shadow: var(--sombra-suave);
+  transition: transform 0.35s var(--curva-suave), box-shadow 0.35s var(--curva-suave), border-color 0.35s ease;
+  position: relative;
+}
+
+.servicio-card:hover {
+  transform: translateY(-7px);
+  box-shadow: var(--sombra-hover);  /* la sombra de la caja */
+  border-color: var(--azul-borde);
+  border-top-color: var(--marca-celeste);
+}
+
+.servicio-card .numero {
+  font-size: 28px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: #bfd6ec;  /* el color del texto */
+  line-height: 1;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+  margin-bottom: 10px;  /* el espacio por debajo de la caja */
+  transition: color 0.3s ease, transform 0.3s var(--curva-suave);
+}
+
+.servicio-card:hover .numero {
+  color: var(--marca-celeste);
+  transform: scale(1.08);
+}
+
+.servicio-card h3 {
+  font-size: 15px;  /* el tamano de la letra */
+  color: var(--marca);  /* el color del texto */
+  margin-bottom: 10px;  /* el espacio por debajo de la caja */
+  transition: color 0.25s ease;
+}
+
+.servicio-card:hover h3 {
+  color: var(--marca-oscura);
+}
+
+.servicio-card p {
+  font-size: 13px;  /* el tamano de la letra */
+  color: var(--gris-700);  /* el color del texto */
+  line-height: 1.6;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+}
+
+/* Cultura */
+
+.cultura-contenido p {
+  color: rgba(255, 255, 255, 0.9);  /* el color del texto */
+  margin-bottom: 15px;  /* el espacio por debajo de la caja */
+  max-width: 750px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+}
+
+/* La rejilla de los tres bloques de la cultura. */
+.cultura-bloques {
+  display: grid;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  grid-template-columns: 1fr 1fr 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
+  gap: 20px;  /* el espacio entre los elementos */
+  margin-top: 30px;  /* el espacio por encima de la caja */
+}
+
+/* Uno de los tres bloques de la cultura. */
+.cultura-bloque {
+  background-color: rgba(255, 255, 255, 0.11);  /* el color de fondo de la caja */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.24);  /* el borde que rodea la caja (grosor, estilo y color) */
+  padding: 22px 20px;  /* el espacio por dentro de la caja */
+  border-radius: 8px;  /* las esquinas redondeadas */
+  transition: transform 0.32s var(--curva-suave), background-color 0.32s ease, border-color 0.32s ease, box-shadow 0.32s ease;
+}
+
+.cultura-bloque:hover {
+  transform: translateY(-5px);
+  background-color: rgba(255, 255, 255, 0.18);
+  border-color: var(--marca-celeste);
+  box-shadow: 0 12px 28px rgba(11, 31, 66, 0.25);
+}
+
+.cultura-bloque strong {
+  display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  color: #ffffff;  /* el color del texto */
+  font-size: 14px;  /* el tamano de la letra */
+  margin-bottom: 8px;  /* el espacio por debajo de la caja */
+}
+
+.cultura-bloque p {
+  font-size: 13px;  /* el tamano de la letra */
+  color: rgba(255, 255, 255, 0.82);  /* el color del texto */
+  margin: 0;  /* el espacio por fuera de la caja */
+}
+
+/* Equipo */
+
+.equipo-grid {
+  display: grid;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  grid-template-columns: 1fr 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
+  gap: 25px;  /* el espacio entre los elementos */
+}
+
+/* La ficha de una persona del equipo. */
+.abogado-card {
+  background-color: #ffffff;  /* el color de fondo de la caja */
+  border: 1px solid var(--borde);  /* el borde que rodea la caja (grosor, estilo y color) */
+  padding: 25px;  /* el espacio por dentro de la caja */
+  border-radius: 8px;  /* las esquinas redondeadas */
+  border-left: 5px solid var(--marca);  /* el borde de la izquierda (la franja de color de las tarjetas) */
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  flex-direction: column;  /* hacia donde se acomodan los elementos (en fila o en columna) */
+  box-shadow: var(--sombra-suave);
+  transition: transform 0.35s var(--curva-suave), box-shadow 0.35s var(--curva-suave), border-left-color 0.35s ease;
+}
+
+.abogado-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--sombra-hover);
+  border-left-color: var(--marca-celeste);
+}
+
+/* La sinopsis ocupa lo que queda, para que todas las tarjetas
+   terminen a la misma altura. */
+.abogado-card .sinopsis {
+  flex: 1;  /* la forma de crecer dentro de la fila */
+}
+
+.abogado-card h3 {
+  font-size: 17px;  /* el tamano de la letra */
+  color: var(--marca);  /* el color del texto */
+  margin-bottom: 4px;  /* el espacio por debajo de la caja */
+}
+
+.abogado-card .cargo {
+  font-size: 13px;  /* el tamano de la letra */
+  color: var(--gris-500);  /* el color del texto */
+  margin-bottom: 15px;  /* el espacio por debajo de la caja */
+  font-style: italic;  /* si la letra va en cursiva o normal */
+}
+
+.abogado-card ul {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  flex-direction: column;  /* hacia donde se acomodan los elementos (en fila o en columna) */
+  gap: 6px;  /* el espacio entre los elementos */
+}
+
+.abogado-card ul li {
+  font-size: 13px;  /* el tamano de la letra */
+  color: var(--gris-700);  /* el color del texto */
+  padding-left: 16px;  /* el espacio por dentro, a la izquierda */
+  position: relative;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
+  line-height: 1.5;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+}
+
+.abogado-card ul li::before {
+  content: "—";  /* el texto que se pone antes o despues del elemento (por ejemplo, una comilla) */
+  color: var(--marca);  /* el color del texto */
+  position: absolute;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
+  left: 0;  /* la distancia desde la izquierda, cuando la caja esta pegada */
+}
+
+/* Contacto */
+
+.contacto-grid {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  gap: 40px;  /* el espacio entre los elementos */
+  align-items: flex-start;  /* como se alinean de arriba hacia abajo */
+}
+
+/* La columna de los datos de la firma. */
+.contacto-info {
+  width: 320px;  /* el ancho de la caja */
+  flex-shrink: 0;  /* cuanto se encoge el elemento si no hay espacio */
+  background-color: #ffffff;
+  border: 1px solid var(--borde);
+  border-top: 4px solid var(--marca);
+  border-radius: 10px;
+  padding: 24px 22px;
+  box-shadow: var(--sombra-suave);
+  transition: box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.contacto-info:hover {
+  box-shadow: var(--sombra-media);
+}
+
+.contacto-info h3 {
+  font-size: 18px;  /* el tamano de la letra */
+  color: var(--marca);  /* el color del texto */
+  margin-bottom: 5px;  /* el espacio por debajo de la caja */
+}
+
+.contacto-info > p {
+  color: var(--gris-700);  /* el color del texto */
+  font-size: 14px;  /* el tamano de la letra */
+  margin-bottom: 25px;  /* el espacio por debajo de la caja */
+}
+
+/* Cada dato de contacto (direccion, telefono, correo...). */
+.contacto-dato {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  gap: 12px;  /* el espacio entre los elementos */
+  margin-bottom: 18px;  /* el espacio por debajo de la caja */
+  align-items: flex-start;  /* como se alinean de arriba hacia abajo */
+  padding: 8px 10px;
+  margin-left: -10px;
+  border-radius: 8px;
+  transition: background-color 0.25s ease, transform 0.25s var(--curva-suave);
+}
+
+.contacto-dato:hover {
+  background-color: var(--azul-hielo);
+  transform: translateX(4px);
+}
+
+/* El cuadrito con el dibujo del dato. */
+.contacto-dato-icono {
+  font-size: 18px;  /* el tamano de la letra */
+  min-width: 24px;  /* el ancho minimo de la caja */
+  margin-top: 2px;  /* el espacio por encima de la caja */
+  color: var(--marca);
+}
+
+.contacto-dato-texto strong {
+  display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  font-size: 12px;  /* el tamano de la letra */
+  color: var(--marca);  /* el color del texto */
+  text-transform: uppercase;  /* las mayusculas o minusculas del texto */
+  letter-spacing: 0.5px;  /* el espacio entre las letras */
+  margin-bottom: 2px;  /* el espacio por debajo de la caja */
+}
+
+.contacto-dato-texto span {
+  font-size: 14px;  /* el tamano de la letra */
+  color: var(--gris-700);  /* el color del texto */
+}
+
+.contacto-dato-texto a {
+  color: var(--gris-700);  /* el color del texto */
+  transition: color 0.2s ease;
+}
+
+.contacto-dato-texto a:hover {
+  color: var(--marca);  /* el color del texto */
+}
+
+/* El cuadrito con el horario de atencion. */
+.horario-box {
+  background-color: var(--azul-hielo);  /* el color de fondo de la caja */
+  border: 1px solid var(--azul-borde);
+  border-left: 4px solid var(--marca);  /* el borde de la izquierda (la franja de color de las tarjetas) */
+  padding: 14px 16px;  /* el espacio por dentro de la caja */
+  margin-top: 20px;  /* el espacio por encima de la caja */
+  border-radius: 0 8px 8px 0;  /* las esquinas redondeadas */
+  box-shadow: var(--sombra-suave);
+}
+
+.horario-box strong {
+  display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  font-size: 13px;  /* el tamano de la letra */
+  color: var(--marca);  /* el color del texto */
+  margin-bottom: 5px;  /* el espacio por debajo de la caja */
+  text-transform: uppercase;  /* las mayusculas o minusculas del texto */
+  letter-spacing: 0.5px;  /* el espacio entre las letras */
+}
+
+.horario-box p {
+  font-size: 13px;  /* el tamano de la letra */
+  color: var(--gris-700);  /* el color del texto */
+  line-height: 1.6;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+}
+
+/* Formulario */
+
+.formulario {
+  flex: 1;  /* la forma de crecer dentro de la fila */
+  background-color: #ffffff;  /* el color de fondo de la caja */
+  border: 1px solid var(--borde);  /* el borde que rodea la caja (grosor, estilo y color) */
+  border-radius: 10px;  /* las esquinas redondeadas */
+  overflow: hidden;  /* que pasa con lo que no cabe dentro de la caja (se ve o se esconde) */
+  box-shadow: var(--sombra-media);
+  transition: box-shadow 0.3s ease;
+}
+
+.formulario:hover {
+  box-shadow: var(--sombra-hover);
+}
+
+/* El titulo del formulario y su texto de apoyo. */
+.formulario-cabecera {
+  background-color: var(--marca);  /* el color de fondo de la caja */
+  background-image: var(--degradado-marca);
+  color: #ffffff;  /* el color del texto */
+  padding: 22px 25px;  /* el espacio por dentro de la caja */
+}
+
+.formulario-cabecera h3 {
+  font-size: 16px;  /* el tamano de la letra */
+  margin-bottom: 3px;  /* el espacio por debajo de la caja */
+}
+
+.formulario-cabecera p {
+  font-size: 13px;  /* el tamano de la letra */
+  color: rgba(255, 255, 255, 0.85);  /* el color del texto */
+}
+
+/* La parte de abajo del formulario, donde van los campos. */
+.formulario-cuerpo {
+  padding: 25px;  /* el espacio por dentro de la caja */
+}
+
+/* Una fila con dos campos de la mitad de ancho. */
+.fila-doble {
+  display: grid;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  grid-template-columns: 1fr 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
+  gap: 15px;  /* el espacio entre los elementos */
+  margin-bottom: 15px;  /* el espacio por debajo de la caja */
+}
+
+/* Cada campo del formulario: la etiqueta, la caja y la ayuda. */
+.campo {
+  margin-bottom: 15px;  /* el espacio por debajo de la caja */
+}
+
+label {
+  display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  font-size: 12px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: var(--gris-900);  /* el color del texto */
+  text-transform: uppercase;  /* las mayusculas o minusculas del texto */
+  letter-spacing: 0.5px;  /* el espacio entre las letras */
+  margin-bottom: 5px;  /* el espacio por debajo de la caja */
+}
+
+label .req {
+  color: var(--marca);  /* el color del texto */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="url"],
+input[type="search"],
+select,
+textarea {
+  width: 100%;  /* el ancho de la caja */
+  padding: 10px 13px;  /* el espacio por dentro de la caja */
+  border: 1px solid var(--borde);  /* el borde que rodea la caja (grosor, estilo y color) */
+  border-radius: 6px;  /* las esquinas redondeadas */
+  font-family: Arial, sans-serif;  /* la tipografia (la letra) que se usa */
+  font-size: 14px;  /* el tamano de la letra */
+  color: var(--gris-900);  /* el color del texto */
+  background-color: #ffffff;  /* el color de fondo de la caja */
+  outline: none;  /* el contorno al enfocar con el teclado */
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="password"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--marca);  /* el color del borde */
+  background-color: #fafdff;  /* el color de fondo de la caja */
+  box-shadow: 0 0 0 3.5px rgba(0, 108, 183, 0.14);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9fb3c8;  /* el color del texto */
+}
+
+select {
+  cursor: pointer;  /* la forma del puntero del raton cuando pasa por encima */
+}
+
+textarea {
+  resize: vertical;  /* si el visitante puede estirar la caja con el raton */
+  min-height: 110px;  /* el alto minimo de la caja */
+}
+
+/* La frase de ayuda que va debajo de un campo. */
+.ayuda {
+  font-size: 12px;  /* el tamano de la letra */
+  color: var(--gris-500);  /* el color del texto */
+  margin-top: 4px;  /* el espacio por encima de la caja */
+  display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+/* Cada casilla de autorizacion del formulario. */
+.check-privacidad {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  gap: 8px;  /* el espacio entre los elementos */
+  align-items: flex-start;  /* como se alinean de arriba hacia abajo */
+  margin-bottom: 20px;  /* el espacio por debajo de la caja */
+}
+
+.check-privacidad input[type="checkbox"] {
+  width: 15px;  /* el ancho de la caja */
+  height: 15px;  /* el alto de la caja */
+  margin-top: 3px;  /* el espacio por encima de la caja */
+  flex-shrink: 0;  /* cuanto se encoge el elemento si no hay espacio */
+  accent-color: var(--marca);  /* el color de la palomita y las rayitas de los campos */
+}
+
+.check-privacidad label {
+  font-size: 12px;  /* el tamano de la letra */
+  color: var(--gris-700);  /* el color del texto */
+  text-transform: none;  /* las mayusculas o minusculas del texto */
+  letter-spacing: 0;  /* el espacio entre las letras */
+  font-weight: normal;  /* el grosor de la letra (normal, negrita...) */
+  margin: 0;  /* el espacio por fuera de la caja */
+}
+
+.check-privacidad a {
+  color: var(--marca);  /* el color del texto */
+  text-decoration: underline;  /* el adorno del texto */
+}
+
+/* El boton que envia el mensaje. */
+.btn-enviar {
+  width: 100%;  /* el ancho de la caja */
+  padding: 12px;  /* el espacio por dentro de la caja */
+  background-color: var(--marca);  /* el color de fondo de la caja */
+  background-image: var(--degradado-marca);
+  color: #ffffff;  /* el color del texto */
+  border: none;  /* el borde que rodea la caja (grosor, estilo y color) */
+  border-radius: 6px;  /* las esquinas redondeadas */
+  font-size: 14px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  cursor: pointer;  /* la forma del puntero del raton cuando pasa por encima */
+  font-family: Arial, sans-serif;  /* la tipografia (la letra) que se usa */
+  letter-spacing: 0.5px;  /* el espacio entre las letras */
+  box-shadow: 0 4px 14px rgba(0, 108, 183, 0.25);
+  transition: transform 0.25s var(--curva-suave), box-shadow 0.25s var(--curva-suave), filter 0.25s ease;
+}
+
+.btn-enviar:hover {
+  background-color: var(--marca-oscura);  /* el color de fondo de la caja */
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 108, 183, 0.35);
+  filter: brightness(1.06);
+}
+
+/* Pie de página */
+
+footer {
+  background-color: #0e2439;  /* el color de fondo de la caja */
+  background-image: linear-gradient(180deg, #102a43 0%, #091828 100%);
+  border-top: 3px solid var(--marca-celeste);
+  color: rgba(255, 255, 255, 0.75);  /* el color del texto */
+  padding: 50px 20px 20px;  /* el espacio por dentro de la caja */
+}
+
+/* La rejilla de cuatro columnas del pie de pagina. */
+.footer-grid {
+  max-width: 1100px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  margin: 0 auto;  /* el espacio por fuera de la caja */
+  display: grid;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  grid-template-columns: 2fr 1fr 1fr 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
+  gap: 30px;  /* el espacio entre los elementos */
+  padding-bottom: 30px;  /* el espacio por dentro, abajo */
+  border-bottom: 1px solid rgba(0, 174, 239, 0.18);  /* el borde de abajo */
+  margin-bottom: 20px;  /* el espacio por debajo de la caja */
+}
+
+.footer-logo img {
+  height: 60px;  /* el alto de la caja */
+  width: auto;  /* el ancho de la caja */
+  margin-bottom: 12px;  /* el espacio por debajo de la caja */
+}
+
+.footer-logo p {
+  font-size: 13px;  /* el tamano de la letra */
+  line-height: 1.7;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+  margin-bottom: 5px;  /* el espacio por debajo de la caja */
+}
+
+.footer-col h4 {
+  color: #ffffff;  /* el color del texto */
+  font-size: 12px;  /* el tamano de la letra */
+  text-transform: uppercase;  /* las mayusculas o minusculas del texto */
+  letter-spacing: 1.5px;  /* el espacio entre las letras */
+  margin-bottom: 15px;  /* el espacio por debajo de la caja */
+}
+
+.footer-col a {
+  display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  font-size: 13px;  /* el tamano de la letra */
+  color: rgba(255, 255, 255, 0.65);  /* el color del texto */
+  margin-bottom: 7px;  /* el espacio por debajo de la caja */
+  transition: color 0.22s ease, transform 0.22s var(--curva-suave);
+}
+
+.footer-col a:hover {
+  color: var(--marca-celeste);  /* el color del texto */
+  transform: translateX(4px);
+}
+
+.footer-col .contacto-pie {
+  font-size: 13px;  /* el tamano de la letra */
+  color: rgba(255, 255, 255, 0.65);  /* el color del texto */
+  margin-bottom: 7px;  /* el espacio por debajo de la caja */
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  gap: 6px;  /* el espacio entre los elementos */
+  line-height: 1.5;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+}
+
+.footer-col .contacto-pie a {
+  display: inline;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  color: inherit;  /* el color del texto */
+}
+
+/* La ultima fila del pie: el copyright y los enlaces legales. */
+.footer-bottom {
+  max-width: 1100px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  margin: 0 auto;  /* el espacio por fuera de la caja */
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  justify-content: space-between;  /* como se reparten de izquierda a derecha */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  flex-wrap: wrap;  /* si los elementos se pasan a otra linea cuando no caben */
+  gap: 10px;  /* el espacio entre los elementos */
+}
+
+.footer-bottom p {
+  font-size: 12px;  /* el tamano de la letra */
+  color: rgba(255, 255, 255, 0.45);  /* el color del texto */
+}
+
+.footer-bottom a {
+  font-size: 12px;  /* el tamano de la letra */
+  color: rgba(255, 255, 255, 0.45);  /* el color del texto */
+  margin-left: 20px;  /* el espacio por la izquierda de la caja */
+  transition: color 0.2s ease;
+}
+
+.footer-bottom a:hover {
+  color: var(--marca-celeste);  /* el color del texto */
+}
+
+/* Tablet (máx 900px) */
+
+@media (max-width: 900px) {
+
+  /* Dos columnas lado a lado: la de texto y la de color. */
+  .dos-columnas {
+    flex-direction: column;  /* hacia donde se acomodan los elementos (en fila o en columna) */
+  }
+
+  .dos-columnas .col-azul {
+    width: 100%;  /* el ancho de la caja */
+  }
+
+  /* La rejilla donde van las tarjetas de las areas. */
+  .servicios-grid {
+    grid-template-columns: 1fr 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
+  }
+
+  /* La rejilla de los tres bloques de la cultura. */
+  .cultura-bloques {
+    grid-template-columns: 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
+  }
+
+  /* La rejilla con las fichas del equipo. */
+  .equipo-grid {
+    grid-template-columns: 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
+  }
+
+  /* Las dos columnas del contacto: los datos y el formulario. */
+  .contacto-grid {
+    flex-direction: column;  /* hacia donde se acomodan los elementos (en fila o en columna) */
+  }
+
+  /* La columna de los datos de la firma. */
+  .contacto-info {
+    width: 100%;  /* el ancho de la caja */
+  }
+
+  /* La rejilla de cuatro columnas del pie de pagina. */
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
+    gap: 25px;  /* el espacio entre los elementos */
+  }
+}
+
+/* Móvil (máx 600px) */
+
+@media (max-width: 600px) {
+
+  /* La lista de enlaces del menu. */
+  .nav-links {
+    display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+    position: absolute;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
+    top: 70px;  /* la distancia desde arriba, cuando la caja esta pegada */
+    left: 0;  /* la distancia desde la izquierda, cuando la caja esta pegada */
+    width: 100%;  /* el ancho de la caja */
+    background-color: #ffffff;  /* el color de fondo de la caja */
+    flex-direction: column;  /* hacia donde se acomodan los elementos (en fila o en columna) */
+    padding: 10px 0 20px;  /* el espacio por dentro de la caja */
+    border-bottom: 3px solid var(--marca);  /* el borde de abajo */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  /* la sombra de la caja */
+    gap: 0;  /* el espacio entre los elementos */
+  }
+
+  .nav-links a {
+    padding: 12px 20px;  /* el espacio por dentro de la caja */
+    border-radius: 0;  /* las esquinas redondeadas */
+    border-bottom: 1px solid #f0f0f0;  /* el borde de abajo */
+    font-size: 15px;  /* el tamano de la letra */
+  }
+
+  .nav-links a:last-child {
+    border-bottom: none;  /* el borde de abajo */
+  }
+
+  /* La portada azul del inicio, con el nombre de la firma y los dos botones. */
+  .banner {
+    padding: 50px 20px;  /* el espacio por dentro de la caja */
+  }
+
+  .banner h1 {
+    font-size: 24px;  /* el tamano de la letra */
+  }
+
+  .banner a {
+    display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+    margin: 8px auto;  /* el espacio por fuera de la caja */
+    max-width: 260px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  }
+
+  /* Una parte de la pagina. Todas las secciones tienen el mismo ancho y el mismo espacio arriba y abajo. */
+  .seccion {
+    padding: 40px 20px;  /* el espacio por dentro de la caja */
+  }
+
+  /* El titulo grande de cada seccion (Inicio, Contacto, Equipo...). */
+  .titulo-seccion {
+    font-size: 22px;  /* el tamano de la letra */
+  }
+
+  /* La rejilla donde van las tarjetas de las areas. */
+  .servicios-grid {
+    grid-template-columns: 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
+  }
+
+  /* Una fila con dos campos de la mitad de ancho. */
+  .fila-doble {
+    grid-template-columns: 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
+  }
+
+  /* La parte de abajo del formulario, donde van los campos. */
+  .formulario-cuerpo {
+    padding: 20px 15px;  /* el espacio por dentro de la caja */
+  }
+
+  /* La rejilla de los seis valores. */
+  .valores-grid {
+    grid-template-columns: 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
+  }
+
+  /* La rejilla de cuatro columnas del pie de pagina. */
+  .footer-grid {
+    grid-template-columns: 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
+  }
+
+  /* La ultima fila del pie: el copyright y los enlaces legales. */
+  .footer-bottom {
+    flex-direction: column;  /* hacia donde se acomodan los elementos (en fila o en columna) */
+    text-align: center;  /* como se alinea el texto (izquierda, centro o derecha) */
+  }
+
+  .footer-bottom a {
+    margin-left: 10px;  /* el espacio por la izquierda de la caja */
+  }
+}
+
+/* Campo con error */
+.campo-error {
+  border-color: #cc0000 !important;  /* el color del borde */
+  background-color: #fff5f5 !important;  /* el color de fondo de la caja */
+}
+
+/* El texto rojo que explica cual es el problema. */
+.texto-error {
+  font-size: 12px;  /* el tamano de la letra */
+  color: #cc0000;  /* el color del texto */
+  margin-top: 4px;  /* el espacio por encima de la caja */
+  display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+/* Mensaje de éxito al enviar */
+.mensaje-enviado {
+  display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  background-color: #e8f5e9;  /* el color de fondo de la caja */
+  border: 1px solid #4caf50;  /* el borde que rodea la caja (grosor, estilo y color) */
+  border-left: 4px solid #4caf50;  /* el borde de la izquierda (la franja de color de las tarjetas) */
+  padding: 16px 20px;  /* el espacio por dentro de la caja */
+  border-radius: 4px;  /* las esquinas redondeadas */
+  color: #2e7d32;  /* el color del texto */
+  font-size: 14px;  /* el tamano de la letra */
+  margin-top: 10px;  /* el espacio por encima de la caja */
+  text-align: center;  /* como se alinea el texto (izquierda, centro o derecha) */
+}
+
+/* Campos del formulario — validación con CSS */
+
+/* Rojo: solo cuando el campo ya fue tocado (focus) y sigue inválido */
+input:focus:invalid,
+select:focus:invalid,
+textarea:focus:invalid {
+  border-color: #cc0000;  /* el color del borde */
+  background-color: #fff5f5;  /* el color de fondo de la caja */
+  outline: none;  /* el contorno al enfocar con el teclado */
+}
+
+/* Verde: cuando el campo está bien llenado */
+input:focus:valid,
+select:focus:valid,
+textarea:focus:valid {
+  border-color: #2e7d32;  /* el color del borde */
+  background-color: #f5fff5;  /* el color de fondo de la caja */
+  outline: none;  /* el contorno al enfocar con el teclado */
+}
+
+/* Rojo más visible: cuando el usuario salió del campo y quedó inválido */
+input:not(:focus):not(:placeholder-shown):invalid,
+textarea:not(:focus):not(:placeholder-shown):invalid {
+  border-color: #cc0000;  /* el color del borde */
+  background-color: #fff5f5;  /* el color de fondo de la caja */
+}
+
+/* Verde: cuando el usuario salió del campo y quedó válido */
+input:not(:focus):not(:placeholder-shown):valid,
+textarea:not(:focus):not(:placeholder-shown):valid {
+  border-color: #2e7d32;  /* el color del borde */
+  background-color: #f5fff5;  /* el color de fondo de la caja */
+}
+
+/* =========================================
+   WHATSAPP
+   ========================================= */
+
+/* Botón flotante de WhatsApp (esquina inferior derecha) */
+.btn-whatsapp {
+  position: fixed;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
+  right: 20px;  /* la distancia desde la derecha, cuando la caja esta pegada */
+  bottom: 20px;  /* la distancia desde abajo, cuando la caja esta pegada */
+  width: 56px;  /* el ancho de la caja */
+  height: 56px;  /* el alto de la caja */
+  border-radius: 50%;  /* las esquinas redondeadas */
+  background-color: #25d366;  /* el color de fondo de la caja */
+  color: #ffffff;  /* el color del texto */
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  justify-content: center;  /* como se reparten de izquierda a derecha */
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);  /* la sombra de la caja */
+  z-index: 200;  /* el orden de las capas (lo que esta mas arriba, tapa a lo de abajo) */
+  transition: transform 0.28s var(--curva-suave), box-shadow 0.28s var(--curva-suave);  /* el cambio suave entre estados */
+  animation: pulsoWhatsapp 3s infinite;
+}
+
+/* Al pasar el mouse crece un poco */
+.btn-whatsapp:hover {
+  transform: scale(1.1) translateY(-2px);  /* un movimiento o cambio de forma del elemento */
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);  /* la sombra de la caja */
+}
+
+/* El dibujo de WhatsApp (SVG) */
+.btn-whatsapp svg {
+  width: 30px;  /* el ancho de la caja */
+  height: 30px;  /* el alto de la caja */
+  fill: #ffffff;  /* el color de relleno de un dibujo SVG */
+}
+
+/* Icono de WhatsApp dentro del bloque de contacto */
+.contacto-dato-icono.whatsapp,
+.contacto-pie .whatsapp {
+  color: #25d366;  /* el color del texto */
+}
+
+/* Enlace de WhatsApp en el pie de página */
+.footer-col a.whatsapp {
+  color: #25d366;  /* el color del texto */
+}
+
+/* =========================================
+   CONTROLES: MODO OSCURO, IDIOMA, REDES, EQUIPO
+   (se agrega a las dos versiones por igual)
+   ========================================= */
+
+/* ---------- Botones de la barra superior ---------- */
+.controles {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  gap: 8px;  /* el espacio entre los elementos */
+}
+
+/* Un boton redondo de la barra superior. */
+.btn-control {
+  width: 38px;  /* el ancho de la caja */
+  height: 38px;  /* el alto de la caja */
+  min-width: 38px;  /* el ancho minimo de la caja */
+  border-radius: 50%;  /* las esquinas redondeadas */
+  border: 1px solid var(--borde);  /* el borde que rodea la caja (grosor, estilo y color) */
+  background-color: var(--azul-hielo);  /* el color de fondo de la caja */
+  color: var(--marca);  /* el color del texto */
+  cursor: pointer;  /* la forma del puntero del raton cuando pasa por encima */
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  justify-content: center;  /* como se reparten de izquierda a derecha */
+  font-size: 13px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  font-family: Arial, sans-serif;  /* la tipografia (la letra) que se usa */
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s var(--curva-suave), box-shadow 0.25s ease;  /* el cambio suave entre estados */
+}
+
+.btn-control svg {
+  width: 18px;  /* el ancho de la caja */
+  height: 18px;  /* el alto de la caja */
+  fill: currentColor;  /* el color de relleno de un dibujo SVG */
+  transition: transform 0.35s var(--curva-suave);
+}
+
+.btn-control:hover {
+  background-color: var(--marca);  /* el color de fondo de la caja */
+  border-color: var(--marca);  /* el color del borde */
+  color: #ffffff;  /* el color del texto */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 108, 183, 0.25);
+}
+
+.btn-control:hover svg {
+  transform: rotate(12deg) scale(1.08);
+}
+
+/* El grupo de las dos banderas. */
+.btn-idioma {
+  width: 40px;  /* el ancho de la caja */
+  height: 38px;  /* el alto de la caja */
+  min-width: 40px;  /* el ancho minimo de la caja */
+  border-radius: 19px;  /* las esquinas redondeadas */
+}
+
+/* ---------- Tarjetas de servicio con icono ---------- */
+.servicio-top {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  justify-content: space-between;  /* como se reparten de izquierda a derecha */
+  margin-bottom: 12px;  /* el espacio por debajo de la caja */
+}
+
+/* El cuadrito con el dibujo del area. */
+.servicio-icono {
+  width: 46px;  /* el ancho de la caja */
+  height: 46px;  /* el alto de la caja */
+  border-radius: 10px;  /* las esquinas redondeadas */
+  background-color: var(--azul-suave);  /* el color de fondo de la caja */
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  justify-content: center;  /* como se reparten de izquierda a derecha */
+  flex-shrink: 0;  /* cuanto se encoge el elemento si no hay espacio */
+  transition: background 0.32s var(--curva-suave), transform 0.32s var(--curva-suave), box-shadow 0.32s var(--curva-suave);
+}
+
+.servicio-icono svg {
+  width: 24px;  /* el ancho de la caja */
+  height: 24px;  /* el alto de la caja */
+  fill: var(--marca);  /* el color de relleno de un dibujo SVG */
+  transition: fill 0.32s ease, transform 0.32s var(--curva-suave);
+}
+
+.servicio-card:hover .servicio-icono {
+  background: var(--degradado-marca);
+  transform: scale(1.1) rotate(-4deg);
+  box-shadow: 0 6px 16px rgba(0, 108, 183, 0.25);
+}
+
+.servicio-card:hover .servicio-icono svg {
+  fill: #ffffff;
+  transform: scale(1.06);
+}
+
+.servicio-card .numero {
+  margin-bottom: 0;  /* el espacio por debajo de la caja */
+}
+
+/* ---------- Tarjetas del equipo ---------- */
+/* La cabecera de la ficha: el monograma arriba y los datos centrados,
+   igual que las tarjetas de areas, de valores y de publicaciones. */
+/* La parte de arriba de la ficha: monograma, nombre y cargo. */
+.equipo-cabecera {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  flex-direction: column;  /* hacia donde se acomodan los elementos (en fila o en columna) */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  text-align: center;  /* como se alinea el texto (izquierda, centro o derecha) */
+  gap: 8px;  /* el espacio entre los elementos */
+  margin-bottom: 16px;  /* el espacio por debajo de la caja */
+  padding-bottom: 16px;  /* el espacio por dentro, abajo */
+  border-bottom: 1px solid var(--borde);  /* el borde de abajo */
+}
+
+/* El circulo con las iniciales de la persona. */
+.equipo-monograma {
+  width: 62px;  /* el ancho de la caja */
+  height: 62px;  /* el alto de la caja */
+  min-width: 62px;  /* el ancho minimo de la caja */
+  border-radius: 50%;  /* las esquinas redondeadas */
+  background-color: var(--marca);  /* el color de fondo de la caja */
+  background-image: var(--degradado-marca);
+  color: #ffffff;  /* el color del texto */
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  justify-content: center;  /* como se reparten de izquierda a derecha */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  font-size: 17px;  /* el tamano de la letra */
+  letter-spacing: 0.5px;  /* el espacio entre las letras */
+  box-shadow: 0 4px 14px rgba(0, 108, 183, 0.25), 0 0 0 4px var(--azul-suave);
+  transition: transform 0.35s var(--curva-suave), box-shadow 0.35s var(--curva-suave);
+}
+
+.abogado-card:hover .equipo-monograma {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 108, 183, 0.35), 0 0 0 5px rgba(0, 174, 239, 0.25);
+}
+
+.abogado-card .equipo-cabecera h3 {
+  margin: 0;  /* el espacio por fuera de la caja */
+  font-size: 16.5px;  /* el tamano de la letra */
+  line-height: 1.35;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+}
+
+.abogado-card .equipo-cabecera .cargo {
+  margin: 0;  /* el espacio por fuera de la caja */
+  font-style: normal;  /* si la letra va en cursiva o normal */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  letter-spacing: 0.3px;  /* el espacio entre las letras */
+  color: var(--gris-500);  /* el color del texto */
+}
+
+/* La fila de enlaces de la ficha (el de LinkedIn). */
+.equipo-enlaces {
+  margin-top: 14px;  /* el espacio por encima de la caja */
+  padding-top: 12px;  /* el espacio por dentro, arriba */
+  border-top: 1px solid var(--borde);  /* el borde de arriba (la franja de color de las tarjetas) */
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  gap: 10px;  /* el espacio entre los elementos */
+}
+
+/* El boton de LinkedIn de una ficha. */
+.equipo-linkedin {
+  width: 30px;  /* el ancho de la caja */
+  height: 30px;  /* el alto de la caja */
+  border-radius: 50%;  /* las esquinas redondeadas */
+  border: 1px solid var(--borde);  /* el borde que rodea la caja (grosor, estilo y color) */
+  color: var(--marca);  /* el color del texto */
+  background-color: var(--azul-hielo);
+  display: inline-flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  justify-content: center;  /* como se reparten de izquierda a derecha */
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s var(--curva-suave);  /* el cambio suave entre estados */
+}
+
+.equipo-linkedin svg {
+  width: 15px;  /* el ancho de la caja */
+  height: 15px;  /* el alto de la caja */
+  fill: currentColor;  /* el color de relleno de un dibujo SVG */
+}
+
+.equipo-linkedin:hover {
+  background-color: var(--marca);  /* el color de fondo de la caja */
+  border-color: var(--marca);  /* el color del borde */
+  color: #ffffff;  /* el color del texto */
+  transform: translateY(-2px);
+}
+
+/* ---------- Redes sociales del pie de pagina ---------- */
+.redes-sociales {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  gap: 10px;  /* el espacio entre los elementos */
+  margin-top: 18px;  /* el espacio por encima de la caja */
+}
+
+.redes-sociales a {
+  width: 38px;  /* el ancho de la caja */
+  height: 38px;  /* el alto de la caja */
+  border-radius: 50%;  /* las esquinas redondeadas */
+  border: 1px solid rgba(0, 174, 239, 0.35);  /* el borde que rodea la caja (grosor, estilo y color) */
+  background-color: rgba(0, 108, 183, 0.15);
+  color: #ffffff;  /* el color del texto */
+  display: inline-flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  justify-content: center;  /* como se reparten de izquierda a derecha */
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s var(--curva-suave), box-shadow 0.25s ease;  /* el cambio suave entre estados */
+}
+
+.redes-sociales a svg {
+  width: 17px;  /* el ancho de la caja */
+  height: 17px;  /* el alto de la caja */
+  fill: currentColor;  /* el color de relleno de un dibujo SVG */
+}
+
+.redes-sociales a:hover {
+  background-color: var(--marca-celeste);  /* el color de fondo de la caja */
+  border-color: var(--marca-celeste);  /* el color del borde */
+  color: #ffffff;  /* el color del texto */
+  transform: translateY(-3px);  /* un movimiento o cambio de forma del elemento */
+  box-shadow: 0 6px 16px rgba(0, 174, 239, 0.35);
+}
+
+/* =========================================
+   MODO OSCURO
+   Se sobreescriben los colores que estaban
+   escritos a mano en el CSS original.
+   ========================================= */
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) {
+  --azul-hielo: #13233b;
+  --azul-suave: #172b47;
+  --azul-borde: #274060;
+  --gris-900: #f1f5f9;
+  --gris-700: #cbd5e1;
+  --gris-500: #94a3b8;
+  --borde: #243b5a;
+  --sombra-suave: 0 4px 18px rgba(0, 0, 0, 0.35);
+  --sombra-media: 0 10px 28px rgba(0, 0, 0, 0.45);
+  --sombra-hover: 0 16px 36px rgba(0, 174, 239, 0.18);
+  color-scheme: dark;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) body {
+  background-color: #0b1626;  /* el color de fondo de la caja */
+  color: #e2e8f0;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) nav {
+  background-color: rgba(11, 22, 38, 0.92);  /* el color de fondo de la caja */
+  border-bottom-color: #00aeef;  /* el color del borde de abajo */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.55);  /* la sombra de la caja */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .nav-links a {
+  color: #e2e8f0;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .nav-links a[aria-current="page"] {
+  background-color: rgba(0, 174, 239, 0.16);
+  color: #7dd3fc;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .nav-links a:hover {
+  background-color: #1976d2;  /* el color de fondo de la caja */
+  color: #ffffff;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .menu-btn span {
+  background-color: #e2e8f0;  /* el color de fondo de la caja */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .btn-control {
+  background-color: #13233b;
+  border-color: #274060;  /* el color del borde */
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .btn-control:hover {
+  background-color: #00aeef;  /* el color de fondo de la caja */
+  border-color: #00aeef;  /* el color del borde */
+  color: #0b1626;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .banner {
+  background-color: #0b2a45;  /* el color de fondo de la caja */
+  background-image: linear-gradient(135deg, #071326 0%, #16235a 40%, #0b3c6e 78%, #006699 100%);
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .seccion-gris {
+  background-color: #101e33;  /* el color de fondo de la caja */
+  background-image: linear-gradient(180deg, #101e33 0%, #0d192b 100%);
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .titulo-seccion {
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .seccion-azul .titulo-seccion {
+  color: #ffffff;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .linea-azul {
+  background: linear-gradient(90deg, #006cb7, #00aeef, #7dd3fc);  /* el color de fondo de la caja */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .subtitulo-gris {
+  color: #94a3b8;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .dos-columnas .col-texto p {
+  color: #b6c2d1;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .col-azul {
+  background-color: #0e3a5c;  /* el color de fondo de la caja */
+  background-image: linear-gradient(145deg, #152559 0%, #0d3b66 100%);
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .valor-item {
+  background-color: #15263f;  /* el color de fondo de la caja */
+  border-color: #243b5a;
+  border-left-color: #00aeef;  /* el color del borde de la izquierda */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .valor-item:hover {
+  background-color: #1b3150;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .valor-item strong {
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .valor-item span {
+  color: #94a3b8;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .servicio-card {
+  background-color: #15263f;  /* el color de fondo de la caja */
+  border-color: #243b5a;  /* el color del borde */
+  border-top-color: #00aeef;  /* el color del borde de arriba */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .servicio-icono {
+  background-color: #0b1626;  /* el color de fondo de la caja */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .servicio-icono svg {
+  fill: #7dd3fc;  /* el color de relleno de un dibujo SVG */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .servicio-card .numero {
+  color: #274060;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .servicio-card:hover .numero {
+  color: #00aeef;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .servicio-card h3 {
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .servicio-card p {
+  color: #94a3b8;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .abogado-card {
+  background-color: #15263f;  /* el color de fondo de la caja */
+  border-color: #243b5a;  /* el color del borde */
+  border-left-color: #00aeef;  /* el color del borde de la izquierda */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .abogado-card h3 {
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .abogado-card .cargo {
+  color: #94a3b8;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .abogado-card ul li {
+  color: #b6c2d1;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .abogado-card ul li::before {
+  color: #00aeef;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .equipo-cabecera {
+  border-bottom-color: #243b5a;  /* el color del borde de abajo */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .equipo-monograma {
+  background-color: #1976d2;  /* el color de fondo de la caja */
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 0 0 4px rgba(0, 174, 239, 0.18);
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .equipo-enlaces {
+  border-top-color: #243b5a;  /* el color del borde de arriba */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .equipo-linkedin {
+  background-color: #0b1626;
+  border-color: #274060;  /* el color del borde */
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .contacto-info {
+  background-color: #15263f;
+  border-color: #243b5a;
+  border-top-color: #00aeef;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .contacto-info h3 {
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .contacto-info > p {
+  color: #94a3b8;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .contacto-dato:hover {
+  background-color: #1b3150;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .contacto-dato-icono {
+  color: #38bdf8;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .contacto-dato-icono.whatsapp {
+  color: #25d366;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .contacto-dato-texto strong {
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .contacto-dato-texto span,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .contacto-dato-texto a {
+  color: #cbd5e1;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .contacto-dato-texto a:hover {
+  color: #7dd3fc;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .horario-box {
+  background-color: #0f1e34;  /* el color de fondo de la caja */
+  border-color: #243b5a;
+  border-left-color: #00aeef;  /* el color del borde de la izquierda */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .horario-box strong {
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .horario-box p {
+  color: #cbd5e1;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .formulario {
+  background-color: #15263f;  /* el color de fondo de la caja */
+  border-color: #243b5a;  /* el color del borde */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .formulario-cabecera {
+  background-color: #0b2a45;  /* el color de fondo de la caja */
+  background-image: linear-gradient(135deg, #0d1f42 0%, #152c69 50%, #006cb7 100%);
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .formulario-cuerpo {
+  background-color: #15263f;  /* el color de fondo de la caja */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .formulario-cta p {
+  color: #cbd5e1;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) label {
+  color: #cbd5e1;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) label .req {
+  color: #38bdf8;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input[type="text"],
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input[type="email"],
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input[type="tel"],
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input[type="password"],
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input[type="url"],
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input[type="search"],
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) select,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) textarea {
+  background-color: #0b1626;  /* el color de fondo de la caja */
+  color: #f1f5f9;  /* el color del texto */
+  border-color: #274060;  /* el color del borde */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) select option {
+  background-color: #0b1626;
+  color: #f1f5f9;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input::placeholder,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) textarea::placeholder {
+  color: #64748b;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input[type="text"]:focus,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input[type="email"]:focus,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input[type="tel"]:focus,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input[type="password"]:focus,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input[type="url"]:focus,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input[type="search"]:focus,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input:focus,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) select:focus,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) textarea:focus {
+  background-color: #091220;  /* el color de fondo de la caja */
+  color: #ffffff;
+  border-color: #00aeef;  /* el color del borde */
+  box-shadow: 0 0 0 3.5px rgba(0, 174, 239, 0.22);
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input:focus:invalid,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) select:focus:invalid,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) textarea:focus:invalid,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input:not(:focus):not(:placeholder-shown):invalid,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) textarea:not(:focus):not(:placeholder-shown):invalid {
+  background-color: rgba(185, 28, 28, 0.16);
+  border-color: #f87171;
+  color: #f8fafc;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input:focus:valid,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) select:focus:valid,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) textarea:focus:valid,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) input:not(:focus):not(:placeholder-shown):valid,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) textarea:not(:focus):not(:placeholder-shown):valid {
+  background-color: rgba(21, 128, 61, 0.15);
+  border-color: #4ade80;
+  color: #f8fafc;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .campo-error {
+  border-color: #f87171 !important;
+  background-color: rgba(185, 28, 28, 0.18) !important;
+  color: #fecaca !important;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .texto-error {
+  color: #fca5a5;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .mensaje-enviado {
+  background-color: rgba(22, 163, 74, 0.18);
+  border-color: #4ade80;
+  border-left-color: #4ade80;
+  color: #bbf7d0;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .mensaje-enviado.error {
+  background-color: rgba(220, 38, 38, 0.18);
+  border-color: #f87171;
+  border-left-color: #f87171;
+  color: #fecaca;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .ayuda {
+  color: #94a3b8;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .check-privacidad label {
+  color: #cbd5e1;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .check-privacidad a {
+  color: #38bdf8;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .btn-enviar {
+  background-color: #1976d2;  /* el color de fondo de la caja */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .btn-enviar:hover {
+  background-color: #0d47a1;  /* el color de fondo de la caja */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) footer {
+  background-color: #07101c;  /* el color de fondo de la caja */
+  background-image: linear-gradient(180deg, #091526 0%, #050c16 100%);
+  color: rgba(226, 232, 240, 0.75);  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .footer-logo p {
+  color: rgba(226, 232, 240, 0.6);  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .footer-col h4 {
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .footer-col a {
+  color: rgba(226, 232, 240, 0.6);  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .footer-col a:hover {
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .footer-col .contacto-pie {
+  color: rgba(226, 232, 240, 0.6);  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .footer-bottom p,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .footer-bottom a {
+  color: rgba(226, 232, 240, 0.45);  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .footer-bottom a:hover {
+  color: rgba(226, 232, 240, 0.85);  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .redes-sociales a {
+  border-color: rgba(125, 211, 252, 0.3);  /* el color del borde */
+  color: #e2e8f0;  /* el color del texto */
+}
+
+/* En pantallas pequenas los botones se mantienen visibles */
+@media (max-width: 600px) {
+  /* Un boton redondo de la barra superior. */
+  .btn-control {
+    width: 34px;  /* el ancho de la caja */
+    height: 34px;  /* el alto de la caja */
+    min-width: 34px;  /* el ancho minimo de la caja */
+  }
+
+  /* El grupo de las dos banderas. */
+  .btn-idioma {
+    width: 36px;  /* el ancho de la caja */
+    height: 34px;  /* el alto de la caja */
+    min-width: 36px;  /* el ancho minimo de la caja */
+    font-size: 12px;  /* el tamano de la letra */
+  }
+}
+
+/* =========================================
+   SELECTOR DE IDIOMA CON BANDERAS
+   ========================================= */
+
+/* El grupo de las dos banderas */
+.selector-idioma {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  gap: 6px;  /* el espacio entre los elementos */
+}
+
+/* Cada bandera es un boton redondeado */
+.btn-bandera {
+  width: 34px;  /* el ancho de la caja */
+  height: 26px;  /* el alto de la caja */
+  min-width: 34px;  /* el ancho minimo de la caja */
+  padding: 0;  /* el espacio por dentro de la caja */
+  border-radius: 4px;  /* las esquinas redondeadas */
+  border: 2px solid transparent;  /* el borde que rodea la caja (grosor, estilo y color) */
+  background-color: transparent;  /* el color de fondo de la caja */
+  cursor: pointer;  /* la forma del puntero del raton cuando pasa por encima */
+  overflow: hidden;  /* que pasa con lo que no cabe dentro de la caja (se ve o se esconde) */
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  justify-content: center;  /* como se reparten de izquierda a derecha */
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;  /* el cambio suave entre estados */
+}
+
+.btn-bandera svg {
+  width: 100%;  /* el ancho de la caja */
+  height: 100%;  /* el alto de la caja */
+  display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+/* Al pasar el mouse */
+.btn-bandera:hover {
+  transform: translateY(-2px);  /* un movimiento o cambio de forma del elemento */
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);  /* la sombra de la caja */
+}
+
+/* La bandera del idioma activo se marca con un borde azul */
+.btn-bandera.activa {
+  border-color: var(--marca);  /* el color del borde */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .btn-bandera.activa {
+  border-color: #00aeef;  /* el color del borde */
+}
+
+/* Texto para lectores de pantalla (oculto) */
+.solo-lectores {
+  position: absolute;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
+  width: 1px;  /* el ancho de la caja */
+  height: 1px;  /* el alto de la caja */
+  padding: 0;  /* el espacio por dentro de la caja */
+  margin: -1px;  /* el espacio por fuera de la caja */
+  overflow: hidden;  /* que pasa con lo que no cabe dentro de la caja (se ve o se esconde) */
+  clip: rect(0, 0, 0, 0);  /* recorta la parte del dibujo que se sale de la caja */
+  white-space: nowrap;  /* los espacios y los saltos de linea */
+  border: 0;  /* el borde que rodea la caja (grosor, estilo y color) */
+}
+
+/* =========================================
+   IDIOMA Y TEMA CON CSS PURO (sin JavaScript)
+   -----------------------------------------------------
+   La versión HTML estática usa botones de radio y la
+   pseudo-clase :has() para cambiar de idioma y de tema.
+   Por defecto la página está en ESPAÑOL y en MODO CLARO.
+   ========================================= */
+
+/* El español es el idioma por defecto */
+.es {
+  display: inline;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+/* El texto en ingles. Solo se ve cuando el visitante elige ingles. */
+.en {
+  display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+/* Cuando se elige inglés se esconde el español */
+html:has(#idioma-en:checked) .es {
+  display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+html:has(#idioma-en:checked) .en {
+  display: inline;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+/* La bandera del idioma activo se marca con el borde de la marca */
+html:has(#idioma-es:checked) label[for="idioma-es"],
+html:has(#idioma-en:checked) label[for="idioma-en"] {
+  border-color: var(--marca);  /* el color del borde */
+}
+
+html:has(#idioma-es:checked) label[for="idioma-en"],
+html:has(#idioma-en:checked) label[for="idioma-es"] {
+  border-color: transparent;  /* el color del borde */
+}
+
+/* El icono del botón de tema cambia según el estado */
+.icono-sol {
+  display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+html:has(#tema-oscuro:checked) .icono-sol {
+  display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+html:has(#tema-oscuro:checked) .icono-luna {
+  display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+/* Las etiquetas (labels) también son clicables */
+label.btn-control,
+label.btn-bandera {
+  cursor: pointer;  /* la forma del puntero del raton cuando pasa por encima */
+}
+
+/* Al enfocarlos con el teclado se ve el contorno */
+label.btn-control:focus-visible,
+label.btn-bandera:focus-visible {
+  outline: 2px solid var(--marca);  /* el contorno al enfocar con el teclado */
+  outline-offset: 2px;  /* la distancia entre el elemento y su contorno */
+}
+
+/* =========================================
+   BOTONES DE ENLACE ENTRE SECCIONES
+   (los que llevan a otra pagina del sitio)
+   ========================================= */
+
+/* El boton que invita a seguir: KNOW... Conozcanos mas, Conozca al equipo... */
+.btn-seccion {
+  display: inline-block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  margin-top: 18px;  /* el espacio por encima de la caja */
+  padding: 11px 24px;  /* el espacio por dentro de la caja */
+  border: 2px solid var(--marca);  /* el borde que rodea la caja (grosor, estilo y color) */
+  border-radius: 6px;  /* las esquinas redondeadas */
+  background-color: transparent;  /* el color de fondo de la caja */
+  color: var(--marca);  /* el color del texto */
+  font-size: 14px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  text-align: center;  /* como se alinea el texto (izquierda, centro o derecha) */
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s var(--curva-suave), box-shadow 0.25s var(--curva-suave), border-color 0.25s ease;  /* el cambio suave entre estados */
+}
+
+.btn-seccion:hover {
+  background-color: var(--marca);  /* el color de fondo de la caja */
+  background-image: var(--degradado-marca);
+  border-color: transparent;
+  color: #ffffff;  /* el color del texto */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 108, 183, 0.26);
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .btn-seccion {
+  border-color: #00aeef;  /* el color del borde */
+  color: #00aeef;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .btn-seccion:hover {
+  background-color: #00aeef;  /* el color de fondo de la caja */
+  background-image: none;
+  color: #0f172a;  /* el color del texto */
+}
+
+/* La tarjeta que invita a ir al formulario no lleva el borde del formulario */
+.formulario-cta .formulario-cuerpo {
+  padding: 30px 25px;  /* el espacio por dentro de la caja */
+}
+
+.formulario-cta p {
+  font-size: 14px;  /* el tamano de la letra */
+  color: var(--gris-700);  /* el color del texto */
+  margin-bottom: 4px;  /* el espacio por debajo de la caja */
+}
+
+/* =========================================
+   LOGOTIPO INCRUSTADO EN EL HTML
+   (la version estatica no usa archivos de imagen)
+   ========================================= */
+
+
+
+/* =========================================
+   LOGOTIPO INCRUSTADO EN EL HTML
+   (la version estatica no usa archivos de imagen)
+   ========================================= */
+
+
+
+/* =========================================
+   AREA DEL CLIENTE: MIS SOLICITUDES
+   ========================================= */
+
+/* Esconde el elemento. La usan los recuadros que solo aparecen cuando se pide. */
+.oculto {
+  display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+/* La parte de arriba del area de Mi cuenta. */
+.cuenta-cabecera {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  justify-content: space-between;  /* como se reparten de izquierda a derecha */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  gap: 16px;  /* el espacio entre los elementos */
+  flex-wrap: wrap;  /* si los elementos se pasan a otra linea cuando no caben */
+  margin-bottom: 26px;  /* el espacio por debajo de la caja */
+  padding-bottom: 18px;  /* el espacio por dentro, abajo */
+  border-bottom: 1px solid #d5d8dc;  /* el borde de abajo */
+}
+
+.cuenta-cabecera .btn-seccion {
+  margin-top: 0;  /* el espacio por encima de la caja */
+}
+
+/* El titulo del area de Mi cuenta. */
+.titulo-cuenta {
+  font-size: 18px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: #006cb7;  /* el color del texto */
+  margin: 26px 0 14px;  /* el espacio por fuera de la caja */
+}
+
+/* Una solicitud enviada por el visitante. */
+.solicitud {
+  background: #ffffff;  /* el fondo de la caja */
+  border: 1px solid #d5d8dc;  /* el borde que rodea la caja (grosor, estilo y color) */
+  border-left: 4px solid #006cb7;  /* el borde de la izquierda (la franja de color de las tarjetas) */
+  border-radius: 0 5px 5px 0;  /* las esquinas redondeadas */
+  padding: 16px 18px;  /* el espacio por dentro de la caja */
+  margin-bottom: 12px;  /* el espacio por debajo de la caja */
+}
+
+/* La parte de arriba de la solicitud (fecha y area). */
+.solicitud-cabecera {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  justify-content: space-between;  /* como se reparten de izquierda a derecha */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  gap: 12px;  /* el espacio entre los elementos */
+  flex-wrap: wrap;  /* si los elementos se pasan a otra linea cuando no caben */
+  margin-bottom: 8px;  /* el espacio por debajo de la caja */
+}
+
+.solicitud-cabecera strong {
+  color: #006cb7;  /* el color del texto */
+  font-size: 15px;  /* el tamano de la letra */
+}
+
+/* La fecha de la solicitud. */
+.solicitud-fecha {
+  font-size: 12px;  /* el tamano de la letra */
+  color: #697276;  /* el color del texto */
+}
+
+.solicitud p {
+  font-size: 14px;  /* el tamano de la letra */
+  color: #566573;  /* el color del texto */
+  margin-bottom: 8px;  /* el espacio por debajo de la caja */
+}
+
+/* La etiqueta de estado de la solicitud. */
+.solicitud-estado {
+  display: inline-block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  font-size: 11px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  text-transform: uppercase;  /* las mayusculas o minusculas del texto */
+  letter-spacing: 0.5px;  /* el espacio entre las letras */
+  color: #1b7a42;  /* el color del texto */
+  background: #eaf7ef;  /* el fondo de la caja */
+  border-radius: 12px;  /* las esquinas redondeadas */
+  padding: 3px 10px;  /* el espacio por dentro de la caja */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .cuenta-cabecera {
+  border-bottom-color: #334155;  /* el color del borde de abajo */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .titulo-cuenta {
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .solicitud {
+  background: #1e293b;  /* el fondo de la caja */
+  border-color: #334155;  /* el color del borde */
+  border-left-color: #00aeef;  /* el color del borde de la izquierda */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .solicitud-cabecera strong {
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .solicitud p {
+  color: #b6c2d1;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .solicitud-fecha {
+  color: #94a3b8;  /* el color del texto */
+}
+
+/* =========================================
+   LOGOTIPO: DOS VERSIONES Y SIN DESBORDES
+   -----------------------------------------------------
+   El logotipo oficial es vertical (1557 x 2251): un
+   cuadrado con el simbolo arriba y la palabra MONTES
+   debajo. Por eso se usan dos recortes:
+
+     .logo-icon  Solo el cuadrado (para la barra)
+     .logo-full  El lockup completo (para el pie de pagina)
+
+   El alto se fija y el ancho se calcula solo, para que
+   el logo nunca se salga de su contenedor.
+   ========================================= */
+
+/* El logotipo dibujado con SVG (en vez de una imagen). */
+.logo-inline {
+  display: inline-block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  line-height: 0;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+  overflow: hidden;  /* que pasa con lo que no cabe dentro de la caja (se ve o se esconde) */
+}
+
+.logo-inline svg {
+  display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  width: auto;  /* el ancho de la caja */
+  height: 100%;  /* el alto de la caja */
+  max-width: 100%;  /* el ancho maximo (la caja no pasa de ese ancho) */
+}
+
+/* En la barra de navegacion: solo el cuadrado, 46x46 */
+.nav-logo .logo-inline {
+  width: 46px;  /* el ancho de la caja */
+  height: 46px;  /* el alto de la caja */
+}
+
+/* En el pie de pagina: el lockup completo */
+.footer-logo .logo-inline {
+  width: auto;  /* el ancho de la caja */
+  height: 96px;  /* el alto de la caja */
+}
+
+/* La barra no crece por culpa del logo */
+.nav-contenido {
+  overflow: hidden;  /* que pasa con lo que no cabe dentro de la caja (se ve o se esconde) */
+}
+
+/* =========================================
+   INICIO DE SESION Y REGISTRO (panel superior)
+   ========================================= */
+
+/* El cuadro de la barra: es igual que los botones de tema e idioma */
+.btn-usuario {
+  position: relative;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
+}
+
+/* Cuando hay sesion iniciada se muestran las iniciales */
+.inicial-usuario {
+  font-size: 13px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  letter-spacing: 0.5px;  /* el espacio entre las letras */
+}
+
+/* Capa oscura de fondo */
+.capa-sesion {
+  position: fixed;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
+  top: 0;  /* la distancia desde arriba, cuando la caja esta pegada */
+  left: 0;  /* la distancia desde la izquierda, cuando la caja esta pegada */
+  right: 0;  /* la distancia desde la derecha, cuando la caja esta pegada */
+  bottom: 0;  /* la distancia desde abajo, cuando la caja esta pegada */
+  background: rgba(15, 23, 42, 0.55);  /* el fondo de la caja */
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: flex-start;  /* como se alinean de arriba hacia abajo */
+  justify-content: center;  /* como se reparten de izquierda a derecha */
+  padding: 90px 20px 20px;  /* el espacio por dentro de la caja */
+  z-index: 300;  /* el orden de las capas (lo que esta mas arriba, tapa a lo de abajo) */
+  overflow-y: auto;  /* que pasa con lo que no cabe en vertical */
+}
+
+/* El recuadro del formulario */
+.modal-sesion {
+  background: #ffffff;  /* el fondo de la caja */
+  border-radius: 8px;  /* las esquinas redondeadas */
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);  /* la sombra de la caja */
+  width: 100%;  /* el ancho de la caja */
+  max-width: 420px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  padding: 28px 26px;  /* el espacio por dentro de la caja */
+  position: relative;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
+}
+
+.modal-sesion h3 {
+  font-size: 19px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: #006cb7;  /* el color del texto */
+  margin-bottom: 6px;  /* el espacio por debajo de la caja */
+}
+
+.modal-sesion h4.titulo-sesion {
+  font-size: 15px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: #006cb7;  /* el color del texto */
+  margin: 22px 0 12px;  /* el espacio por fuera de la caja */
+}
+
+/* El boton de cerrar la X */
+.cerrar-sesion {
+  position: absolute;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
+  top: 12px;  /* la distancia desde arriba, cuando la caja esta pegada */
+  right: 14px;  /* la distancia desde la derecha, cuando la caja esta pegada */
+  width: 30px;  /* el ancho de la caja */
+  height: 30px;  /* el alto de la caja */
+  border: none;  /* el borde que rodea la caja (grosor, estilo y color) */
+  background: transparent;  /* el fondo de la caja */
+  color: #697276;  /* el color del texto */
+  font-size: 24px;  /* el tamano de la letra */
+  line-height: 1;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+  cursor: pointer;  /* la forma del puntero del raton cuando pasa por encima */
+  border-radius: 50%;  /* las esquinas redondeadas */
+}
+
+.cerrar-sesion:hover {
+  background: #f4f6f7;  /* el fondo de la caja */
+  color: #1c2833;  /* el color del texto */
+}
+
+/* Texto pequeno */
+.modal-sesion .pista {
+  font-size: 13px;  /* el tamano de la letra */
+  color: #566573;  /* el color del texto */
+  margin-bottom: 16px;  /* el espacio por debajo de la caja */
+}
+
+/* Enlace para cambiar entre entrar y registrarse */
+.pie-alternativo {
+  font-size: 13px;  /* el tamano de la letra */
+  color: #566573;  /* el color del texto */
+  text-align: center;  /* como se alinea el texto (izquierda, centro o derecha) */
+  margin-top: 18px;  /* el espacio por encima de la caja */
+  padding-top: 16px;  /* el espacio por dentro, arriba */
+  border-top: 1px solid #d5d8dc;  /* el borde de arriba (la franja de color de las tarjetas) */
+}
+
+/* Un enlace que parece boton (Olvido su contrasena, Soy administrador). */
+.enlace-boton {
+  border: none;  /* el borde que rodea la caja (grosor, estilo y color) */
+  background: none;  /* el fondo de la caja */
+  color: #006cb7;  /* el color del texto */
+  font-size: 13px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  cursor: pointer;  /* la forma del puntero del raton cuando pasa por encima */
+  padding: 0;  /* el espacio por dentro de la caja */
+  text-decoration: underline;  /* el adorno del texto */
+}
+
+.enlace-boton:hover {
+  color: #2e3092;  /* el color del texto */
+}
+
+/* Modo oscuro */
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .capa-sesion {
+  background: rgba(0, 0, 0, 0.7);  /* el fondo de la caja */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .modal-sesion {
+  background: #1e293b;  /* el fondo de la caja */
+  color: #e2e8f0;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .modal-sesion h3,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .modal-sesion h4.titulo-sesion {
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .cerrar-sesion {
+  color: #94a3b8;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .cerrar-sesion:hover {
+  background: #0f172a;  /* el fondo de la caja */
+  color: #e2e8f0;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .modal-sesion .pista,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .pie-alternativo {
+  color: #b6c2d1;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .pie-alternativo {
+  border-top-color: #334155;  /* el color del borde de arriba */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .enlace-boton {
+  color: #00aeef;  /* el color del texto */
+}
+
+/* =========================================
+   LOGROS DEL EQUIPO (panel de administracion)
+   ========================================= */
+
+/* Cada logro del recuadro de la cuenta. */
+.fila-logro {
+  display: grid;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  grid-template-columns: 1fr auto;  /* cuantas columnas tiene la rejilla y de que ancho son */
+  gap: 8px;  /* el espacio entre los elementos */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  margin-bottom: 8px;  /* el espacio por debajo de la caja */
+}
+
+.fila-logro input {
+  width: 100%;  /* el ancho de la caja */
+  padding: 8px 11px;  /* el espacio por dentro de la caja */
+  border: 1px solid #d5d8dc;  /* el borde que rodea la caja (grosor, estilo y color) */
+  border-radius: 4px;  /* las esquinas redondeadas */
+  font-family: inherit;  /* la tipografia (la letra) que se usa */
+  font-size: 14px;  /* el tamano de la letra */
+  color: #1c2833;  /* el color del texto */
+  background: #fff;  /* el fondo de la caja */
+}
+
+button.pequeno {
+  padding: 7px 12px;  /* el espacio por dentro de la caja */
+  font-size: 12px;  /* el tamano de la letra */
+  white-space: nowrap;  /* los espacios y los saltos de linea */
+}
+
+button.secundario.pequeno {
+  border-width: 1px;  /* el grosor del borde */
+}
+
+@media (max-width: 700px) {
+  /* Cada logro del recuadro de la cuenta. */
+  .fila-logro {
+    grid-template-columns: 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
+  }
+}
+
+/* =========================================
+   PANEL DE SESION EN LA VERSION ESTATICA
+   (se abre con una casilla de verificacion)
+   ========================================= */
+
+/* El recuadro esta oculto por defecto */
+.panel-sesion {
+  position: fixed;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
+  top: 0;  /* la distancia desde arriba, cuando la caja esta pegada */
+  left: 0;  /* la distancia desde la izquierda, cuando la caja esta pegada */
+  right: 0;  /* la distancia desde la derecha, cuando la caja esta pegada */
+  bottom: 0;  /* la distancia desde abajo, cuando la caja esta pegada */
+  background: rgba(15, 23, 42, 0.55);  /* el fondo de la caja */
+  display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: flex-start;  /* como se alinean de arriba hacia abajo */
+  justify-content: center;  /* como se reparten de izquierda a derecha */
+  padding: 90px 20px 20px;  /* el espacio por dentro de la caja */
+  z-index: 300;  /* el orden de las capas (lo que esta mas arriba, tapa a lo de abajo) */
+  overflow-y: auto;  /* que pasa con lo que no cabe en vertical */
+}
+
+/* Al marcar la casilla, el recuadro se abre */
+#abrirSesion:checked ~ .panel-sesion {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+/* Las dos pestanas: iniciar sesion y registrarse */
+.pestanas-sesion {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  gap: 6px;  /* el espacio entre los elementos */
+  margin-bottom: 18px;  /* el espacio por debajo de la caja */
+  border-bottom: 1px solid #d5d8dc;  /* el borde de abajo */
+  padding-bottom: 12px;  /* el espacio por dentro, abajo */
+}
+
+.pestanas-sesion label {
+  padding: 7px 14px;  /* el espacio por dentro de la caja */
+  border-radius: 4px;  /* las esquinas redondeadas */
+  font-size: 13px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: #566573;  /* el color del texto */
+  cursor: pointer;  /* la forma del puntero del raton cuando pasa por encima */
+}
+
+#tabIniciar:checked ~ .pestanas-sesion label[for="tabIniciar"],
+#tabRegistro:checked ~ .pestanas-sesion label[for="tabRegistro"] {
+  background: #006cb7;  /* el fondo de la caja */
+  color: #ffffff;  /* el color del texto */
+}
+
+/* El formulario de registro se muestra solo en su pestana */
+.form-registro {
+  display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+#tabRegistro:checked ~ .form-iniciar {
+  display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+#tabRegistro:checked ~ .form-registro {
+  display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+/* Modo oscuro */
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .panel-sesion {
+  background: rgba(0, 0, 0, 0.72);  /* el fondo de la caja */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .pestanas-sesion {
+  border-bottom-color: #334155;  /* el color del borde de abajo */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .pestanas-sesion label {
+  color: #94a3b8;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) #tabIniciar:checked ~ .pestanas-sesion label[for="tabIniciar"],
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) #tabRegistro:checked ~ .pestanas-sesion label[for="tabRegistro"] {
+  background: #00aeef;
+  color: #0b1626;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .fila-logro input {
+  background: #0b1626;
+  color: #f1f5f9;
+  border-color: #274060;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .solicitud-estado {
+  background: rgba(34, 197, 94, 0.18);
+  color: #86efac;
+}
+
+/* El panel de sesion arranca oculto: solo aparece al pulsar el boton.
+   Se usa .capa-sesion.oculto porque tiene mas peso que .capa-sesion. */
+.capa-sesion.oculto {
+  display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+/* En la version estatica el recuadro tambien arranca oculto */
+.panel-sesion:not(:checked) {
+  display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+/* La sinopsis del equipo: un texto corto bajo el cargo */
+.sinopsis {
+  font-size: 14px;  /* el tamano de la letra */
+  line-height: 1.6;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+  color: #566573;  /* el color del texto */
+  margin-bottom: 14px;  /* el espacio por debajo de la caja */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .sinopsis {
+  color: #b6c2d1;  /* el color del texto */
+}
+
+/* =========================================
+   BOTON PARA VER LA CONTRASENA (el ojo)
+   ========================================= */
+
+/* El campo con su boton al lado */
+.campo-clave {
+  position: relative;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
+}
+
+/* Se deja un espacio a la derecha para que el ojo no tape el texto */
+.campo-clave input {
+  padding-right: 44px;  /* el espacio por dentro, a la derecha */
+}
+
+/* La cajita donde va el boton */
+.boton-ver-clave {
+  position: absolute;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
+  right: 4px;  /* la distancia desde la derecha, cuando la caja esta pegada */
+  top: 50%;  /* la distancia desde arriba, cuando la caja esta pegada */
+  transform: translateY(-50%);  /* un movimiento o cambio de forma del elemento */
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+}
+
+/* El boton con el ojo */
+.btn-ver-clave {
+  width: 32px;  /* el ancho de la caja */
+  height: 32px;  /* el alto de la caja */
+  border: none;  /* el borde que rodea la caja (grosor, estilo y color) */
+  background: transparent;  /* el fondo de la caja */
+  color: #697276;  /* el color del texto */
+  cursor: pointer;  /* la forma del puntero del raton cuando pasa por encima */
+  border-radius: 50%;  /* las esquinas redondeadas */
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  justify-content: center;  /* como se reparten de izquierda a derecha */
+  padding: 0;  /* el espacio por dentro de la caja */
+}
+
+.btn-ver-clave svg {
+  width: 18px;  /* el ancho de la caja */
+  height: 18px;  /* el alto de la caja */
+}
+
+.btn-ver-clave:hover {
+  background: #eef2f4;  /* el fondo de la caja */
+  color: #1a5276;  /* el color del texto */
+}
+
+/* Cuando la contrasena esta a la vista, se muestra el ojo tachado */
+.btn-ver-clave .ojo-tachado {
+  display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+.btn-ver-clave.viendo .ojo {
+  display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+.btn-ver-clave.viendo .ojo-tachado {
+  display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+}
+
+/* Modo oscuro */
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .btn-ver-clave {
+  color: #94a3b8;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .btn-ver-clave:hover {
+  background: #0f172a;  /* el fondo de la caja */
+  color: #7dd3fc;  /* el color del texto */
+}
+
+/* =========================================
+   AJUSTES PARA EL MENU MOVIL Y AVISOS (HTML Y JAVASCRIPT)
+   -----------------------------------------------------
+   En la version estatica el boton de las tres rayitas se
+   controla con una casilla (#abrirMenu), y en la version
+   con JavaScript con la clase .abierto.
+   ========================================= */
+
+/* El titulo "Nuestra Mision" */
+.titulo-mision {
+  color: var(--marca);  /* el color del texto */
+  margin-bottom: 15px;  /* el espacio por debajo de la caja */
+  margin-top: 10px;  /* el espacio por encima de la caja */
+}
+
+/* El boton de las tres rayitas */
+.menu-btn {
+  display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  flex-direction: column;  /* hacia donde se acomodan los elementos (en fila o en columna) */
+  gap: 5px;  /* el espacio entre los elementos */
+  background: none;  /* el fondo de la caja */
+  border: none;  /* el borde que rodea la caja (grosor, estilo y color) */
+  cursor: pointer;  /* la forma del puntero del raton cuando pasa por encima */
+  padding: 5px;  /* el espacio por dentro de la caja */
+}
+
+/* Las 3 rayitas del boton */
+.menu-btn span {
+  display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  width: 24px;  /* el ancho de la caja */
+  height: 2px;  /* el alto de la caja */
+  background-color: var(--gris-900);  /* el color de fondo de la caja */
+  border-radius: 2px;  /* las esquinas redondeadas */
+  transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+@media (max-width: 600px) {
+  /* En celular se ve el boton de las rayitas */
+  .menu-btn {
+    display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  }
+
+  /* Al marcar la casilla o abrir con JS, el menu aparece */
+  #abrirMenu:checked ~ .nav-links,
+  .nav-links.abierto {
+    display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+    animation: aparecerArriba 0.25s var(--curva-suave) both;
+  }
+
+  :is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .nav-links {
+    background-color: #0b1626;
+    border-bottom-color: #00aeef;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65);
+  }
+
+  :is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .nav-links a {
+    border-bottom-color: #1e3452;
+  }
+}
+
+/* El aviso se muestra con la clase "visible" */
+.mensaje-enviado.visible {
+  display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  animation: aparecerArriba 0.3s var(--curva-suave) both;
+}
+
+/* Aviso de error (rojo) */
+.mensaje-enviado.error {
+  background-color: #fdecea;  /* el color de fondo de la caja */
+  border-color: #cc0000;  /* el color del borde */
+  border-left-color: #cc0000;  /* el color del borde de la izquierda */
+  color: #a93226;  /* el color del texto */
+}
+
+/* =========================================
+   MISION, VISION Y BLOQUES NUEVOS
+   ========================================= */
+
+/* El bloque de la mision y de la vision */
+.bloque-mision {
+  margin-bottom: 22px;  /* el espacio por debajo de la caja */
+  background-color: #ffffff;
+  border: 1px solid var(--borde);
+  border-left: 4px solid var(--marca);
+  border-radius: 0 10px 10px 0;
+  padding: 22px 26px;
+  box-shadow: var(--sombra-suave);
+  transition: transform 0.3s var(--curva-suave), box-shadow 0.3s var(--curva-suave), border-left-color 0.3s ease, background-color 0.3s ease;
+}
+
+.bloque-mision:hover {
+  transform: translateX(4px);
+  box-shadow: var(--sombra-media);
+  border-left-color: var(--marca-celeste);
+}
+
+.bloque-mision h3 {
+  font-size: 17px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: var(--marca);  /* el color del texto */
+  margin-bottom: 8px;  /* el espacio por debajo de la caja */
+}
+
+.bloque-mision p {
+  font-size: 15px;  /* el tamano de la letra */
+  line-height: 1.75;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+  color: var(--gris-700);  /* el color del texto */
+  max-width: 900px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  margin-bottom: 0;
+}
+
+/* El titulo de los valores */
+.valores-titulo {
+  margin: 32px 0 4px;  /* el espacio por fuera de la caja */
+}
+
+.valores-titulo h3 {
+  font-size: 17px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: var(--marca);  /* el color del texto */
+}
+
+/* El titulo de cada bloque de servicios */
+.titulo-bloque {
+  font-size: 19px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: var(--marca);  /* el color del texto */
+  margin: 30px 0 14px;  /* el espacio por fuera de la caja */
+}
+
+.titulo-bloque:first-of-type {
+  margin-top: 0;  /* el espacio por encima de la caja */
+}
+
+/* El enlace "Consultar por esta area" */
+.enlace-servicio {
+  display: inline-flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: center;
+  gap: 5px;
+  margin-top: 12px;  /* el espacio por encima de la caja */
+  font-size: 13px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: var(--marca);  /* el color del texto */
+  text-decoration: none;  /* el adorno del texto */
+  transition: color 0.25s ease, gap 0.25s var(--curva-suave);
+}
+
+.enlace-servicio::after {
+  content: "→";
+  display: inline-block;
+  transition: transform 0.25s var(--curva-suave);
+}
+
+.enlace-servicio:hover {
+  color: var(--marca-oscura);  /* el color del texto */
+}
+
+.servicio-card:hover .enlace-servicio::after,
+.enlace-servicio:hover::after {
+  transform: translateX(4px);
+}
+
+/* ---------- Portada ---------- */
+.banner-valor {
+  font-size: 22px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  line-height: 1.3;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+  max-width: 720px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  margin: 0 auto 12px;  /* el espacio por fuera de la caja */
+}
+
+/* El subtitulo de la portada, debajo de la propuesta de valor. */
+.banner-texto {
+  font-size: 16px;  /* el tamano de la letra */
+  max-width: 680px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  margin: 0 auto 10px;  /* el espacio por fuera de la caja */
+}
+
+/* La frase Sede en Bogota D.C. - Cobertura nacional. */
+.banner-cobertura {
+  font-size: 12.5px;  /* el tamano de la letra */
+  letter-spacing: 0.8px;  /* el espacio entre las letras */
+  text-transform: uppercase;  /* las mayusculas o minusculas del texto */
+  opacity: 0.95;  /* lo transparente que se ve el elemento (1 es opaco, 0 es invisible) */
+  width: fit-content;
+  margin: 0 auto 26px;  /* el espacio por fuera de la caja */
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* ---------- Aviso de privacidad ---------- */
+.aviso-privacidad {
+  background: var(--azul-hielo);  /* el fondo de la caja */
+  border: 1px solid var(--azul-borde);
+  border-left: 4px solid var(--marca);  /* el borde de la izquierda (la franja de color de las tarjetas) */
+  border-radius: 0 8px 8px 0;  /* las esquinas redondeadas */
+  padding: 16px 18px;  /* el espacio por dentro de la caja */
+  margin-bottom: 20px;  /* el espacio por debajo de la caja */
+}
+
+.aviso-privacidad h4 {
+  font-size: 14px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: var(--marca);  /* el color del texto */
+  margin-bottom: 8px;  /* el espacio por debajo de la caja */
+}
+
+.aviso-privacidad p {
+  font-size: 12.5px;  /* el tamano de la letra */
+  line-height: 1.65;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+  color: var(--gris-700);  /* el color del texto */
+}
+
+.aviso-privacidad a {
+  color: var(--marca);  /* el color del texto */
+  text-decoration: underline;  /* el adorno del texto */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+}
+
+/* ---------- Actualidad Juridica ---------- */
+.filtros-categoria {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  flex-wrap: wrap;  /* si los elementos se pasan a otra linea cuando no caben */
+  gap: 8px;  /* el espacio entre los elementos */
+  margin-bottom: 22px;  /* el espacio por debajo de la caja */
+}
+
+/* Un filtro por categoria. */
+.filtro-categoria {
+  font-size: 13px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  padding: 7px 15px;  /* el espacio por dentro de la caja */
+  border: 1px solid var(--marca);  /* el borde que rodea la caja (grosor, estilo y color) */
+  border-radius: 20px;  /* las esquinas redondeadas */
+  color: var(--marca);  /* el color del texto */
+  background: var(--azul-hielo);  /* el fondo de la caja */
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s var(--curva-suave), box-shadow 0.25s ease;  /* el cambio suave entre estados */
+}
+
+.filtro-categoria:hover {
+  background: var(--degradado-marca);  /* el fondo de la caja */
+  color: #ffffff;  /* el color del texto */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 108, 183, 0.22);
+}
+
+/* La rejilla de las publicaciones de Actualidad Juridica. */
+.publicaciones-grid {
+  display: grid;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  grid-template-columns: repeat(3, 1fr);  /* cuantas columnas tiene la rejilla y de que ancho son */
+  gap: 22px;  /* el espacio entre los elementos */
+}
+
+/* La tarjeta de una publicacion. */
+.publicacion-card {
+  background: #ffffff;  /* el fondo de la caja */
+  border: 1px solid var(--borde);  /* el borde que rodea la caja (grosor, estilo y color) */
+  border-top: 4px solid var(--marca);  /* el borde de arriba (la franja de color de las tarjetas) */
+  border-radius: 0 0 8px 8px;  /* las esquinas redondeadas */
+  padding: 22px 20px;  /* el espacio por dentro de la caja */
+  box-shadow: var(--sombra-suave);
+  transition: transform 0.35s var(--curva-suave), box-shadow 0.35s var(--curva-suave), border-top-color 0.35s ease;
+}
+
+.publicacion-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--sombra-hover);
+  border-top-color: var(--marca-celeste);
+}
+
+/* La etiqueta con la categoria (Articulos, Jurisprudencia...). */
+.publicacion-categoria {
+  display: inline-block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  font-size: 11px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  text-transform: uppercase;  /* las mayusculas o minusculas del texto */
+  letter-spacing: 0.5px;  /* el espacio entre las letras */
+  color: var(--marca);  /* el color del texto */
+  background: var(--azul-suave);  /* el fondo de la caja */
+  border-radius: 12px;  /* las esquinas redondeadas */
+  padding: 4px 11px;  /* el espacio por dentro de la caja */
+  margin-bottom: 12px;  /* el espacio por debajo de la caja */
+}
+
+.publicacion-card h3 {
+  font-size: 16px;  /* el tamano de la letra */
+  line-height: 1.35;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+  color: var(--gris-900);  /* el color del texto */
+  margin-bottom: 9px;  /* el espacio por debajo de la caja */
+  transition: color 0.25s ease;
+}
+
+.publicacion-card:hover h3 {
+  color: var(--marca);
+}
+
+/* El resumen de dos lineas de la publicacion. */
+.publicacion-resumen {
+  font-size: 13px;  /* el tamano de la letra */
+  line-height: 1.6;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+  color: var(--gris-700);  /* el color del texto */
+  margin-bottom: 14px;  /* el espacio por debajo de la caja */
+}
+
+/* La fila con la autora y la fecha. */
+.publicacion-pie {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  justify-content: space-between;  /* como se reparten de izquierda a derecha */
+  gap: 10px;  /* el espacio entre los elementos */
+  font-size: 12px;  /* el tamano de la letra */
+  color: var(--gris-500);  /* el color del texto */
+  border-top: 1px solid var(--borde);  /* el borde de arriba (la franja de color de las tarjetas) */
+  padding-top: 12px;  /* el espacio por dentro, arriba */
+  margin-bottom: 12px;  /* el espacio por debajo de la caja */
+}
+
+/* Los botones de compartir */
+.publicacion-compartir {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  gap: 10px;  /* el espacio entre los elementos */
+}
+
+.publicacion-compartir a {
+  width: 30px;  /* el ancho de la caja */
+  height: 30px;  /* el alto de la caja */
+  border-radius: 50%;  /* las esquinas redondeadas */
+  border: 1px solid var(--borde);  /* el borde que rodea la caja (grosor, estilo y color) */
+  background: var(--azul-hielo);
+  color: var(--marca);  /* el color del texto */
+  display: inline-flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  justify-content: center;  /* como se reparten de izquierda a derecha */
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s var(--curva-suave);  /* el cambio suave entre estados */
+}
+
+.publicacion-compartir a:hover {
+  background: var(--marca);  /* el fondo de la caja */
+  border-color: var(--marca);  /* el color del borde */
+  color: #ffffff;  /* el color del texto */
+  transform: translateY(-2px);
+}
+
+.publicacion-compartir svg {
+  width: 15px;  /* el ancho de la caja */
+  height: 15px;  /* el alto de la caja */
+  fill: currentColor;  /* el color de relleno de un dibujo SVG */
+}
+
+/* La nota al pie de la seccion */
+.nota-legal {
+  margin-top: 22px;  /* el espacio por encima de la caja */
+  padding: 12px 16px;  /* el espacio por dentro de la caja */
+  background: var(--azul-suave);  /* el fondo de la caja */
+  border-left: 3px solid var(--marca);
+  border-radius: 0 6px 6px 0;  /* las esquinas redondeadas */
+  font-size: 12.5px;  /* el tamano de la letra */
+  font-style: italic;  /* si la letra va en cursiva o normal */
+  color: var(--gris-700);  /* el color del texto */
+}
+
+/* ---------- Contacto ---------- */
+.enlace-mapa {
+  display: inline-block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  margin-top: 4px;  /* el espacio por encima de la caja */
+  font-size: 12.5px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: var(--marca);  /* el color del texto */
+  text-decoration: underline;  /* el adorno del texto */
+}
+
+/* La frase de cobertura nacional en el contacto. */
+.contacto-cobertura {
+  margin: 18px 0;  /* el espacio por fuera de la caja */
+  padding: 10px 14px;  /* el espacio por dentro de la caja */
+  background: var(--azul-suave);  /* el fondo de la caja */
+  border-left: 3px solid var(--marca);
+  border-radius: 0 6px 6px 0;  /* las esquinas redondeadas */
+  font-size: 13px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: var(--marca);  /* el color del texto */
+}
+
+/* ---------- Pie ---------- */
+.footer-cobertura {
+  font-size: 12.5px;  /* el tamano de la letra */
+  color: #aed6f1;  /* el color del texto */
+  margin-top: 4px;  /* el espacio por encima de la caja */
+}
+
+/* El logotipo completo en el pie de pagina. */
+.logo-pie {
+  width: 66px;  /* el ancho de la caja */
+  height: 96px;  /* el alto de la caja */
+}
+
+/* El cuadrado del logotipo en la barra de arriba. */
+.logo-nav {
+  width: 46px;  /* el ancho de la caja */
+  height: 46px;  /* el alto de la caja */
+}
+
+/* ---------- El documento de la politica ---------- */
+.documento {
+  background: #ffffff;  /* el fondo de la caja */
+  border: 1px solid var(--borde);  /* el borde que rodea la caja (grosor, estilo y color) */
+  border-top: 4px solid var(--marca);
+  border-radius: 8px;  /* las esquinas redondeadas */
+  padding: 34px 38px;  /* el espacio por dentro de la caja */
+  box-shadow: var(--sombra-suave);
+}
+
+.documento h2 {
+  font-size: 17px;  /* el tamano de la letra */
+  color: var(--marca);  /* el color del texto */
+  margin: 26px 0 10px;  /* el espacio por fuera de la caja */
+  padding-bottom: 6px;  /* el espacio por dentro, abajo */
+  border-bottom: 1px solid var(--borde);  /* el borde de abajo */
+}
+
+.documento h2:first-child {
+  margin-top: 0;  /* el espacio por encima de la caja */
+}
+
+.documento h3 {
+  font-size: 15px;  /* el tamano de la letra */
+  color: var(--gris-900);  /* el color del texto */
+  margin: 20px 0 8px;  /* el espacio por fuera de la caja */
+}
+
+.documento p {
+  font-size: 13.5px;  /* el tamano de la letra */
+  line-height: 1.7;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+  color: var(--gris-700);  /* el color del texto */
+  margin-bottom: 11px;  /* el espacio por debajo de la caja */
+}
+
+/* ---------- Pantallas pequenas ---------- */
+@media (max-width: 900px) {
+  /* La rejilla de las publicaciones de Actualidad Juridica. */
+  .publicaciones-grid {
+    grid-template-columns: 1fr 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
+  }
+}
+
+@media (max-width: 600px) {
+  /* La rejilla de las publicaciones de Actualidad Juridica. */
+  .publicaciones-grid {
+    grid-template-columns: 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
+  }
+
+  /* La propuesta de valor: la frase corta de la firma. */
+  .banner-valor {
+    font-size: 19px;  /* el tamano de la letra */
+  }
+
+  /* La caja blanca con el texto largo de la politica de datos. */
+  .documento {
+    padding: 22px 18px;  /* el espacio por dentro de la caja */
+  }
+}
+
+/* ---------- Modo oscuro ---------- */
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .bloque-mision {
+  background-color: #15263f;
+  border-color: #243b5a;
+  border-left-color: #00aeef;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .bloque-mision p,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .documento p {
+  color: #cbd5e1;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .bloque-mision h3,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .valores-titulo h3,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .titulo-bloque,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .titulo-mision {
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .enlace-servicio,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .enlace-mapa {
+  color: #38bdf8;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .enlace-servicio:hover,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .enlace-mapa:hover {
+  color: #7dd3fc;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .aviso-privacidad,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .nota-legal {
+  background: #13233b;  /* el fondo de la caja */
+  border-color: #243b5a;
+  border-left-color: #00aeef;
+  color: #cbd5e1;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .aviso-privacidad h4 {
+  color: #7dd3fc;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .aviso-privacidad p {
+  color: #cbd5e1;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .aviso-privacidad a {
+  color: #38bdf8;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .publicacion-card {
+  background: #15263f;  /* el fondo de la caja */
+  border-color: #243b5a;  /* el color del borde */
+  border-top-color: #00aeef;  /* el color del borde de arriba */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .publicacion-card h3 {
+  color: #f1f5f9;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .publicacion-card:hover h3 {
+  color: #7dd3fc;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .publicacion-resumen {
+  color: #cbd5e1;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .publicacion-categoria {
+  background: #0b1626;  /* el fondo de la caja */
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .publicacion-pie {
+  border-top-color: #243b5a;  /* el color del borde de arriba */
+  color: #94a3b8;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .publicacion-compartir a {
+  background: #0b1626;
+  border-color: #274060;
+  color: #7dd3fc;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .publicacion-compartir a:hover {
+  background: #00aeef;
+  border-color: #00aeef;
+  color: #0b1626;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .documento {
+  background: #15263f;  /* el fondo de la caja */
+  border-color: #243b5a;  /* el color del borde */
+  border-top-color: #00aeef;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .documento h2 {
+  color: #7dd3fc;  /* el color del texto */
+  border-bottom-color: #243b5a;  /* el color del borde de abajo */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .documento h3,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .documento p > strong:first-child {
+  color: #f1f5f9;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .contacto-cobertura {
+  background: #13233b;  /* el fondo de la caja */
+  border-left-color: #00aeef;
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .filtro-categoria {
+  background: #13233b;
+  color: #7dd3fc;  /* el color del texto */
+  border-color: #00aeef;  /* el color del borde */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .filtro-categoria:hover {
+  background: #00aeef;
+  color: #0b1626;
+}
+
+/* =========================================
+   PAGINA DE CADA AREA DE PRACTICA
+   ========================================= */
+
+/* El encabezado: icono, tipo de asesoria y titulo */
+.area-detalle-cabecera {
+  text-align: center;  /* como se alinea el texto (izquierda, centro o derecha) */
+  margin-bottom: 34px;  /* el espacio por debajo de la caja */
+}
+
+/* El icono grande del area */
+.area-detalle-icono {
+  width: 58px;  /* el ancho de la caja */
+  height: 58px;  /* el alto de la caja */
+  margin: 0 auto 14px;  /* el espacio por fuera de la caja */
+  box-shadow: var(--sombra-suave);
+}
+
+/* La linea que dice si es asesoria preventiva o litigio */
+.area-detalle-tipo {
+  display: inline-block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  font-size: 12px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  text-transform: uppercase;  /* las mayusculas o minusculas del texto */
+  letter-spacing: 1px;  /* el espacio entre las letras */
+  color: var(--marca);  /* el color del texto */
+  background: var(--azul-suave);  /* el fondo de la caja */
+  border-radius: 14px;  /* las esquinas redondeadas */
+  padding: 5px 14px;  /* el espacio por dentro de la caja */
+  margin-bottom: 12px;  /* el espacio por debajo de la caja */
+}
+
+/* El texto corto que resume el area */
+.area-detalle-resumen {
+  font-size: 16px;  /* el tamano de la letra */
+  line-height: 1.75;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+  color: var(--gris-700);  /* el color del texto */
+  max-width: 780px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  margin: 16px auto 0;  /* el espacio por fuera de la caja */
+}
+
+/* Las tres columnas: que resuelve, a quien va, como trabajamos */
+.area-detalle-grid {
+  display: grid;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  grid-template-columns: repeat(3, 1fr);  /* cuantas columnas tiene la rejilla y de que ancho son */
+  gap: 24px;  /* el espacio entre los elementos */
+  margin-bottom: 30px;  /* el espacio por debajo de la caja */
+}
+
+/* Cada bloque con su titulo */
+.area-detalle-bloque + .area-detalle-bloque {
+  margin-top: 0;  /* el espacio por encima de la caja */
+}
+
+.area-detalle-grid .area-detalle-bloque {
+  background: #ffffff;  /* el fondo de la caja */
+  border: 1px solid var(--borde);  /* el borde que rodea la caja (grosor, estilo y color) */
+  border-top: 4px solid var(--marca);  /* el borde de arriba (la franja de color de las tarjetas) */
+  border-radius: 0 0 8px 8px;  /* las esquinas redondeadas */
+  padding: 24px 22px;  /* el espacio por dentro de la caja */
+  box-shadow: var(--sombra-suave);
+  transition: transform 0.35s var(--curva-suave), box-shadow 0.35s var(--curva-suave), border-top-color 0.35s ease;
+}
+
+.area-detalle-grid .area-detalle-bloque:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--sombra-hover);
+  border-top-color: var(--marca-celeste);
+}
+
+.area-detalle-grid .area-detalle-bloque h3 {
+  font-size: 16px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: var(--marca);  /* el color del texto */
+  margin-bottom: 12px;  /* el espacio por debajo de la caja */
+}
+
+.area-detalle-grid .area-detalle-bloque p {
+  font-size: 14px;  /* el tamano de la letra */
+  line-height: 1.7;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+  color: var(--gris-700);  /* el color del texto */
+}
+
+.area-detalle-grid .area-detalle-bloque ul {
+  margin: 0;  /* el espacio por fuera de la caja */
+  padding-left: 20px;  /* el espacio por dentro, a la izquierda */
+}
+
+.area-detalle-grid .area-detalle-bloque li {
+  font-size: 14px;  /* el tamano de la letra */
+  line-height: 1.65;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+  color: var(--gris-700);  /* el color del texto */
+  margin-bottom: 9px;  /* el espacio por debajo de la caja */
+}
+
+.area-detalle-grid .area-detalle-bloque li::marker {
+  color: var(--marca);  /* el color del texto */
+}
+
+/* La frase de cobertura nacional de las areas de litigio */
+.area-detalle-cobertura {
+  background: var(--azul-suave);  /* el fondo de la caja */
+  border-left: 4px solid var(--marca);  /* el borde de la izquierda (la franja de color de las tarjetas) */
+  border-radius: 0 8px 8px 0;  /* las esquinas redondeadas */
+  padding: 14px 18px;  /* el espacio por dentro de la caja */
+  margin-bottom: 28px;  /* el espacio por debajo de la caja */
+  font-size: 14px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: var(--marca);  /* el color del texto */
+}
+
+/* El boton de consultar por esa area */
+.area-detalle-cta {
+  text-align: center;  /* como se alinea el texto (izquierda, centro o derecha) */
+  margin-bottom: 40px;  /* el espacio por debajo de la caja */
+}
+
+.area-detalle-cta .btn-banner {
+  margin-right: 14px;  /* el espacio por la derecha de la caja */
+}
+
+/* La lista de las otras areas */
+.area-otras {
+  border-top: 1px solid var(--borde);  /* el borde de arriba (la franja de color de las tarjetas) */
+  padding-top: 26px;  /* el espacio por dentro, arriba */
+}
+
+.area-otras h3 {
+  font-size: 15px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: var(--gris-900);  /* el color del texto */
+  margin-bottom: 12px;  /* el espacio por debajo de la caja */
+  text-align: center;  /* como se alinea el texto (izquierda, centro o derecha) */
+}
+
+.area-otras ul {
+  display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  flex-wrap: wrap;  /* si los elementos se pasan a otra linea cuando no caben */
+  justify-content: center;  /* como se reparten de izquierda a derecha */
+  gap: 10px 12px;  /* el espacio entre los elementos */
+  margin: 0;  /* el espacio por fuera de la caja */
+  padding: 0;  /* el espacio por dentro de la caja */
+  list-style: none;  /* el tipo de vineta de la lista */
+}
+
+.area-otras a {
+  font-size: 13px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  color: var(--marca);  /* el color del texto */
+  background-color: var(--azul-hielo);
+  border: 1px solid var(--azul-borde);
+  padding: 7px 15px;
+  border-radius: 20px;
+  text-decoration: none;  /* el adorno del texto */
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s var(--curva-suave), box-shadow 0.25s ease;
+  display: inline-block;
+}
+
+.area-otras a:hover {
+  background: var(--degradado-marca);
+  border-color: transparent;
+  color: #ffffff;  /* el color del texto */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 108, 183, 0.22);
+}
+
+/* ---------- La nota al pie de cada publicacion ---------- */
+.publicacion-nota {
+  font-size: 11.5px;  /* el tamano de la letra */
+  font-style: italic;  /* si la letra va en cursiva o normal */
+  line-height: 1.55;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+  color: var(--gris-500);  /* el color del texto */
+  border-top: 1px solid var(--borde);  /* el borde de arriba (la franja de color de las tarjetas) */
+  padding-top: 10px;  /* el espacio por dentro, arriba */
+  margin-bottom: 10px;  /* el espacio por debajo de la caja */
+}
+
+/* ---------- Pantallas pequenas ---------- */
+@media (max-width: 900px) {
+  /* Las tres columnas: que resuelve, a quien va y como trabajamos. */
+  .area-detalle-grid {
+    grid-template-columns: 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
+  }
+}
+
+/* ---------- Modo oscuro ---------- */
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .area-detalle-icono {
+  filter: brightness(1.35);  /* un efecto que se le aplica al dibujo (por ejemplo, aclararlo) */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .area-detalle-tipo {
+  background: #13233b;  /* el fondo de la caja */
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .area-detalle-resumen {
+  color: #b6c2d1;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .area-detalle-grid .area-detalle-bloque {
+  background: #15263f;  /* el fondo de la caja */
+  border-color: #243b5a;  /* el color del borde */
+  border-top-color: #00aeef;  /* el color del borde de arriba */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .area-detalle-grid .area-detalle-bloque h3 {
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .area-detalle-grid .area-detalle-bloque p,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .area-detalle-grid .area-detalle-bloque li {
+  color: #b6c2d1;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .area-detalle-cobertura {
+  background: #13233b;  /* el fondo de la caja */
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .area-otras {
+  border-top-color: #243b5a;  /* el color del borde de arriba */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .area-otras h3 {
+  color: #e2e8f0;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .area-otras a {
+  background-color: #13233b;
+  border-color: #274060;
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .area-otras a:hover {
+  background: #00aeef;
+  border-color: #00aeef;
+  color: #0b1626;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .area-detalle-grid .area-detalle-bloque li::marker,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .documento li::marker {
+  color: #38bdf8;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .tabla-datos td {
+  color: #cbd5e1;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .tabla-datos tr:nth-child(even) td {
+  background-color: rgba(11, 22, 38, 0.45);
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .nav-logo .logo-inline {
+  filter: drop-shadow(0 0 6px rgba(0, 174, 239, 0.25)) brightness(1.12);
+}
+
+.footer-logo .logo-inline {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 8px 10px;
+  height: 112px;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  margin-bottom: 10px;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .publicacion-nota {
+  border-top-color: #243b5a;  /* el color del borde de arriba */
+  color: #94a3b8;  /* el color del texto */
+}
+
+/* =========================================
+   LA PAGINA DE LA POLITICA DE DATOS
+   ========================================= */
+
+/* La tabla con los datos del responsable */
+.tabla-datos {
+  width: 100%;  /* el ancho de la caja */
+  border-collapse: collapse;  /* une los bordes de una tabla para que se vea una sola linea */
+  margin-bottom: 26px;  /* el espacio por debajo de la caja */
+}
+
+.tabla-datos th,
+.tabla-datos td {
+  border: 1px solid var(--borde);  /* el borde que rodea la caja (grosor, estilo y color) */
+  padding: 11px 14px;  /* el espacio por dentro de la caja */
+  text-align: left;  /* como se alinea el texto (izquierda, centro o derecha) */
+  font-size: 13.5px;  /* el tamano de la letra */
+  line-height: 1.6;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+}
+
+.tabla-datos th {
+  background: var(--azul-suave);  /* el fondo de la caja */
+  color: var(--marca);  /* el color del texto */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  width: 38%;  /* el ancho de la caja */
+}
+
+/* Las listas de puntos de la politica */
+.documento ul,
+.documento ol {
+  margin: 0 0 14px;  /* el espacio por fuera de la caja */
+  padding-left: 22px;  /* el espacio por dentro, a la izquierda */
+}
+
+.documento li {
+  font-size: 13.5px;  /* el tamano de la letra */
+  line-height: 1.7;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
+  color: var(--gris-700);  /* el color del texto */
+  margin-bottom: 7px;  /* el espacio por debajo de la caja */
+}
+
+.documento li::marker {
+  color: var(--marca);  /* el color del texto */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+}
+
+/* La palabra que abre cada capitulo */
+.documento p > strong:first-child {
+  color: var(--gris-900);  /* el color del texto */
+}
+
+/* ---------- Modo oscuro ---------- */
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .tabla-datos th,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .tabla-datos td {
+  border-color: #243b5a;  /* el color del borde */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .tabla-datos th {
+  background: #0b1626;  /* el fondo de la caja */
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .documento li {
+  color: #b6c2d1;  /* el color del texto */
+}
+
+/* La imagen que se sube desde el panel de administracion */
+.publicacion-imagen {
+  width: 100%;  /* el ancho de la caja */
+  height: 150px;  /* el alto de la caja */
+  object-fit: cover;  /* como se acomoda la imagen dentro de su caja (sin deformarla) */
+  border-radius: 6px;  /* las esquinas redondeadas */
+  margin-bottom: 14px;  /* el espacio por debajo de la caja */
+}
+
+/* El enlace al archivo en PDF adjunto */
+.publicacion-pdf {
+  display: inline-flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
+  align-items: center;  /* como se alinean de arriba hacia abajo */
+  justify-content: center;  /* como se reparten de izquierda a derecha */
+  width: 30px;  /* el ancho de la caja */
+  height: 30px;  /* el alto de la caja */
+  border-radius: 50%;  /* las esquinas redondeadas */
+  border: 1px solid var(--borde);  /* el borde que rodea la caja (grosor, estilo y color) */
+  background: var(--azul-hielo);
+  color: var(--marca);  /* el color del texto */
+  font-size: 10px;  /* el tamano de la letra */
+  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  letter-spacing: 0.3px;  /* el espacio entre las letras */
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s var(--curva-suave);  /* el cambio suave entre estados */
+}
+
+.publicacion-pdf:hover {
+  background: var(--marca);  /* el fondo de la caja */
+  border-color: var(--marca);  /* el color del borde */
+  color: #ffffff;  /* el color del texto */
+  transform: translateY(-2px);
+}
+
+/* ---------- Modo oscuro ---------- */
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .publicacion-pdf {
+  background: #0b1626;
+  border-color: #274060;  /* el color del borde */
+  color: #7dd3fc;  /* el color del texto */
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .publicacion-pdf:hover {
+  background: var(--marca);  /* el fondo de la caja */
+  border-color: var(--marca);  /* el color del borde */
+  color: #ffffff;  /* el color del texto */
+}
+
+/* =========================================
+   ANIMACIONES Y MICRO-INTERACCIONES
+   ========================================= */
+
+@keyframes aparecerArriba {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes flotarLuz {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(28px, 18px) scale(1.12);
+  }
+}
+
+@keyframes fluidoAzulBanner {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes expandirLinea {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 56px;
+    opacity: 1;
+  }
+}
+
+@keyframes pulsoWhatsapp {
+  0% {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), 0 0 0 0 rgba(37, 211, 102, 0.55);
+  }
+  70% {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), 0 0 0 14px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+/* Entrada escalonada de tarjetas y bloques */
+.servicio-card,
+.abogado-card,
+.valor-item,
+.cultura-bloque,
+.publicacion-card,
+.area-detalle-bloque,
+.solicitud,
+.documento {
+  animation: aparecerArriba 0.65s var(--curva-suave) both;
+}
+
+.servicios-grid > :nth-child(1),
+.equipo-grid > :nth-child(1),
+.valores-grid > :nth-child(1),
+.cultura-bloques > :nth-child(1),
+.publicaciones-grid > :nth-child(1),
+.area-detalle-grid > :nth-child(1) {
+  animation-delay: 0.06s;
+}
+
+.servicios-grid > :nth-child(2),
+.equipo-grid > :nth-child(2),
+.valores-grid > :nth-child(2),
+.cultura-bloques > :nth-child(2),
+.publicaciones-grid > :nth-child(2),
+.area-detalle-grid > :nth-child(2) {
+  animation-delay: 0.14s;
+}
+
+.servicios-grid > :nth-child(3),
+.equipo-grid > :nth-child(3),
+.valores-grid > :nth-child(3),
+.cultura-bloques > :nth-child(3),
+.publicaciones-grid > :nth-child(3),
+.area-detalle-grid > :nth-child(3) {
+  animation-delay: 0.22s;
+}
+
+.servicios-grid > :nth-child(4),
+.equipo-grid > :nth-child(4),
+.valores-grid > :nth-child(4),
+.publicaciones-grid > :nth-child(4) {
+  animation-delay: 0.30s;
+}
+
+.valores-grid > :nth-child(5),
+.publicaciones-grid > :nth-child(5) {
+  animation-delay: 0.38s;
+}
+
+.valores-grid > :nth-child(6),
+.publicaciones-grid > :nth-child(6) {
+  animation-delay: 0.46s;
+}
+
+/* Clases de revelado suave al hacer scroll (activadas en la version con JavaScript) */
+.revelar-scroll {
+  animation: none;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s var(--curva-suave), transform 0.65s var(--curva-suave), box-shadow 0.35s var(--curva-suave), border-color 0.35s ease;
+}
+
+.revelar-scroll.revelado {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.servicios-grid > .revelar-scroll:nth-child(2),
+.equipo-grid > .revelar-scroll:nth-child(2),
+.valores-grid > .revelar-scroll:nth-child(2),
+.cultura-bloques > .revelar-scroll:nth-child(2),
+.publicaciones-grid > .revelar-scroll:nth-child(2),
+.area-detalle-grid > .revelar-scroll:nth-child(2) {
+  transition-delay: 0.08s;
+}
+
+.servicios-grid > .revelar-scroll:nth-child(3),
+.equipo-grid > .revelar-scroll:nth-child(3),
+.valores-grid > .revelar-scroll:nth-child(3),
+.cultura-bloques > .revelar-scroll:nth-child(3),
+.publicaciones-grid > .revelar-scroll:nth-child(3),
+.area-detalle-grid > .revelar-scroll:nth-child(3) {
+  transition-delay: 0.16s;
+}
+
+.servicios-grid > .revelar-scroll:nth-child(4),
+.equipo-grid > .revelar-scroll:nth-child(4),
+.valores-grid > .revelar-scroll:nth-child(4),
+.publicaciones-grid > .revelar-scroll:nth-child(4) {
+  transition-delay: 0.24s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- CARRUSEL DE IMAGENES (pagina de inicio) ---------- */
+.carrusel {
+  position: relative;
+  max-width: 1100px;
+  margin: 24px auto;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #0b1a2a;
+}
+
+.carrusel-pista {
+  display: grid;
+}
+
+.carrusel-diapositiva {
+  grid-area: 1 / 1;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.carrusel-diapositiva.activa {
+  opacity: 1;
+  visibility: visible;
+}
+
+.carrusel-diapositiva img {
+  display: block;
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+}
+
+.carrusel-texto {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 28px 32px 56px;
+  color: #fff;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.78));
+}
+
+.carrusel-texto strong,
+.carrusel-texto > span {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.carrusel-texto strong {
+  font-size: 1.4rem;
+}
+
+.carrusel-boton {
+  display: inline-block;
+  margin-top: 10px;
+}
+
+/* Idioma: lo marca la etiqueta <html lang> que pone aplicarIdioma() */
+.carrusel .es { display: inline; }
+.carrusel .en { display: none; }
+html[lang="en"] .carrusel .es { display: none; }
+html[lang="en"] .carrusel .en { display: inline; }
+
+.carrusel-control {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  color: #0b1a2a;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.carrusel-ant { left: 12px; }
+.carrusel-sig { right: 12px; }
+
+.carrusel-puntos {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.carrusel-punto {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.carrusel-punto.activo {
+  background: #fff;
+}
+
+.carrusel button:focus-visible,
+.carrusel a:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .carrusel-diapositiva img { height: 240px; }
+  .carrusel-texto { padding: 16px 16px 44px; }
+  .carrusel-texto strong { font-size: 1.1rem; }
+}
