@@ -3,7 +3,7 @@ import {
   construirPagina, obtenerDatosDelSitio, buscarDatosGuardados, iniciarMenu, iniciarFormulario,
   iniciarSesionUsuario, iniciarControles, iniciarTema, iniciarIdioma, iniciarAnimacionesScroll,
   iniciarCarrusel, detenerCarrusel, mostrarResumenConsola,
-} from "../legacy/sitio.js";
+} from "./sitio.js";
 
 /* Página del sitio. El HTML lo genera construirPagina(); React lo inserta en #app
    y después activa menú, idioma, tema, formulario y carrusel. */

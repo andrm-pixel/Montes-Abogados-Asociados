@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>
+  /* Si el archivo se abre directamente (doble clic o vista previa),
+     se redirige al servidor de desarrollo para que la pagina se
+     muestre correctamente en lugar de salir en blanco. */
+  if (location.protocol === "file:") {
+    var nombre = decodeURIComponent(location.pathname.split("/").pop());
+    location.replace("http://localhost:5173/" + nombre);
+  }
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
@@ -28,6 +37,6 @@
 </head>
 <body>
   <div id="root" data-pagina="panel-administracion.html"></div>
-  <script type="module" src="/src/admin-main.jsx"></script>
+  <script type="module" src="/admin-main.jsx"></script>
 </body>
 </html>

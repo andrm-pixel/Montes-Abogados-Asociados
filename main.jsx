@@ -1,9 +1,9 @@
-import "./styles/estilos.css";
+import "./estilos.css";
 import { createRoot } from "react-dom/client";
-import PaginaSitio from "./componentes/PaginaSitio.jsx";
-import PaginaPolitica from "./componentes/PaginaPolitica.jsx";
+import PaginaSitio from "./PaginaSitio.jsx";
+import PaginaPolitica from "./PaginaPolitica.jsx";
 
-// Cada página HTML trae <div id="root" data-pagina="..."> y aquí se monta su componente.
+// Cada página HTML trae <div id="root" data-página="..."> y aquí se monta su componente.
 const nodo = document.getElementById("root");
 const pagina = nodo.dataset.pagina;
 

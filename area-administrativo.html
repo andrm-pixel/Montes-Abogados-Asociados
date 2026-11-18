@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>
+  /* Si el archivo se abre directamente (doble clic o vista previa),
+     se redirige al servidor de desarrollo para que la pagina se
+     muestre correctamente en lugar de salir en blanco. */
+  if (location.protocol === "file:") {
+    var nombre = decodeURIComponent(location.pathname.split("/").pop());
+    location.replace("http://localhost:5173/" + nombre);
+  }
+</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Acompañamos a empresas en sus trámites y actuaciones ante entidades públicas, en la presentación de recursos y en los procesos ante la jurisdicción de lo contencioso administrativo.">
@@ -8,6 +17,6 @@
 </head>
 <body>
   <div id="root" data-pagina="area-administrativo.html"></div>
-  <script type="module" src="/src/main.jsx"></script>
+  <script type="module" src="/main.jsx"></script>
 </body>
 </html>

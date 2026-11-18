@@ -8,13 +8,13 @@
      1. Las variables (los colores y las medidas)
      2. El reset (se borran los margenes del navegador)
      3. La barra de navegacion
-     4. La portada, las secciones, los valores, las areas,
+     4. La portada, las secciones, los valores, las áreas,
         la cultura, el equipo, el contacto y el formulario
-     5. El pie de pagina
+     5. El pie de página
      6. Las reglas para el celular y la tablet
      7. Los botones de idioma, el modo oscuro y el recuadro
         de la cuenta del visitante
-     8. Las paginas de cada area y la pagina de la politica
+     8. Las páginas de cada área y la página de la política
 
    Los tres colores de marca son los del logotipo oficial que
    apruebo la firma: el azul (#006cb7), el azul oscuro (#2e3092)
@@ -56,7 +56,7 @@
 }
 
 html {
-  scroll-behavior: smooth;  /* como se mueve la pagina al bajar (despacio y suave) */
+  scroll-behavior: smooth;  /* como se mueve la página al bajar (despacio y suave) */
 }
 
 body {
@@ -79,7 +79,7 @@ ul {
 }
 
 img {
-  max-width: 100%;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  max-width: 100%;  /* el ancho máximo (la caja no pasa de ese ancho) */
 }
 
 /* Navegación */
@@ -92,14 +92,14 @@ nav {
   border-image: linear-gradient(90deg, var(--marca-oscura), var(--marca), var(--marca-celeste)) 1;
   position: sticky;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
   top: 0;  /* la distancia desde arriba, cuando la caja esta pegada */
-  z-index: 100;  /* el orden de las capas (lo que esta mas arriba, tapa a lo de abajo) */
+  z-index: 100;  /* el orden de las capas (lo que esta más arriba, tapa a lo de abajo) */
   box-shadow: 0 4px 20px rgba(0, 68, 130, 0.08);  /* la sombra de la caja */
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* La fila de la barra de arriba: logotipo, enlaces y controles. */
 .nav-contenido {
-  max-width: 1100px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  max-width: 1100px;  /* el ancho máximo (la caja no pasa de ese ancho) */
   margin: 0 auto;  /* el espacio por fuera de la caja */
   padding: 0 20px;  /* el espacio por dentro de la caja */
   display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
@@ -225,7 +225,7 @@ nav {
 .banner p {
   font-size: 16px;  /* el tamano de la letra */
   color: rgba(255, 255, 255, 0.9);  /* el color del texto */
-  max-width: 600px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  max-width: 600px;  /* el ancho máximo (la caja no pasa de ese ancho) */
   margin: 0 auto 30px;  /* el espacio por fuera de la caja */
   animation: aparecerArriba 0.75s var(--curva-suave) 0.12s both;
 }
@@ -271,13 +271,13 @@ nav {
   padding: 60px 20px;  /* el espacio por dentro de la caja */
 }
 
-/* Lo mismo que .seccion, pero con fondo gris: se usa para alternar el color de las secciones. */
+/* Lo mismo que .sección, pero con fondo gris: se usa para alternar el color de las secciones. */
 .seccion-gris {
   background-color: var(--azul-hielo);  /* el color de fondo de la caja */
   background-image: linear-gradient(180deg, #f3f8fd 0%, #eaf3fb 100%);
 }
 
-/* Lo mismo que .seccion, pero con fondo azul: es la seccion de la cultura de la firma. */
+/* Lo mismo que .sección, pero con fondo azul: es la sección de la cultura de la firma. */
 .seccion-azul {
   background-color: var(--marca);  /* el color de fondo de la caja */
   background-image: var(--degradado-banner);
@@ -286,13 +286,13 @@ nav {
   overflow: hidden;
 }
 
-/* El ancho maximo del contenido. Todo el texto de la pagina va dentro de esta caja, que se centra. */
+/* El ancho máximo del contenido. Todo el texto de la página va dentro de esta caja, que se centra. */
 .contenedor {
-  max-width: 1100px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  max-width: 1100px;  /* el ancho máximo (la caja no pasa de ese ancho) */
   margin: 0 auto;  /* el espacio por fuera de la caja */
 }
 
-/* El titulo grande de cada seccion (Inicio, Contacto, Equipo...). */
+/* El título grande de cada sección (Inicio, Contacto, Equipo...). */
 .titulo-seccion {
   font-size: 26px;  /* el tamano de la letra */
   font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
@@ -305,7 +305,7 @@ nav {
   color: #ffffff;  /* el color del texto */
 }
 
-/* El dibujito corto de color bajo los titulos: es la marca de la firma. */
+/* El dibujito corto de color bajo los títulos: es la marca de la firma. */
 .linea-azul {
   width: 56px;  /* el ancho de la caja */
   height: 4px;  /* el alto de la caja */
@@ -324,11 +324,11 @@ nav {
   background: linear-gradient(90deg, #ffffff, var(--marca-celeste));  /* el color de fondo de la caja */
 }
 
-/* El texto de apoyo que va debajo de un titulo. */
+/* El texto de apoyo que va debajo de un título. */
 .subtitulo-gris {
   color: var(--gris-700);  /* el color del texto */
   margin-bottom: 35px;  /* el espacio por debajo de la caja */
-  max-width: 600px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  max-width: 600px;  /* el ancho máximo (la caja no pasa de ese ancho) */
 }
 
 /* Quiénes somos */
@@ -386,7 +386,7 @@ nav {
 }
 
 .col-azul ul li::before {
-  content: "•";  /* el texto que se pone antes o despues del elemento (por ejemplo, una comilla) */
+  content: "•";  /* el texto que se pone antes o después del elemento (por ejemplo, una comilla) */
   color: var(--marca-celeste);  /* el color del texto */
   position: absolute;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
   left: 0;  /* la distancia desde la izquierda, cuando la caja esta pegada */
@@ -439,7 +439,7 @@ nav {
   gap: 20px;  /* el espacio entre los elementos */
 }
 
-/* La tarjeta de un area de practica. */
+/* La tarjeta de un área de práctica. */
 .servicio-card {
   background-color: #ffffff;  /* el color de fondo de la caja */
   border: 1px solid var(--borde);  /* el borde que rodea la caja (grosor, estilo y color) */
@@ -494,7 +494,7 @@ nav {
 .cultura-contenido p {
   color: rgba(255, 255, 255, 0.9);  /* el color del texto */
   margin-bottom: 15px;  /* el espacio por debajo de la caja */
-  max-width: 750px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  max-width: 750px;  /* el ancho máximo (la caja no pasa de ese ancho) */
 }
 
 /* La rejilla de los tres bloques de la cultura. */
@@ -597,7 +597,7 @@ nav {
 }
 
 .abogado-card ul li::before {
-  content: "—";  /* el texto que se pone antes o despues del elemento (por ejemplo, una comilla) */
+  content: "—";  /* el texto que se pone antes o después del elemento (por ejemplo, una comilla) */
   color: var(--marca);  /* el color del texto */
   position: absolute;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
   left: 0;  /* la distancia desde la izquierda, cuando la caja esta pegada */
@@ -640,7 +640,7 @@ nav {
   margin-bottom: 25px;  /* el espacio por debajo de la caja */
 }
 
-/* Cada dato de contacto (direccion, telefono, correo...). */
+/* Cada dato de contacto (dirección, teléfono, correo...). */
 .contacto-dato {
   display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   gap: 12px;  /* el espacio entre los elementos */
@@ -660,7 +660,7 @@ nav {
 /* El cuadrito con el dibujo del dato. */
 .contacto-dato-icono {
   font-size: 18px;  /* el tamano de la letra */
-  min-width: 24px;  /* el ancho minimo de la caja */
+  min-width: 24px;  /* el ancho mínimo de la caja */
   margin-top: 2px;  /* el espacio por encima de la caja */
   color: var(--marca);
 }
@@ -688,7 +688,7 @@ nav {
   color: var(--marca);  /* el color del texto */
 }
 
-/* El cuadrito con el horario de atencion. */
+/* El cuadrito con el horario de atención. */
 .horario-box {
   background-color: var(--azul-hielo);  /* el color de fondo de la caja */
   border: 1px solid var(--azul-borde);
@@ -730,7 +730,7 @@ nav {
   box-shadow: var(--sombra-hover);
 }
 
-/* El titulo del formulario y su texto de apoyo. */
+/* El título del formulario y su texto de apoyo. */
 .formulario-cabecera {
   background-color: var(--marca);  /* el color de fondo de la caja */
   background-image: var(--degradado-marca);
@@ -824,7 +824,7 @@ select {
 
 textarea {
   resize: vertical;  /* si el visitante puede estirar la caja con el raton */
-  min-height: 110px;  /* el alto minimo de la caja */
+  min-height: 110px;  /* el alto mínimo de la caja */
 }
 
 /* La frase de ayuda que va debajo de un campo. */
@@ -835,7 +835,7 @@ textarea {
   display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
 }
 
-/* Cada casilla de autorizacion del formulario. */
+/* Cada casilla de autorización del formulario. */
 .check-privacidad {
   display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   gap: 8px;  /* el espacio entre los elementos */
@@ -865,7 +865,7 @@ textarea {
   text-decoration: underline;  /* el adorno del texto */
 }
 
-/* El boton que envia el mensaje. */
+/* El botón que envia el mensaje. */
 .btn-enviar {
   width: 100%;  /* el ancho de la caja */
   padding: 12px;  /* el espacio por dentro de la caja */
@@ -900,9 +900,9 @@ footer {
   padding: 50px 20px 20px;  /* el espacio por dentro de la caja */
 }
 
-/* La rejilla de cuatro columnas del pie de pagina. */
+/* La rejilla de cuatro columnas del pie de página. */
 .footer-grid {
-  max-width: 1100px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  max-width: 1100px;  /* el ancho máximo (la caja no pasa de ese ancho) */
   margin: 0 auto;  /* el espacio por fuera de la caja */
   display: grid;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   grid-template-columns: 2fr 1fr 1fr 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
@@ -959,9 +959,9 @@ footer {
   color: inherit;  /* el color del texto */
 }
 
-/* La ultima fila del pie: el copyright y los enlaces legales. */
+/* La última fila del pie: el copyright y los enlaces legales. */
 .footer-bottom {
-  max-width: 1100px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  max-width: 1100px;  /* el ancho máximo (la caja no pasa de ese ancho) */
   margin: 0 auto;  /* el espacio por fuera de la caja */
   display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   justify-content: space-between;  /* como se reparten de izquierda a derecha */
@@ -999,7 +999,7 @@ footer {
     width: 100%;  /* el ancho de la caja */
   }
 
-  /* La rejilla donde van las tarjetas de las areas. */
+  /* La rejilla donde van las tarjetas de las áreas. */
   .servicios-grid {
     grid-template-columns: 1fr 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
   }
@@ -1024,7 +1024,7 @@ footer {
     width: 100%;  /* el ancho de la caja */
   }
 
-  /* La rejilla de cuatro columnas del pie de pagina. */
+  /* La rejilla de cuatro columnas del pie de página. */
   .footer-grid {
     grid-template-columns: 1fr 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
     gap: 25px;  /* el espacio entre los elementos */
@@ -1073,20 +1073,20 @@ footer {
   .banner a {
     display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
     margin: 8px auto;  /* el espacio por fuera de la caja */
-    max-width: 260px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+    max-width: 260px;  /* el ancho máximo (la caja no pasa de ese ancho) */
   }
 
-  /* Una parte de la pagina. Todas las secciones tienen el mismo ancho y el mismo espacio arriba y abajo. */
+  /* Una parte de la página. Todas las secciones tienen el mismo ancho y el mismo espacio arriba y abajo. */
   .seccion {
     padding: 40px 20px;  /* el espacio por dentro de la caja */
   }
 
-  /* El titulo grande de cada seccion (Inicio, Contacto, Equipo...). */
+  /* El título grande de cada sección (Inicio, Contacto, Equipo...). */
   .titulo-seccion {
     font-size: 22px;  /* el tamano de la letra */
   }
 
-  /* La rejilla donde van las tarjetas de las areas. */
+  /* La rejilla donde van las tarjetas de las áreas. */
   .servicios-grid {
     grid-template-columns: 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
   }
@@ -1106,12 +1106,12 @@ footer {
     grid-template-columns: 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
   }
 
-  /* La rejilla de cuatro columnas del pie de pagina. */
+  /* La rejilla de cuatro columnas del pie de página. */
   .footer-grid {
     grid-template-columns: 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
   }
 
-  /* La ultima fila del pie: el copyright y los enlaces legales. */
+  /* La última fila del pie: el copyright y los enlaces legales. */
   .footer-bottom {
     flex-direction: column;  /* hacia donde se acomodan los elementos (en fila o en columna) */
     text-align: center;  /* como se alinea el texto (izquierda, centro o derecha) */
@@ -1202,7 +1202,7 @@ textarea:not(:focus):not(:placeholder-shown):valid {
   align-items: center;  /* como se alinean de arriba hacia abajo */
   justify-content: center;  /* como se reparten de izquierda a derecha */
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);  /* la sombra de la caja */
-  z-index: 200;  /* el orden de las capas (lo que esta mas arriba, tapa a lo de abajo) */
+  z-index: 200;  /* el orden de las capas (lo que esta más arriba, tapa a lo de abajo) */
   transition: transform 0.28s var(--curva-suave), box-shadow 0.28s var(--curva-suave);  /* el cambio suave entre estados */
   animation: pulsoWhatsapp 3s infinite;
 }
@@ -1243,11 +1243,11 @@ textarea:not(:focus):not(:placeholder-shown):valid {
   gap: 8px;  /* el espacio entre los elementos */
 }
 
-/* Un boton redondo de la barra superior. */
+/* Un botón redondo de la barra superior. */
 .btn-control {
   width: 38px;  /* el ancho de la caja */
   height: 38px;  /* el alto de la caja */
-  min-width: 38px;  /* el ancho minimo de la caja */
+  min-width: 38px;  /* el ancho mínimo de la caja */
   border-radius: 50%;  /* las esquinas redondeadas */
   border: 1px solid var(--borde);  /* el borde que rodea la caja (grosor, estilo y color) */
   background-color: var(--azul-hielo);  /* el color de fondo de la caja */
@@ -1285,7 +1285,7 @@ textarea:not(:focus):not(:placeholder-shown):valid {
 .btn-idioma {
   width: 40px;  /* el ancho de la caja */
   height: 38px;  /* el alto de la caja */
-  min-width: 40px;  /* el ancho minimo de la caja */
+  min-width: 40px;  /* el ancho mínimo de la caja */
   border-radius: 19px;  /* las esquinas redondeadas */
 }
 
@@ -1297,7 +1297,7 @@ textarea:not(:focus):not(:placeholder-shown):valid {
   margin-bottom: 12px;  /* el espacio por debajo de la caja */
 }
 
-/* El cuadrito con el dibujo del area. */
+/* El cuadrito con el dibujo del área. */
 .servicio-icono {
   width: 46px;  /* el ancho de la caja */
   height: 46px;  /* el alto de la caja */
@@ -1334,7 +1334,7 @@ textarea:not(:focus):not(:placeholder-shown):valid {
 
 /* ---------- Tarjetas del equipo ---------- */
 /* La cabecera de la ficha: el monograma arriba y los datos centrados,
-   igual que las tarjetas de areas, de valores y de publicaciones. */
+   igual que las tarjetas de áreas, de valores y de publicaciones. */
 /* La parte de arriba de la ficha: monograma, nombre y cargo. */
 .equipo-cabecera {
   display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
@@ -1351,7 +1351,7 @@ textarea:not(:focus):not(:placeholder-shown):valid {
 .equipo-monograma {
   width: 62px;  /* el ancho de la caja */
   height: 62px;  /* el alto de la caja */
-  min-width: 62px;  /* el ancho minimo de la caja */
+  min-width: 62px;  /* el ancho mínimo de la caja */
   border-radius: 50%;  /* las esquinas redondeadas */
   background-color: var(--marca);  /* el color de fondo de la caja */
   background-image: var(--degradado-marca);
@@ -1394,7 +1394,7 @@ textarea:not(:focus):not(:placeholder-shown):valid {
   gap: 10px;  /* el espacio entre los elementos */
 }
 
-/* El boton de LinkedIn de una ficha. */
+/* El botón de LinkedIn de una ficha. */
 .equipo-linkedin {
   width: 30px;  /* el ancho de la caja */
   height: 30px;  /* el alto de la caja */
@@ -1421,7 +1421,7 @@ textarea:not(:focus):not(:placeholder-shown):valid {
   transform: translateY(-2px);
 }
 
-/* ---------- Redes sociales del pie de pagina ---------- */
+/* ---------- Redes sociales del pie de página ---------- */
 .redes-sociales {
   display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   gap: 10px;  /* el espacio entre los elementos */
@@ -1861,20 +1861,20 @@ textarea:not(:focus):not(:placeholder-shown):valid {
   color: #e2e8f0;  /* el color del texto */
 }
 
-/* En pantallas pequenas los botones se mantienen visibles */
+/* En pantallas pequeñas los botones se mantienen visibles */
 @media (max-width: 600px) {
-  /* Un boton redondo de la barra superior. */
+  /* Un botón redondo de la barra superior. */
   .btn-control {
     width: 34px;  /* el ancho de la caja */
     height: 34px;  /* el alto de la caja */
-    min-width: 34px;  /* el ancho minimo de la caja */
+    min-width: 34px;  /* el ancho mínimo de la caja */
   }
 
   /* El grupo de las dos banderas. */
   .btn-idioma {
     width: 36px;  /* el ancho de la caja */
     height: 34px;  /* el alto de la caja */
-    min-width: 36px;  /* el ancho minimo de la caja */
+    min-width: 36px;  /* el ancho mínimo de la caja */
     font-size: 12px;  /* el tamano de la letra */
   }
 }
@@ -1890,11 +1890,11 @@ textarea:not(:focus):not(:placeholder-shown):valid {
   gap: 6px;  /* el espacio entre los elementos */
 }
 
-/* Cada bandera es un boton redondeado */
+/* Cada bandera es un botón redondeado */
 .btn-bandera {
   width: 34px;  /* el ancho de la caja */
   height: 26px;  /* el alto de la caja */
-  min-width: 34px;  /* el ancho minimo de la caja */
+  min-width: 34px;  /* el ancho mínimo de la caja */
   padding: 0;  /* el espacio por dentro de la caja */
   border-radius: 4px;  /* las esquinas redondeadas */
   border: 2px solid transparent;  /* el borde que rodea la caja (grosor, estilo y color) */
@@ -1954,7 +1954,7 @@ textarea:not(:focus):not(:placeholder-shown):valid {
   display: inline;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
 }
 
-/* El texto en ingles. Solo se ve cuando el visitante elige ingles. */
+/* El texto en inglés. Solo se ve cuando el visitante elige inglés. */
 .en {
   display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
 }
@@ -2006,11 +2006,11 @@ label.btn-bandera:focus-visible {
 }
 
 /* =========================================
-   BOTONES DE ENLACE ENTRE SECCIONES
-   (los que llevan a otra pagina del sitio)
+   Botones DE ENLACE ENTRE Secciones
+   (los que llevan a otra página del sitio)
    ========================================= */
 
-/* El boton que invita a seguir: KNOW... Conozcanos mas, Conozca al equipo... */
+/* El botón que invita a seguir: KNOW... Conozcanos más, Conozca al equipo... */
 .btn-seccion {
   display: inline-block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   margin-top: 18px;  /* el espacio por encima de la caja */
@@ -2071,7 +2071,7 @@ label.btn-bandera:focus-visible {
 
 
 /* =========================================
-   AREA DEL CLIENTE: MIS SOLICITUDES
+   Área DEL CLIENTE: MIS SOLICITUDES
    ========================================= */
 
 /* Esconde el elemento. La usan los recuadros que solo aparecen cuando se pide. */
@@ -2079,7 +2079,7 @@ label.btn-bandera:focus-visible {
   display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
 }
 
-/* La parte de arriba del area de Mi cuenta. */
+/* La parte de arriba del área de Mi cuenta. */
 .cuenta-cabecera {
   display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   justify-content: space-between;  /* como se reparten de izquierda a derecha */
@@ -2095,7 +2095,7 @@ label.btn-bandera:focus-visible {
   margin-top: 0;  /* el espacio por encima de la caja */
 }
 
-/* El titulo del area de Mi cuenta. */
+/* El título del área de Mi cuenta. */
 .titulo-cuenta {
   font-size: 18px;  /* el tamano de la letra */
   font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
@@ -2113,7 +2113,7 @@ label.btn-bandera:focus-visible {
   margin-bottom: 12px;  /* el espacio por debajo de la caja */
 }
 
-/* La parte de arriba de la solicitud (fecha y area). */
+/* La parte de arriba de la solicitud (fecha y área). */
 .solicitud-cabecera {
   display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   justify-content: space-between;  /* como se reparten de izquierda a derecha */
@@ -2187,7 +2187,7 @@ label.btn-bandera:focus-visible {
    debajo. Por eso se usan dos recortes:
 
      .logo-icon  Solo el cuadrado (para la barra)
-     .logo-full  El lockup completo (para el pie de pagina)
+     .logo-full  El lockup completo (para el pie de página)
 
    El alto se fija y el ancho se calcula solo, para que
    el logo nunca se salga de su contenedor.
@@ -2204,7 +2204,7 @@ label.btn-bandera:focus-visible {
   display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   width: auto;  /* el ancho de la caja */
   height: 100%;  /* el alto de la caja */
-  max-width: 100%;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  max-width: 100%;  /* el ancho máximo (la caja no pasa de ese ancho) */
 }
 
 /* En la barra de navegacion: solo el cuadrado, 46x46 */
@@ -2213,7 +2213,7 @@ label.btn-bandera:focus-visible {
   height: 46px;  /* el alto de la caja */
 }
 
-/* En el pie de pagina: el lockup completo */
+/* En el pie de página: el lockup completo */
 .footer-logo .logo-inline {
   width: auto;  /* el ancho de la caja */
   height: 96px;  /* el alto de la caja */
@@ -2225,7 +2225,7 @@ label.btn-bandera:focus-visible {
 }
 
 /* =========================================
-   INICIO DE SESION Y REGISTRO (panel superior)
+   INICIO DE Sesión Y REGISTRO (panel superior)
    ========================================= */
 
 /* El cuadro de la barra: es igual que los botones de tema e idioma */
@@ -2233,7 +2233,7 @@ label.btn-bandera:focus-visible {
   position: relative;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
 }
 
-/* Cuando hay sesion iniciada se muestran las iniciales */
+/* Cuando hay sesión iniciada se muestran las iniciales */
 .inicial-usuario {
   font-size: 13px;  /* el tamano de la letra */
   font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
@@ -2252,7 +2252,7 @@ label.btn-bandera:focus-visible {
   align-items: flex-start;  /* como se alinean de arriba hacia abajo */
   justify-content: center;  /* como se reparten de izquierda a derecha */
   padding: 90px 20px 20px;  /* el espacio por dentro de la caja */
-  z-index: 300;  /* el orden de las capas (lo que esta mas arriba, tapa a lo de abajo) */
+  z-index: 300;  /* el orden de las capas (lo que esta más arriba, tapa a lo de abajo) */
   overflow-y: auto;  /* que pasa con lo que no cabe en vertical */
 }
 
@@ -2262,7 +2262,7 @@ label.btn-bandera:focus-visible {
   border-radius: 8px;  /* las esquinas redondeadas */
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);  /* la sombra de la caja */
   width: 100%;  /* el ancho de la caja */
-  max-width: 420px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  max-width: 420px;  /* el ancho máximo (la caja no pasa de ese ancho) */
   padding: 28px 26px;  /* el espacio por dentro de la caja */
   position: relative;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
 }
@@ -2281,7 +2281,7 @@ label.btn-bandera:focus-visible {
   margin: 22px 0 12px;  /* el espacio por fuera de la caja */
 }
 
-/* El boton de cerrar la X */
+/* El botón de cerrar la X */
 .cerrar-sesion {
   position: absolute;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
   top: 12px;  /* la distancia desde arriba, cuando la caja esta pegada */
@@ -2302,7 +2302,7 @@ label.btn-bandera:focus-visible {
   color: #1c2833;  /* el color del texto */
 }
 
-/* Texto pequeno */
+/* Texto pequeño */
 .modal-sesion .pista {
   font-size: 13px;  /* el tamano de la letra */
   color: #566573;  /* el color del texto */
@@ -2319,7 +2319,7 @@ label.btn-bandera:focus-visible {
   border-top: 1px solid #d5d8dc;  /* el borde de arriba (la franja de color de las tarjetas) */
 }
 
-/* Un enlace que parece boton (Olvido su contrasena, Soy administrador). */
+/* Un enlace que parece botón (Olvido su contraseña, Soy administrador). */
 .enlace-boton {
   border: none;  /* el borde que rodea la caja (grosor, estilo y color) */
   background: none;  /* el fondo de la caja */
@@ -2414,7 +2414,7 @@ button.secundario.pequeno {
 }
 
 /* =========================================
-   PANEL DE SESION EN LA VERSION ESTATICA
+   PANEL DE Sesión EN LA VERSION ESTATICA
    (se abre con una casilla de verificacion)
    ========================================= */
 
@@ -2430,7 +2430,7 @@ button.secundario.pequeno {
   align-items: flex-start;  /* como se alinean de arriba hacia abajo */
   justify-content: center;  /* como se reparten de izquierda a derecha */
   padding: 90px 20px 20px;  /* el espacio por dentro de la caja */
-  z-index: 300;  /* el orden de las capas (lo que esta mas arriba, tapa a lo de abajo) */
+  z-index: 300;  /* el orden de las capas (lo que esta más arriba, tapa a lo de abajo) */
   overflow-y: auto;  /* que pasa con lo que no cabe en vertical */
 }
 
@@ -2439,7 +2439,7 @@ button.secundario.pequeno {
   display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
 }
 
-/* Las dos pestanas: iniciar sesion y registrarse */
+/* Las dos pestanas: iniciar sesión y registrarse */
 .pestanas-sesion {
   display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   gap: 6px;  /* el espacio entre los elementos */
@@ -2506,13 +2506,13 @@ button.secundario.pequeno {
   color: #86efac;
 }
 
-/* El panel de sesion arranca oculto: solo aparece al pulsar el boton.
-   Se usa .capa-sesion.oculto porque tiene mas peso que .capa-sesion. */
+/* El panel de sesión arranca oculto: solo aparece al pulsar el botón.
+   Se usa .capa-sesión.oculto porque tiene más peso que .capa-sesión. */
 .capa-sesion.oculto {
   display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
 }
 
-/* En la version estatica el recuadro tambien arranca oculto */
+/* En la version estatica el recuadro también arranca oculto */
 .panel-sesion:not(:checked) {
   display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
 }
@@ -2530,10 +2530,10 @@ button.secundario.pequeno {
 }
 
 /* =========================================
-   BOTON PARA VER LA CONTRASENA (el ojo)
+   Botón PARA VER LA Contraseña (el ojo)
    ========================================= */
 
-/* El campo con su boton al lado */
+/* El campo con su botón al lado */
 .campo-clave {
   position: relative;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
 }
@@ -2543,7 +2543,7 @@ button.secundario.pequeno {
   padding-right: 44px;  /* el espacio por dentro, a la derecha */
 }
 
-/* La cajita donde va el boton */
+/* La cajita donde va el botón */
 .boton-ver-clave {
   position: absolute;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
   right: 4px;  /* la distancia desde la derecha, cuando la caja esta pegada */
@@ -2553,7 +2553,7 @@ button.secundario.pequeno {
   align-items: center;  /* como se alinean de arriba hacia abajo */
 }
 
-/* El boton con el ojo */
+/* El botón con el ojo */
 .btn-ver-clave {
   width: 32px;  /* el ancho de la caja */
   height: 32px;  /* el alto de la caja */
@@ -2578,7 +2578,7 @@ button.secundario.pequeno {
   color: #1a5276;  /* el color del texto */
 }
 
-/* Cuando la contrasena esta a la vista, se muestra el ojo tachado */
+/* Cuando la contraseña esta a la vista, se muestra el ojo tachado */
 .btn-ver-clave .ojo-tachado {
   display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
 }
@@ -2604,19 +2604,19 @@ button.secundario.pequeno {
 /* =========================================
    AJUSTES PARA EL MENU MOVIL Y AVISOS (HTML Y JAVASCRIPT)
    -----------------------------------------------------
-   En la version estatica el boton de las tres rayitas se
+   En la version estatica el botón de las tres rayitas se
    controla con una casilla (#abrirMenu), y en la version
    con JavaScript con la clase .abierto.
    ========================================= */
 
-/* El titulo "Nuestra Mision" */
+/* El título "Nuestra Misión" */
 .titulo-mision {
   color: var(--marca);  /* el color del texto */
   margin-bottom: 15px;  /* el espacio por debajo de la caja */
   margin-top: 10px;  /* el espacio por encima de la caja */
 }
 
-/* El boton de las tres rayitas */
+/* El botón de las tres rayitas */
 .menu-btn {
   display: none;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   flex-direction: column;  /* hacia donde se acomodan los elementos (en fila o en columna) */
@@ -2627,7 +2627,7 @@ button.secundario.pequeno {
   padding: 5px;  /* el espacio por dentro de la caja */
 }
 
-/* Las 3 rayitas del boton */
+/* Las 3 rayitas del botón */
 .menu-btn span {
   display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   width: 24px;  /* el ancho de la caja */
@@ -2638,7 +2638,7 @@ button.secundario.pequeno {
 }
 
 @media (max-width: 600px) {
-  /* En celular se ve el boton de las rayitas */
+  /* En celular se ve el botón de las rayitas */
   .menu-btn {
     display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   }
@@ -2676,10 +2676,10 @@ button.secundario.pequeno {
 }
 
 /* =========================================
-   MISION, VISION Y BLOQUES NUEVOS
+   Misión, Visión Y BLOQUES NUEVOS
    ========================================= */
 
-/* El bloque de la mision y de la vision */
+/* El bloque de la misión y de la visión */
 .bloque-mision {
   margin-bottom: 22px;  /* el espacio por debajo de la caja */
   background-color: #ffffff;
@@ -2708,11 +2708,11 @@ button.secundario.pequeno {
   font-size: 15px;  /* el tamano de la letra */
   line-height: 1.75;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
   color: var(--gris-700);  /* el color del texto */
-  max-width: 900px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  max-width: 900px;  /* el ancho máximo (la caja no pasa de ese ancho) */
   margin-bottom: 0;
 }
 
-/* El titulo de los valores */
+/* El título de los valores */
 .valores-titulo {
   margin: 32px 0 4px;  /* el espacio por fuera de la caja */
 }
@@ -2723,7 +2723,7 @@ button.secundario.pequeno {
   color: var(--marca);  /* el color del texto */
 }
 
-/* El titulo de cada bloque de servicios */
+/* El título de cada bloque de servicios */
 .titulo-bloque {
   font-size: 19px;  /* el tamano de la letra */
   font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
@@ -2735,7 +2735,7 @@ button.secundario.pequeno {
   margin-top: 0;  /* el espacio por encima de la caja */
 }
 
-/* El enlace "Consultar por esta area" */
+/* El enlace "Consultar por esta área" */
 .enlace-servicio {
   display: inline-flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   align-items: center;
@@ -2768,18 +2768,18 @@ button.secundario.pequeno {
   font-size: 22px;  /* el tamano de la letra */
   font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
   line-height: 1.3;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
-  max-width: 720px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  max-width: 720px;  /* el ancho máximo (la caja no pasa de ese ancho) */
   margin: 0 auto 12px;  /* el espacio por fuera de la caja */
 }
 
-/* El subtitulo de la portada, debajo de la propuesta de valor. */
+/* El subtítulo de la portada, debajo de la propuesta de valor. */
 .banner-texto {
   font-size: 16px;  /* el tamano de la letra */
-  max-width: 680px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  max-width: 680px;  /* el ancho máximo (la caja no pasa de ese ancho) */
   margin: 0 auto 10px;  /* el espacio por fuera de la caja */
 }
 
-/* La frase Sede en Bogota D.C. - Cobertura nacional. */
+/* La frase Sede en Bogotá D.C. - Cobertura nacional. */
 .banner-cobertura {
   font-size: 12.5px;  /* el tamano de la letra */
   letter-spacing: 0.8px;  /* el espacio entre las letras */
@@ -2824,7 +2824,7 @@ button.secundario.pequeno {
   font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
 }
 
-/* ---------- Actualidad Juridica ---------- */
+/* ---------- Actualidad Jurídica ---------- */
 .filtros-categoria {
   display: flex;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   flex-wrap: wrap;  /* si los elementos se pasan a otra linea cuando no caben */
@@ -2832,7 +2832,7 @@ button.secundario.pequeno {
   margin-bottom: 22px;  /* el espacio por debajo de la caja */
 }
 
-/* Un filtro por categoria. */
+/* Un filtro por categoría. */
 .filtro-categoria {
   font-size: 13px;  /* el tamano de la letra */
   font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
@@ -2851,14 +2851,14 @@ button.secundario.pequeno {
   box-shadow: 0 4px 12px rgba(0, 108, 183, 0.22);
 }
 
-/* La rejilla de las publicaciones de Actualidad Juridica. */
+/* La rejilla de las publicaciones de Actualidad Jurídica. */
 .publicaciones-grid {
   display: grid;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   grid-template-columns: repeat(3, 1fr);  /* cuantas columnas tiene la rejilla y de que ancho son */
   gap: 22px;  /* el espacio entre los elementos */
 }
 
-/* La tarjeta de una publicacion. */
+/* La tarjeta de una publicación. */
 .publicacion-card {
   background: #ffffff;  /* el fondo de la caja */
   border: 1px solid var(--borde);  /* el borde que rodea la caja (grosor, estilo y color) */
@@ -2875,7 +2875,7 @@ button.secundario.pequeno {
   border-top-color: var(--marca-celeste);
 }
 
-/* La etiqueta con la categoria (Articulos, Jurisprudencia...). */
+/* La etiqueta con la categoría (Artículos, Jurisprudencia...). */
 .publicacion-categoria {
   display: inline-block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   font-size: 11px;  /* el tamano de la letra */
@@ -2901,7 +2901,7 @@ button.secundario.pequeno {
   color: var(--marca);
 }
 
-/* El resumen de dos lineas de la publicacion. */
+/* El resumen de dos lineas de la publicación. */
 .publicacion-resumen {
   font-size: 13px;  /* el tamano de la letra */
   line-height: 1.6;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
@@ -2953,7 +2953,7 @@ button.secundario.pequeno {
   fill: currentColor;  /* el color de relleno de un dibujo SVG */
 }
 
-/* La nota al pie de la seccion */
+/* La nota al pie de la sección */
 .nota-legal {
   margin-top: 22px;  /* el espacio por encima de la caja */
   padding: 12px 16px;  /* el espacio por dentro de la caja */
@@ -2994,7 +2994,7 @@ button.secundario.pequeno {
   margin-top: 4px;  /* el espacio por encima de la caja */
 }
 
-/* El logotipo completo en el pie de pagina. */
+/* El logotipo completo en el pie de página. */
 .logo-pie {
   width: 66px;  /* el ancho de la caja */
   height: 96px;  /* el alto de la caja */
@@ -3006,7 +3006,7 @@ button.secundario.pequeno {
   height: 46px;  /* el alto de la caja */
 }
 
-/* ---------- El documento de la politica ---------- */
+/* ---------- El documento de la política ---------- */
 .documento {
   background: #ffffff;  /* el fondo de la caja */
   border: 1px solid var(--borde);  /* el borde que rodea la caja (grosor, estilo y color) */
@@ -3041,16 +3041,16 @@ button.secundario.pequeno {
   margin-bottom: 11px;  /* el espacio por debajo de la caja */
 }
 
-/* ---------- Pantallas pequenas ---------- */
+/* ---------- Pantallas pequeñas ---------- */
 @media (max-width: 900px) {
-  /* La rejilla de las publicaciones de Actualidad Juridica. */
+  /* La rejilla de las publicaciones de Actualidad Jurídica. */
   .publicaciones-grid {
     grid-template-columns: 1fr 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
   }
 }
 
 @media (max-width: 600px) {
-  /* La rejilla de las publicaciones de Actualidad Juridica. */
+  /* La rejilla de las publicaciones de Actualidad Jurídica. */
   .publicaciones-grid {
     grid-template-columns: 1fr;  /* cuantas columnas tiene la rejilla y de que ancho son */
   }
@@ -3060,7 +3060,7 @@ button.secundario.pequeno {
     font-size: 19px;  /* el tamano de la letra */
   }
 
-  /* La caja blanca con el texto largo de la politica de datos. */
+  /* La caja blanca con el texto largo de la política de datos. */
   .documento {
     padding: 22px 18px;  /* el espacio por dentro de la caja */
   }
@@ -3189,16 +3189,16 @@ button.secundario.pequeno {
 }
 
 /* =========================================
-   PAGINA DE CADA AREA DE PRACTICA
+   Página DE CADA Área DE Práctica
    ========================================= */
 
-/* El encabezado: icono, tipo de asesoria y titulo */
+/* El encabezado: icono, tipo de asesoría y título */
 .area-detalle-cabecera {
   text-align: center;  /* como se alinea el texto (izquierda, centro o derecha) */
   margin-bottom: 34px;  /* el espacio por debajo de la caja */
 }
 
-/* El icono grande del area */
+/* El icono grande del área */
 .area-detalle-icono {
   width: 58px;  /* el ancho de la caja */
   height: 58px;  /* el alto de la caja */
@@ -3206,7 +3206,7 @@ button.secundario.pequeno {
   box-shadow: var(--sombra-suave);
 }
 
-/* La linea que dice si es asesoria preventiva o litigio */
+/* La linea que dice si es asesoría preventiva o litigio */
 .area-detalle-tipo {
   display: inline-block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
   font-size: 12px;  /* el tamano de la letra */
@@ -3220,12 +3220,12 @@ button.secundario.pequeno {
   margin-bottom: 12px;  /* el espacio por debajo de la caja */
 }
 
-/* El texto corto que resume el area */
+/* El texto corto que resume el área */
 .area-detalle-resumen {
   font-size: 16px;  /* el tamano de la letra */
   line-height: 1.75;  /* el alto de cada linea de texto (lo que se ve entre lineas) */
   color: var(--gris-700);  /* el color del texto */
-  max-width: 780px;  /* el ancho maximo (la caja no pasa de ese ancho) */
+  max-width: 780px;  /* el ancho máximo (la caja no pasa de ese ancho) */
   margin: 16px auto 0;  /* el espacio por fuera de la caja */
 }
 
@@ -3237,7 +3237,7 @@ button.secundario.pequeno {
   margin-bottom: 30px;  /* el espacio por debajo de la caja */
 }
 
-/* Cada bloque con su titulo */
+/* Cada bloque con su título */
 .area-detalle-bloque + .area-detalle-bloque {
   margin-top: 0;  /* el espacio por encima de la caja */
 }
@@ -3287,7 +3287,7 @@ button.secundario.pequeno {
   color: var(--marca);  /* el color del texto */
 }
 
-/* La frase de cobertura nacional de las areas de litigio */
+/* La frase de cobertura nacional de las áreas de litigio */
 .area-detalle-cobertura {
   background: var(--azul-suave);  /* el fondo de la caja */
   border-left: 4px solid var(--marca);  /* el borde de la izquierda (la franja de color de las tarjetas) */
@@ -3299,7 +3299,7 @@ button.secundario.pequeno {
   color: var(--marca);  /* el color del texto */
 }
 
-/* El boton de consultar por esa area */
+/* El botón de consultar por esa área */
 .area-detalle-cta {
   text-align: center;  /* como se alinea el texto (izquierda, centro o derecha) */
   margin-bottom: 40px;  /* el espacio por debajo de la caja */
@@ -3309,7 +3309,7 @@ button.secundario.pequeno {
   margin-right: 14px;  /* el espacio por la derecha de la caja */
 }
 
-/* La lista de las otras areas */
+/* La lista de las otras áreas */
 .area-otras {
   border-top: 1px solid var(--borde);  /* el borde de arriba (la franja de color de las tarjetas) */
   padding-top: 26px;  /* el espacio por dentro, arriba */
@@ -3354,7 +3354,7 @@ button.secundario.pequeno {
   box-shadow: 0 4px 12px rgba(0, 108, 183, 0.22);
 }
 
-/* ---------- La nota al pie de cada publicacion ---------- */
+/* ---------- La nota al pie de cada publicación ---------- */
 .publicacion-nota {
   font-size: 11.5px;  /* el tamano de la letra */
   font-style: italic;  /* si la letra va en cursiva o normal */
@@ -3365,7 +3365,7 @@ button.secundario.pequeno {
   margin-bottom: 10px;  /* el espacio por debajo de la caja */
 }
 
-/* ---------- Pantallas pequenas ---------- */
+/* ---------- Pantallas pequeñas ---------- */
 @media (max-width: 900px) {
   /* Las tres columnas: que resuelve, a quien va y como trabajamos. */
   .area-detalle-grid {
@@ -3459,7 +3459,7 @@ button.secundario.pequeno {
 }
 
 /* =========================================
-   LA PAGINA DE LA POLITICA DE DATOS
+   LA Página DE LA Política DE DATOS
    ========================================= */
 
 /* La tabla con los datos del responsable */
@@ -3485,7 +3485,7 @@ button.secundario.pequeno {
   width: 38%;  /* el ancho de la caja */
 }
 
-/* Las listas de puntos de la politica */
+/* Las listas de puntos de la política */
 .documento ul,
 .documento ol {
   margin: 0 0 14px;  /* el espacio por fuera de la caja */
@@ -3733,7 +3733,7 @@ button.secundario.pequeno {
   }
 }
 
-/* ---------- CARRUSEL DE IMAGENES (pagina de inicio) ---------- */
+/* ---------- CARRUSEL DE Imágenes (página de inicio) ---------- */
 .carrusel {
   position: relative;
   max-width: 1100px;

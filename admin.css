@@ -91,10 +91,23 @@
   .login { max-width: 380px; margin: 90px auto; }
   .oculto { display: none; }
   .pista { font-size: 13px; color: var(--suave); margin-top: 6px; }
+
+  /* Botones en español para elegir archivos: el botón nativo del
+     navegador puede salir en inglés, asi que se oculta y se usa
+     una etiqueta con texto en español. */
+  .entrada-archivo { display: none; }
+  .campo label.boton-archivo {
+    display: inline-block; padding: 9px 18px; border: 2px solid var(--marca); border-radius: 6px;
+    color: var(--marca); font-size: 14px; font-weight: bold; letter-spacing: 0; text-transform: none;
+    cursor: pointer; background: transparent; margin-bottom: 0;
+    transition: background-color 0.22s ease, color 0.22s ease;
+  }
+  .campo label.boton-archivo:hover { background: var(--marca); color: #fff; }
+  .nombre-archivo { font-size: 13px; color: var(--suave); margin-left: 10px; }
   code { background: #e3f0fb; color: var(--marca); padding: 2px 6px; border-radius: 3px; font-size: 13px; }
   @media (max-width: 700px) { .fila, .tres { grid-template-columns: 1fr; } }
 
-  /* ---------- El boton con el ojo para ver la contrasena ---------- */
+  /* ---------- El botón con el ojo para ver la contraseña ---------- */
   .campo-clave {
     position: relative;
   }
@@ -144,7 +157,7 @@
     color: #1a5276;
   }
 
-  /* Cuando la contrasena esta a la vista se muestra el ojo tachado */
+  /* Cuando la contraseña esta a la vista se muestra el ojo tachado */
   .btn-ver-clave .ojo-tachado {
     display: none;
   }

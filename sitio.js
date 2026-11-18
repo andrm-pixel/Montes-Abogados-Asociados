@@ -1,24 +1,24 @@
-/* Lógica del sitio (migrada de script.js). React la monta desde PaginaSitio.jsx. */
+/* Lógica del sitio (antes se llamaba script.js). React la monta desde PaginaSitio.jsx. */
 
 /* =======================================================
-   SCRIPT.JS  -  el unico archivo de JavaScript del sitio
+   SITIO.JS  -  el archivo principal de JavaScript del sitio
    -------------------------------------------------------
    Este archivo reune TODO lo que el sitio necesita para
    funcionar con JavaScript:
 
-     1. Los datos de la firma (nombre, direccion, telefonos,
-        las areas de practica, el equipo, las publicaciones...)
+     1. Los datos de la firma (nombre, dirección, teléfonos,
+        las areas de práctica, el equipo, las publicaciones...)
      2. Los dibujos SVG (el logotipo y los iconos)
-     3. Las traducciones al ingles
+     3. Las traducciones al inglés
      4. El idioma y el modo oscuro
-     5. Las funciones que arman cada pagina
+     5. Las funciones que arman cada página
      6. El formulario de contacto y sus reglas
      7. La cuenta del visitante y sus solicitudes
 
    El mismo archivo lo usa el generador (generar-html.js)
    para crear la copia estatica, de modo que las dos
    carpetas del sitio nunca se separan: si se cambia un
-   texto aqui, cambia en las dos.
+   texto aquí, cambia en las dos.
    ======================================================= */
 
 /* =======================================================
@@ -26,7 +26,7 @@
    -------------------------------------------------------
    Estas cuatro partes las usan igual la copia estatica
    (carpeta HTML) y la copia con JavaScript (carpeta
-   JavaScript). Por eso viven aqui y no dentro del
+   JavaScript). Por eso viven aquí y no dentro del
    generador:
      1. Los iconos SVG
      2. El diccionario de traducciones (ES / EN)
@@ -35,11 +35,11 @@
    ======================================================= */
 
 /* =======================================================
-   LOS DATOS Y LAS FUNCIONES DE LA PAGINA
+   LOS DATOS Y LAS FUNCIONES DE LA PÁGINA
    -------------------------------------------------------
-   La pagina se dibuja entera desde aqui. Todo lo que el
+   La página se dibuja entera desde aquí. Todo lo que el
    visitante ve sale de los datos de este archivo y de las
-   funciones que los convierten en paginas.
+   funciones que los convierten en páginas.
    ======================================================= */
 var ICONOS = {
   instagram:
@@ -89,10 +89,16 @@ var ICONOS = {
 
 /* =======================================================
    2. TRADUCCIONES
-   Solo esta el texto en ingles: el espanol ya esta
-   escrito en el HTML y en los datos de script.js.
-   Al volver a espanol se restaura el texto original.
+   Solo esta el texto en inglés: el español ya esta
+   escrito en el HTML y en los datos de sitio.js.
+   Al volver a español se restaura el texto original.
    ======================================================= */
+/* Traducciones que el panel genera automaticamente cuando el dueno
+   escribe un texto en español. Tienen la forma
+   { "servicios.0.titulo": { es: "texto en español", en: "traducción" } }
+   y se guardan junto con los datos del sitio (datos.json). */
+var TRADUCCIONES_DINAMICAS = {};
+
 var TRADUCCIONES = {
   "nav.inicio": "Home",
   "nav.servicios": "Practice Areas",
@@ -151,8 +157,16 @@ var TRADUCCIONES = {
   "formulario.cta": "Tell us about your case and we will advise you on the options and possible steps.",
   "nav.servicios": "Practice Areas",
   "nav.contacto": "Contact",
-  "nav.tema": "Cambiar entre modo claro y modo oscuro",
-  "nav.idioma": "Cambiar el idioma de la pagina",
+  "nav.tema": "Switch between light and dark mode",
+  "nav.idioma": "Change the page language",
+  "nav.menu": "Open menu",
+  "nav.sesion": "Sign in or create an account",
+  "nav.idioma.es": "Switch to Spanish",
+  "nav.idioma.en": "Switch to English",
+  "nav.idioma.titulo.es": "Spanish",
+  "nav.idioma.titulo.en": "English",
+  "nav.clave.ver": "Show the password",
+  "nav.cerrar": "Close",
 
   "banner.titulo": "Montes Abogados Asociados S.A.S.",
   "banner.texto": "Legal guidance for individuals, families and organizations in Colombia. We work shoulder to shoulder with our clients.",
@@ -287,7 +301,7 @@ var TRADUCCIONES = {
   "footer.derechos": "All rights reserved",
 
 
-  // Paginas de cada area de practica (traduccion de los textos nuevos).
+  // Páginas de cada área de práctica (traducción de los textos nuevos).
   "area.resuelve": "What it solves",
   "area.dirigidoA": "Who it is for",
   "area.metodo": "How we work",
@@ -339,7 +353,7 @@ var TRADUCCIONES = {
   "areas.5": "Debt Recovery",
   "areas.6": "Business Insolvency",
 
-  // Textos de la portada de color, del aviso de privacidad y del pie de pagina.
+  // Textos de la portada de color, del aviso de privacidad y del pie de página.
   "banner.valor": "High-level legal advice with the closeness of a boutique firm.",
   "banner.cobertura": "Head office in Bogot\u00e1 D.C. \u00b7 Nationwide coverage",
   "banner.cta": "Book a consultation",
@@ -353,7 +367,7 @@ var TRADUCCIONES = {
   "footer.nit": "Tax ID 900.383.659-0",
   "footer.aviso": "Privacy notice",
   "aviso.titulo": "Privacy notice",
-  "aviso.texto": "Montes Abogados Asociados S.A.S. (MAA), Tax ID 900.383.659-0, with domicile at Calle 106 # 58-27, office 706, Bogot\u00e1 D.C., is responsible for the processing of the personal data you send us through this form. We will use your name, company, email address, phone number and message to answer your request, to contact you about our services and, only if you authorise it, to send you our legal updates newsletter. You have the right to know, update, rectify and delete your data, to withdraw this authorisation and to the other rights granted by Law 1581 of 2012. We ask you not to include sensitive data in your message, such as health information; you are not obliged to provide it. You can exercise your rights by writing to lucy@montes-a.com or by calling +57 601 467 2868 or +57 300 725 2766. Please read our <a href=\"politica-datos.html\" target=\"_blank\" rel=\"noopener\">Personal Data Processing Policy</a>, where we will also publish any change.",
+  "aviso.texto": "Montes Abogados Asociados S.A.S. (MAA), Tax ID 900.383.659-0, with domicile at Calle 106 # 58-27, office 706, Bogot\u00e1 D.C., is responsible for the processing of the personal data you send us through this form. We will use your name, company, email address, phone number and message to answer your request, to contact you about our services and, only if you authorise it, to send you our legal updates newsletter. You have the right to know, update, rectify and delete your data, to withdraw this authorisation and to the other rights granted by Law 1581 of 2012. We ask you not to include sensitive data in your message, such as health information; you are not obliged to provide it. You can exercise your rights by writing to claudia@montes-a.com or by calling +57 601 467 2868 or +57 300 725 7266. Please read our <a href=\"politica-datos.html\" target=\"_blank\" rel=\"noopener\">Personal Data Processing Policy</a>, where we will also publish any change.",
   "actualidad.titulo": "Legal Updates",
   "actualidad.subtitulo": "Legal analysis, case law, regulatory news and press notes published by the MAA team.",
   "actualidad.nota": "This content is informative and does not constitute legal advice for a specific case.",
@@ -361,7 +375,7 @@ var TRADUCCIONES = {
   "sesion.soyAdmin": "I am the administrator",
 
 
-  // El equipo completo, con el auxiliar juridico.
+  // El equipo completo, con el auxiliar jurídico.
   "equipo.3.nombre": "Daniel Bertel Paternina",
   "equipo.3.cargo": "Legal Assistant",
   "equipo.3.sinopsis": "Law student, currently in the fourth semester, with experience in legal support, case file review, follow-up of judicial proceedings and drafting of legal documents. He is known for his organization, his responsibility and his legal analysis skills, as well as for his commitment to complying with procedural deadlines and to the efficient development of the activities of the legal practice.",
@@ -401,11 +415,22 @@ var TRADUCCIONES = {
   "placeholder.apellido": "Your last name",
   "placeholder.correo": "email@example.com",
   "placeholder.telefono": "+57 300 000 0000",
-  "placeholder.mensaje": "Briefly describe your situation..."
+  "placeholder.mensaje": "Briefly describe your situation...",
+  "placeholder.usuarioIngreso": "Your username",
+  "placeholder.claveIngreso": "Your password",
+  "placeholder.regUsuario": "The name you sign in with",
+  "placeholder.regClave": "Minimum 6 characters",
+  "placeholder.regClave2": "Repeat the password",
+  "placeholder.recClave": "Minimum 6 characters",
+  "placeholder.recClave2": "Repeat the password",
+  "placeholder.regNombre": "Your name",
+  "placeholder.regCorreo": "email@example.com",
+  "placeholder.recUsuario": "Your username",
+  "placeholder.recCorreo": "email@example.com"
 };
 
-/* Mensajes que NO estan escritos en el HTML (los pone el JavaScript).
-   Aqui van los dos idiomas porque no hay texto original que restaurar. */
+/* Mensajes que NO están escritos en el HTML (los pone el JavaScript).
+   Aquí van los dos idiomas porque no hay texto original que restaurar. */
 var MENSAJES = {
   es: {
     "contacto.verSolicitudes": "¿Ya enviaste una solicitud? Inicia sesión para verla",
@@ -436,7 +461,9 @@ var MENSAJES = {
     "error.correo": "El correo electrónico no es válido.",
     "error.area": "Debes seleccionar un área de consulta.",
     "error.mensaje": "Cuéntanos brevemente tu consulta.",
-    "error.privacidad": "Debes aceptar la política de privacidad."
+    "error.privacidad": "Debes aceptar la política de privacidad.",
+    "tema.claro": "Cambiar a modo claro",
+    "tema.oscuro": "Cambiar a modo oscuro"
   },
   en: {
     "contacto.verSolicitudes": "Already sent a request? Sign in to see it",
@@ -467,7 +494,9 @@ var MENSAJES = {
     "error.correo": "The email address is not valid.",
     "error.area": "You must select an area of consultation.",
     "error.mensaje": "Please tell us briefly about your consultation.",
-    "error.privacidad": "You must accept the privacy policy."
+    "error.privacidad": "You must accept the privacy policy.",
+    "tema.claro": "Switch to light mode",
+    "tema.oscuro": "Switch to dark mode"
   }
 };
 
@@ -481,9 +510,9 @@ function mensaje(clave, variables) {
   var idioma = IDIOMA === "en" ? "en" : "es";
   var texto = MENSAJES[idioma][clave] || "";
 
-  // En ingles, si el mensaje no esta en la lista propia, se busca
+  // En inglés, si el mensaje no esta en la lista propia, se busca
   // en el diccionario general de traducciones.
-  if (!texto && idioma === "en") {  // si no hay frase en ingles para esa llave
+  if (!texto && idioma === "en") {  // si no hay frase en inglés para esa llave
     texto = TRADUCCIONES[clave] || "";
   }
 
@@ -514,7 +543,7 @@ var IDIOMA = "es";
  * Busca un dibujo por su nombre. Sirve para los iconos sueltos
  * y para los que son de las areas de servicio.
  * @param {String} clave - nombre del icono
- * @returns {String} - el SVG o una cadena vacia
+ * @returns {String} - el SVG o una cadena vacía
  */
 function buscarIcono(clave) {
   if (ICONOS.servicios[clave]) {  // si ese dibujo esta en el cajon de las areas
@@ -528,10 +557,10 @@ function buscarIcono(clave) {
 
 /**
  * Dibuja los iconos que en el HTML quedaron marcados con data-icono.
- * Asi el SVG se escribe una sola vez, aqui, y no en cada pagina.
+ * Asi el SVG se escribe una sola vez, aquí, y no en cada página.
  */
 function pintarIconos() {
-  var elementos = document.querySelectorAll("[data-icono]");  // busca todos los elementos [data-icono] de la pagina
+  var elementos = document.querySelectorAll("[data-icono]");  // busca todos los elementos [data-icono] de la página
 
   for (var i = 0; i < elementos.length; i++) {  // recorre la lista elementos, una vuelta por cada elemento
     var elemento = elementos[i];  // el elemento que se esta revisando
@@ -541,37 +570,52 @@ function pintarIconos() {
 }
 
 /**
- * Arranca todo lo que las dos versiones tienen en comun.
+ * Arranca todo lo que las dos versiones tienen en común.
  */
 function iniciarControles() {
   pintarIconos();
 }
 
 /**
- * Cambia el idioma de toda la pagina.
+ * Cambia el idioma de toda la página.
  * @param {String} lang - "es" o "en"
  */
 function aplicarIdioma(lang) {
   IDIOMA = lang;
 
-  var elementos = document.querySelectorAll("[data-i18n]");  // busca todos los elementos [data-i18n] de la pagina
+  var elementos = document.querySelectorAll("[data-i18n]");  // busca todos los elementos [data-i18n] de la página
 
   for (var i = 0; i < elementos.length; i++) {  // recorre la lista elementos, una vuelta por cada elemento
     var elemento = elementos[i];  // el elemento que se esta revisando
     var clave = elemento.getAttribute("data-i18n");
 
-    // La primera vez se guarda el texto original en espanol.
+    // La primera vez se guarda el texto original en español.
     if (!elemento.getAttribute("data-texto-original")) {  // si es la primera vez que se pasa por este elemento
       elemento.setAttribute("data-texto-original", elemento.innerHTML);  // escribe el atributo elemento.innerHTML en el elemento
     }
 
-    if (lang === "en" && TRADUCCIONES[clave]) {  // si el visitante eligio ingles y hay frase para esa llave
-      var texto = TRADUCCIONES[clave];
-      // Si la traduccion trae etiquetas (por ejemplo <br>) se usa innerHTML.
-      if (texto.indexOf("<") !== -1) {  // si la frase trae etiquetas de HTML
-        elemento.innerHTML = texto;  // mete ese texto dentro del elemento
-      } else {  // si no se cumplió lo de arriba
-        elemento.textContent = texto;  // mete ese texto dentro del elemento (solo el texto)
+    if (lang === "en") {  // si el visitante eligio inglés
+      var espanol = elemento.getAttribute("data-texto-original") || "";
+      var dinamica = TRADUCCIONES_DINAMICAS[clave];
+      var texto = null;
+
+      // Si el panel tradujo este texto desde el español que se esta
+      // mostrando, se usa esa traducción (queda al día con lo editado).
+      if (dinamica && dinamica.en && dinamica.es === espanol) {
+        texto = dinamica.en;
+      } else if (TRADUCCIONES[clave]) {  // si no, la frase de fabrica
+        texto = TRADUCCIONES[clave];
+      }
+
+      if (texto !== null) {
+        // Si la traducción trae etiquetas (por ejemplo <br>) se usa innerHTML.
+        if (texto.indexOf("<") !== -1) {  // si la frase trae etiquetas de HTML
+          elemento.innerHTML = texto;  // mete ese texto dentro del elemento
+        } else {  // si no se cumplió lo de arriba
+          elemento.textContent = texto;  // mete ese texto dentro del elemento (solo el texto)
+        }
+      } else {  // si no hay traducción, se queda el texto en español
+        elemento.innerHTML = elemento.getAttribute("data-texto-original");
       }
     } else {  // si no se cumplió lo de arriba
       elemento.innerHTML = elemento.getAttribute("data-texto-original");  // mete ese texto dentro del elemento
@@ -579,7 +623,9 @@ function aplicarIdioma(lang) {
   }
 
   // Traduce también los textos de ayuda dentro de los campos (placeholders).
-  var camposConPlaceholder = ["nombre", "apellido", "correo", "telefono", "mensaje"];
+  var camposConPlaceholder = ["nombre", "apellido", "correo", "telefono", "mensaje",
+    "usuarioIngreso", "claveIngreso", "regNombre", "regUsuario", "regCorreo",
+    "regClave", "regClave2", "recUsuario", "recCorreo", "recClave", "recClave2"];
   for (var k = 0; k < camposConPlaceholder.length; k++) {
     var campoForm = document.getElementById(camposConPlaceholder[k]);
     if (campoForm) {
@@ -594,17 +640,64 @@ function aplicarIdioma(lang) {
     }
   }
 
-  // El texto del <title> y el atributo lang del HTML tambien cambian.
-  if (lang === "en") {  // si el visitante eligio ingles
-    document.documentElement.setAttribute("lang", "en");  // cambia un atributo de la pagina
-    document.title = "COLOMBIA LAWYERS - Montes Abogados Asociados S.A.S.";  // cambia el titulo de la pestana
+  // Los textos de ayuda (title) y los de accesibilidad (aria-label)
+  // también se traducen. El elemento los marca con data-i18n-title
+  // o data-i18n-aria y el valor es la misma clave del diccionario.
+  var conAtributo = document.querySelectorAll("[data-i18n-title], [data-i18n-aria]");
+  var paresAtributo = [
+    { marca: "data-i18n-title", original: "data-title-original", atributo: "title" },
+    { marca: "data-i18n-aria", original: "data-aria-original", atributo: "aria-label" }
+  ];
+  for (var a = 0; a < conAtributo.length; a++) {
+    for (var b = 0; b < paresAtributo.length; b++) {
+      var claveAtributo = conAtributo[a].getAttribute(paresAtributo[b].marca);
+      if (!claveAtributo) {
+        continue;
+      }
+      if (!conAtributo[a].getAttribute(paresAtributo[b].original)) {
+        conAtributo[a].setAttribute(paresAtributo[b].original,
+          conAtributo[a].getAttribute(paresAtributo[b].atributo) || "");
+      }
+      var textoAtributo = null;
+      if (lang === "en") {
+        textoAtributo = (TRADUCCIONES_DINAMICAS[claveAtributo] && TRADUCCIONES_DINAMICAS[claveAtributo].en) ||
+          TRADUCCIONES[claveAtributo] || null;
+      }
+      conAtributo[a].setAttribute(paresAtributo[b].atributo,
+        textoAtributo || conAtributo[a].getAttribute(paresAtributo[b].original));
+    }
+  }
+
+  // El texto alternativo de las imágenes del carrusel también cambia,
+  // porque es un atributo y no se puede traducir con CSS.
+  var diaposAlt = document.querySelectorAll(".carrusel-diapositiva");
+  for (var d = 0; d < diaposAlt.length; d++) {
+    var datoAlt = CARRUSEL[Number(diaposAlt[d].getAttribute("data-indice"))];
+    var imgAlt = diaposAlt[d].querySelector("img");
+    if (datoAlt && imgAlt) {
+      imgAlt.setAttribute("alt", lang === "en"
+        ? (datoAlt.tituloEn || datoAlt.titulo || "")
+        : (datoAlt.titulo || ""));
+    }
+  }
+
+  // El botón del tema cambia su texto de ayuda al cambiar de idioma.
+  var btnTemaIdioma = document.getElementById("btnTema");
+  if (btnTemaIdioma) {
+    btnTemaIdioma.setAttribute("aria-label", mensaje(TEMA === "oscuro" ? "tema.claro" : "tema.oscuro"));
+  }
+
+  // El texto del <title> y el atributo lang del HTML también cambian.
+  if (lang === "en") {  // si el visitante eligio inglés
+    document.documentElement.setAttribute("lang", "en");  // cambia un atributo de la página
+    document.title = "COLOMBIA LAWYERS - Montes Abogados Asociados S.A.S.";  // cambia el título de la pestana
   } else {  // si no se cumplió lo de arriba
-    document.documentElement.setAttribute("lang", "es");  // cambia un atributo de la pagina
-    document.title = "ABOGADOS COLOMBIA - Montes Abogados Asociados S.A.S.";  // cambia el titulo de la pestana
+    document.documentElement.setAttribute("lang", "es");  // cambia un atributo de la página
+    document.title = "ABOGADOS COLOMBIA - Montes Abogados Asociados S.A.S.";  // cambia el título de la pestana
   }
 
   // Las banderas muestran cuál idioma está activo.
-  var banderas = document.querySelectorAll("[data-idioma]");  // busca todos los elementos [data-idioma] de la pagina
+  var banderas = document.querySelectorAll("[data-idioma]");  // busca todos los elementos [data-idioma] de la página
   for (var i = 0; i < banderas.length; i++) {  // recorre la lista banderas, una vuelta por cada elemento
     if (banderas[i].getAttribute("data-idioma") === lang) {  // si esta bandera es la del idioma elegido
       banderas[i].classList.add("activa");
@@ -628,7 +721,7 @@ function aplicarIdioma(lang) {
  * Cambia el idioma con las banderas ES / EN.
  */
 function iniciarIdioma() {
-  var banderas = document.querySelectorAll("[data-idioma]");  // busca todos los elementos [data-idioma] de la pagina
+  var banderas = document.querySelectorAll("[data-idioma]");  // busca todos los elementos [data-idioma] de la página
 
   for (var i = 0; i < banderas.length; i++) {  // recorre la lista banderas, una vuelta por cada elemento
     banderas[i].addEventListener("click", function (evento) {
@@ -636,12 +729,12 @@ function iniciarIdioma() {
     });
   }
 
-  // Si el visitante ya habia elegido un idioma, se respeta.
+  // Si el visitante ya había elegido un idioma, se respeta.
   var guardado = null;  // aun no hay nada (se llena después)
   try {  // se intenta hacer esto; si algo falla, se avisa abajo
     guardado = localStorage.getItem("idioma");
   } catch (error) {  // si algo falló, se avisa por consola
-    guardado = null;  // no hay nada guardado todavia
+    guardado = null;  // no hay nada guardado todavía
   }
 
   if (guardado === "en" || guardado === "es") {  // si el idioma guardado es uno de los dos validos
@@ -658,23 +751,23 @@ function iniciarIdioma() {
 var TEMA = "claro";
 
 /**
- * Aplica el tema claro o oscuro a toda la pagina.
+ * Aplica el tema claro o oscuro a toda la página.
  * @param {String} tema - "claro" u "oscuro"
  */
 function aplicarTema(tema) {
   TEMA = tema;
 
   if (tema === "oscuro") {  // si el tema elegido es el oscuro
-    document.documentElement.setAttribute("data-theme", "oscuro");  // cambia un atributo de la pagina
+    document.documentElement.setAttribute("data-theme", "oscuro");  // cambia un atributo de la página
   } else {  // si no se cumplió lo de arriba
-    document.documentElement.setAttribute("data-theme", "claro");  // cambia un atributo de la pagina
+    document.documentElement.setAttribute("data-theme", "claro");  // cambia un atributo de la página
   }
 
-  var boton = document.getElementById("btnTema");  // busca el elemento btnTema en la pagina
-  if (boton) {  // si ese boton si existe en esta pagina
+  var boton = document.getElementById("btnTema");  // busca el elemento btnTema en la página
+  if (boton) {  // si ese botón si existe en esta página
     boton.innerHTML = tema === "oscuro" ? ICONOS.sol : ICONOS.luna;
     // escribe un atributo
-    boton.setAttribute("aria-label", tema === "oscuro" ? "Cambiar a modo claro" : "Cambiar a modo oscuro");
+    boton.setAttribute("aria-label", mensaje(tema === "oscuro" ? "tema.claro" : "tema.oscuro"));
   }
 
   try {  // se intenta hacer esto; si algo falla, se avisa abajo
@@ -686,16 +779,16 @@ function aplicarTema(tema) {
 }
 
 /**
- * Activa el boton que cambia entre modo claro y oscuro.
+ * Activa el botón que cambia entre modo claro y oscuro.
  */
 function iniciarTema() {
-  var boton = document.getElementById("btnTema");  // busca el elemento btnTema en la pagina
-  if (!boton) {  // si ese boton no existe en esta pagina
+  var boton = document.getElementById("btnTema");  // busca el elemento btnTema en la página
+  if (!boton) {  // si ese botón no existe en esta página
     return;  // sale de la función
   }
 
-    // cuando la persona le pique a este boton, se hace lo de abajo
-  boton.addEventListener("click", function () {  // cuando la persona le pique a este boton, se hace lo de abajo
+    // cuando la persona le pique a este botón, se hace lo de abajo
+  boton.addEventListener("click", function () {  // cuando la persona le pique a este botón, se hace lo de abajo
     if (TEMA === "oscuro") {  // si el sitio esta en modo oscuro
       aplicarTema("claro");  // deja el sitio en modo {1}
     } else {  // si no se cumplió lo de arriba
@@ -709,7 +802,7 @@ function iniciarTema() {
   try {  // se intenta hacer esto; si algo falla, se avisa abajo
     guardado = localStorage.getItem("tema");
   } catch (error) {  // si algo falló, se avisa por consola
-    guardado = null;  // no hay nada guardado todavia
+    guardado = null;  // no hay nada guardado todavía
   }
 
   if (guardado === "oscuro" || guardado === "claro") {  // si el tema guardado es uno de los dos validos
@@ -721,15 +814,15 @@ function iniciarTema() {
 
 
 /* =======================================================
-   SCRIPT.JS  -  version construida con JavaScript
+   SITIO.JS  -  versión construida con JavaScript
    -------------------------------------------------------
-   La pagina se dibuja entera desde aqui.
+   La página se dibuja entera desde aquí.
    Todo lo que las dos carpetas del sitio comparten
-   esta mas arriba en este mismo archivo.
+   esta más arriba en este mismo archivo.
 
    CONCEPTOS USADOS (del documento "JavaScript en detalle"):
    - Variables: var, let, const
-   - Tipos de datos: texto, numero, booleano
+   - Tipos de datos: texto, número, booleano
    - Operadores: + - * / , == === , > < , && || !
    - Plantillas de texto con acentos graves ( ` )
    - Condicionales: if / else / else if
@@ -750,29 +843,29 @@ function iniciarTema() {
 const SITIO = {
   nombre: "Montes Abogados Asociados S.A.S.",  /* el nombre de la firma */
   grupo: "Montes Group",  /* el nombre del grupo de firmas al que pertenece */
-  tituloPagina: "ABOGADOS COLOMBIA · Montes Abogados Asociados S.A.S.",  /* el titulo que aparece en la pestana del navegador */
-  descripcion: "Montes Abogados Asociados S.A.S. · Firma jurídica colombiana. Bogotá, Colombia.",  /* la descripcion corta que usan los buscadores */
-  telefono: "+57 300 72 57 266",  /* el telefono de WhatsApp, como lo ve el visitante */
-  telefonoEnlace: "+573007257266",  /* el mismo telefono sin espacios, para el enlace que marca */
-  telefonoAlterno: "+57 601 467 2868",  /* el telefono fijo de Bogota */
-  correo: "lucy@montes-a.com",  /* el correo de la Oficial de proteccion de datos */
+  tituloPagina: "ABOGADOS COLOMBIA · Montes Abogados Asociados S.A.S.",  /* el título que aparece en la pestana del navegador */
+  descripcion: "Montes Abogados Asociados S.A.S. · Firma jurídica colombiana. Bogotá, Colombia.",  /* la descripción corta que usan los buscadores */
+  telefono: "+57 300 725 7266",  /* el teléfono de WhatsApp, como lo ve el visitante */
+  telefonoEnlace: "+573007257266",  /* el mismo teléfono sin espacios, para el enlace que marca */
+  telefonoAlterno: "+57 601 467 2868",  /* el teléfono fijo de Bogota */
+  correo: "claudia@montes-a.com",  /* el correo de la Oficial de protección de datos */
   correoGeneral: "claudia@montes-a.com",  /* el correo comercial de la firma */
   correoAlterno: "contacto@mwabogados.com",  /* el correo de la otra firma del grupo */
-  direccion: "Calle 106 # 58-27, Oficina 706",  /* la direccion de la oficina */
+  direccion: "Calle 106 # 58-27, Oficina 706",  /* la dirección de la oficina */
   ciudad: "Bogotá D.C., Colombia",  /* la ciudad donde esta la oficina */
-  direccionCorta: "Calle 106 # 58-27, Oficina 706, Bogotá D.C.",  /* la direccion con la ciudad, para el pie de pagina */
+  direccionCorta: "Calle 106 # 58-27, Oficina 706, Bogotá D.C.",  /* la dirección con la ciudad, para el pie de página */
   nit: "900.383.659-0",  /* el NIT de la firma */
-  versionPolitica: "22 de octubre de 2026",  /* la fecha de entrada en vigencia de la politica de datos */
+  versionPolitica: "22 de octubre de 2026",  /* la fecha de entrada en vigencia de la política de datos */
   cobertura: "Sede en Bogotá D.C. · Cobertura nacional",  /* la frase Sede en Bogota D.C. - Cobertura nacional */
-  mapa: "https://www.google.com/maps/search/?api=1&query=Calle+106+%2358-27+oficina+706+Bogota",  /* el enlace que abre el mapa con la direccion */
+  mapa: "https://www.google.com/maps/search/?api=1&query=Calle+106+%2358-27+oficina+706+Bogota",  /* el enlace que abre el mapa con la dirección */
   direccionEspaña: "Calle Monte Esquinza 30, bajo izquierda, 28010",
   ciudadEspaña: "Madrid, España",
-  sitioWeb: "www.montes-a.com",  /* la direccion web de la firma */
-  sitioWebEspaña: "www.mwabogados.net",
-  horario: "Lunes a viernes: 8:00 a.m. – 6:00 p.m.",  /* el horario de atencion */
+  sitioWeb: "www.montes-a.com",  /* la dirección web de la firma */
+  sitioWebEspana: "www.mwabogados.net",
+  horario: "Lunes a viernes: 8:00 a.m. – 6:00 p.m.",  /* el horario de atención */
   horarioSabado: "Sábados: 8:00 a.m. – 12:00 p.m.",  /* el horario del sabado */
-  horarioPie: "Lun – Vie: 8am – 6pm",  /* el horario en la version corta del pie de pagina */
-  whatsappNumero: "573007257266",  /* el numero de WhatsApp, sin el + y sin espacios */
+  horarioPie: "Lun – Vie: 8am – 6pm",  /* el horario en la version corta del pie de página */
+  whatsappNumero: "573007257266",  /* el número de WhatsApp, sin el + y sin espacios */
   whatsappMensaje: "Hola, me gustaría recibir información sobre sus servicios de asesoría jurídica.",  /* el mensaje que se abre en WhatsApp */
   formularioUrl: "https://formsubmit.co/ajax/claudia@montes-a.com",  /* a donde llega el formulario */
   formularioSubject: "Nueva consulta - Montes Abogados Asociados"
@@ -845,131 +938,131 @@ const RAZONES = [
 //
 const SERVICIOS = [
   {
-    numero: "01",  /* el numero con que sale en la tarjeta */
-    titulo: "Derecho Comercial y Contratos",  /* el titulo */
-    corto: "Comercial y Contratos",  /* el nombre corto, para el pie de pagina */
+    numero: "01",  /* el número con que sale en la tarjeta */
+    titulo: "Derecho Comercial y Contratos",  /* el título */
+    corto: "Comercial y Contratos",  /* el nombre corto, para el pie de página */
     bloque: "preventiva",  /* a que grupo pertenece (preventiva o litigio) */
     texto: "Asesoramos a empresas en sus operaciones comerciales y en la negociación, redacción y revisión de contratos, para prevenir riesgos y proteger sus intereses.",  /* el texto que se muestra */
     icono: "comercial",  /* la clave del dibujo que se le pone */
-    pagina: "area-comercial.html",  /* el archivo de la pagina propia de esa area */
+    pagina: "area-comercial.html",  /* el archivo de la página propia de esa área */
     problemas: [
       "Contratos que no reflejan lo que la empresa realmente quiere o necesita.",
       "Operaciones comerciales que se hacen sin respaldo jurídico suficiente.",
     ],
-    dirigidoA: "Empresas y empresarios que firman contratos, venden o compran dentro y fuera de Colombia.",  /* a quien va dirigida el area */
+    dirigidoA: "Empresas y empresarios que firman contratos, venden o compran dentro y fuera de Colombia.",  /* a quien va dirigida el área */
     metodo: "Revisamos la documentación antes de firmarla, la ajustamos a la operación real de la empresa y acompañamos la negociación para que no queden vacíos."
   },
   {
-    numero: "02",  /* el numero con que sale en la tarjeta */
-    titulo: "Derecho Laboral y Seguridad Social",  /* el titulo */
-    corto: "Laboral y Seg. Social",  /* el nombre corto, para el pie de pagina */
+    numero: "02",  /* el número con que sale en la tarjeta */
+    titulo: "Derecho Laboral y Seguridad Social",  /* el título */
+    corto: "Laboral y Seg. Social",  /* el nombre corto, para el pie de página */
     bloque: "preventiva",  /* a que grupo pertenece (preventiva o litigio) */
     texto: "Acompañamos a nuestros clientes en contratación, cumplimiento de obligaciones laborales y de seguridad social, terminaciones y reclamaciones.",  /* el texto que se muestra */
     icono: "laboral",  /* la clave del dibujo que se le pone */
-    pagina: "area-laboral.html",  /* el archivo de la pagina propia de esa area */
+    pagina: "area-laboral.html",  /* el archivo de la página propia de esa área */
     problemas: [
       "Contrataciones sin los documentos completos o sin afiliar a tiempo.",
       "Terminaciones y reclamaciones que se manejan con información incompleta.",
     ],
-    dirigidoA: "Empresas con equipo de trabajo y administradores que necesitan respaldo en la relación laboral.",  /* a quien va dirigida el area */
+    dirigidoA: "Empresas con equipo de trabajo y administradores que necesitan respaldo en la relación laboral.",  /* a quien va dirigida el área */
     metodo: "Hacemos un diagnóstico de la documentación laboral, ponemos en orden las obligaciones pendientes y acompañamos las situaciones delicadas desde el principio."
   },
   {
-    numero: "03",  /* el numero con que sale en la tarjeta */
-    titulo: "Derecho Administrativo",  /* el titulo */
-    corto: "Administrativo",  /* el nombre corto, para el pie de pagina */
+    numero: "03",  /* el número con que sale en la tarjeta */
+    titulo: "Derecho Administrativo",  /* el título */
+    corto: "Administrativo",  /* el nombre corto, para el pie de página */
     bloque: "preventiva",  /* a que grupo pertenece (preventiva o litigio) */
     texto: "Acompañamos a empresas en sus trámites y actuaciones ante entidades públicas, en la presentación de recursos y en los procesos ante la jurisdicción de lo contencioso administrativo.",  /* el texto que se muestra */
     icono: "administrativo",  /* la clave del dibujo que se le pone */
-    pagina: "area-administrativo.html",  /* el archivo de la pagina propia de esa area */
+    pagina: "area-administrativo.html",  /* el archivo de la página propia de esa área */
     problemas: [
       "Trámites ante entidades públicas que se atrasan o se pierden.",
       "Recursos y actuaciones que no se presentan dentro del término.",
     ],
-    dirigidoA: "Empresas que se relacionan con entidades públicas por licencias, contratos y contribuciones.",  /* a quien va dirigida el area */
+    dirigidoA: "Empresas que se relacionan con entidades públicas por licencias, contratos y contribuciones.",  /* a quien va dirigida el área */
     metodo: "Acompañamos el trámite paso a paso y preparamos los recursos con argumentos claros y documentación soportada."
   },
   {
-    numero: "04",  /* el numero con que sale en la tarjeta */
-    titulo: "Derecho Migratorio",  /* el titulo */
-    corto: "Migratorio",  /* el nombre corto, para el pie de pagina */
+    numero: "04",  /* el número con que sale en la tarjeta */
+    titulo: "Derecho Migratorio",  /* el título */
+    corto: "Migratorio",  /* el nombre corto, para el pie de página */
     bloque: "preventiva",  /* a que grupo pertenece (preventiva o litigio) */
     texto: "Asesoramos a empresas y a sus colaboradores extranjeros en la obtención de visas y permisos, y en el cumplimiento de sus obligaciones ante Migración Colombia y la Cancillería.",  /* el texto que se muestra */
     icono: "migratorio",  /* la clave del dibujo que se le pone */
-    pagina: "area-migratorio.html",  /* el archivo de la pagina propia de esa area */
+    pagina: "area-migratorio.html",  /* el archivo de la página propia de esa área */
     problemas: [
       "Visas y permisos que no salen a tiempo para la fecha de ingreso del colaborador.",
       "Colaboradores extranjeros que no cumplen los requisitos ni las obligaciones del caso.",
     ],
-    dirigidoA: "Empresas con colaboradores extranjeros y familias que necesitan un permiso o una visa.",  /* a quien va dirigida el area */
+    dirigidoA: "Empresas con colaboradores extranjeros y familias que necesitan un permiso o una visa.",  /* a quien va dirigida el área */
     metodo: "Revisamos el expediente antes de presentarlo, acompañamos cada trámite ante Migración Colombia y la Cancillería y verificamos las obligaciones posteriores."
   },
   {
-    numero: "05",  /* el numero con que sale en la tarjeta */
-    titulo: "Litigio Civil y Comercial",  /* el titulo */
-    corto: "Litigio Civil y Comercial",  /* el nombre corto, para el pie de pagina */
+    numero: "05",  /* el número con que sale en la tarjeta */
+    titulo: "Litigio Civil y Comercial",  /* el título */
+    corto: "Litigio Civil y Comercial",  /* el nombre corto, para el pie de página */
     bloque: "litigio",  /* a que grupo pertenece (preventiva o litigio) */
     texto: "Representamos a nuestros clientes en procesos en cualquier ciudad del país.",  /* el texto que se muestra */
     icono: "responsabilidad",  /* la clave del dibujo que se le pone */
-    pagina: "area-litigio.html",  /* el archivo de la pagina propia de esa area */
+    pagina: "area-litigio.html",  /* el archivo de la página propia de esa área */
     problemas: [
       "Conflictos patrimoniales o comerciales que no encuentran una salida negociada.",
       "Cuentas por cobrar que, con el tiempo, dejan de ser exigibles.",
     ],
-    dirigidoA: "Empresas y empresarios con conflictos que necesitan representación y estrategia procesal.",  /* a quien va dirigida el area */
-    metodo: "Definimos una estrategia desde el inicio, evaluamos si conviene negociar o litigar, y si vamos a juicio lo preparamos con tiempo y con los documentos completos.",  /* como trabaja la firma en esa area */
+    dirigidoA: "Empresas y empresarios con conflictos que necesitan representación y estrategia procesal.",  /* a quien va dirigida el área */
+    metodo: "Definimos una estrategia desde el inicio, evaluamos si conviene negociar o litigar, y si vamos a juicio lo preparamos con tiempo y con los documentos completos.",  /* como trabaja la firma en esa área */
     cobertura: true
   },
   {
-    numero: "06",  /* el numero con que sale en la tarjeta */
-    titulo: "Recaudo de Cartera",  /* el titulo */
-    corto: "Recaudo de Cartera",  /* el nombre corto, para el pie de pagina */
+    numero: "06",  /* el número con que sale en la tarjeta */
+    titulo: "Recaudo de Cartera",  /* el título */
+    corto: "Recaudo de Cartera",  /* el nombre corto, para el pie de página */
     bloque: "litigio",  /* a que grupo pertenece (preventiva o litigio) */
     texto: "Gestionamos el cobro prejurídico y jurídico de obligaciones para ayudar a las empresas a recuperar su cartera de forma eficiente y conforme a la ley.",  /* el texto que se muestra */
     icono: "cartera",  /* la clave del dibujo que se le pone */
-    pagina: "area-recaudo.html",  /* el archivo de la pagina propia de esa area */
+    pagina: "area-recaudo.html",  /* el archivo de la página propia de esa área */
     problemas: [
       "Cartera que envejece y que nadie gestiona porque falta seguimiento.",
       "Deudores que no responden a los canales de contacto permitidos.",
     ],
-    dirigidoA: "Empresas con cartera por cobrar que necesitan recuperarla sin perder la relación comercial.",  /* a quien va dirigida el area */
-    metodo: "Gestionamos el cobro prejurídico y jurídico de obligaciones para ayudar a las empresas a recuperar su cartera de forma eficiente y conforme a la ley.",  /* como trabaja la firma en esa area */
+    dirigidoA: "Empresas con cartera por cobrar que necesitan recuperarla sin perder la relación comercial.",  /* a quien va dirigida el área */
+    metodo: "Gestionamos el cobro prejurídico y jurídico de obligaciones para ayudar a las empresas a recuperar su cartera de forma eficiente y conforme a la ley.",  /* como trabaja la firma en esa área */
     cobertura: true
   },
   {
-    numero: "07",  /* el numero con que sale en la tarjeta */
-    titulo: "Insolvencia Empresarial",  /* el titulo */
-    corto: "Insolvencia Empresarial",  /* el nombre corto, para el pie de pagina */
+    numero: "07",  /* el número con que sale en la tarjeta */
+    titulo: "Insolvencia Empresarial",  /* el título */
+    corto: "Insolvencia Empresarial",  /* el nombre corto, para el pie de página */
     bloque: "litigio",  /* a que grupo pertenece (preventiva o litigio) */
     texto: "Representamos a acreedores, personas naturales y jurídicas, en procesos de reorganización, liquidación y demás trámites de insolvencia, para proteger y hacer valer sus créditos.",  /* el texto que se muestra */
     icono: "societario",  /* la clave del dibujo que se le pone */
-    pagina: "area-insolvencia.html",  /* el archivo de la pagina propia de esa area */
+    pagina: "area-insolvencia.html",  /* el archivo de la página propia de esa área */
     problemas: [
       "Deudores que entran en reorganización o liquidación y la firma no alcanza a defender sus derechos.",
       "Acreedores que no saben cuáles son los pasos ni los plazos del proceso.",
     ],
-    dirigidoA: "Acreedores, personas naturales y jurídicas que necesitan proteger y hacer valer sus créditos.",  /* a quien va dirigida el area */
-    metodo: "Revisamos el caso, representamos al acreedor en el proceso de reorganización o liquidación y defendemos sus derechos en cada etapa.",  /* como trabaja la firma en esa area */
+    dirigidoA: "Acreedores, personas naturales y jurídicas que necesitan proteger y hacer valer sus créditos.",  /* a quien va dirigida el área */
+    metodo: "Revisamos el caso, representamos al acreedor en el proceso de reorganización o liquidación y defendemos sus derechos en cada etapa.",  /* como trabaja la firma en esa área */
     cobertura: true
   }
 ];
 
 const OFERTAS = [
   {
-    numero: "1.",  /* el numero con que sale en la tarjeta */
-    titulo: "Derecho comercial",  /* el titulo */
+    numero: "1.",  /* el número con que sale en la tarjeta */
+    titulo: "Derecho comercial",  /* el título */
     texto: "Verificación de cumplimiento de deberes generales del comerciante, revisión de documentos sociales (reformas estatutarias, actas de asamblea general de accionistas, nombramientos, entre otros), capitalizaciones, revisión de contratos de seguro, entre otros.",  /* el texto que se muestra */
     icono: "comercial"
   },
   {
-    numero: "2.",  /* el numero con que sale en la tarjeta */
-    titulo: "Derecho laboral",  /* el titulo */
+    numero: "2.",  /* el número con que sale en la tarjeta */
+    titulo: "Derecho laboral",  /* el título */
     texto: "Diagnóstico inicial de la contratación laboral y otros modelos de vinculación; revisión y/o ajuste de documentación laboral básica (RIT, perfiles de cargo, evaluaciones de desempeño, entre otros).",  /* el texto que se muestra */
     icono: "laboral"
   },
   {
-    numero: "3.",  /* el numero con que sale en la tarjeta */
-    titulo: "Derecho contractual",  /* el titulo */
+    numero: "3.",  /* el número con que sale en la tarjeta */
+    titulo: "Derecho contractual",  /* el título */
     texto: "Acompañamiento en la negociación, elaboración o revisión de contratos. Emisión de conceptos sobre obligaciones derivadas de contratos. Apoyo en la adecuada terminación y liquidación de contratos.",  /* el texto que se muestra */
     icono: "civil"
   }
@@ -977,17 +1070,17 @@ const OFERTAS = [
 
 const CULTURA_BLOQUES = [
   {
-    titulo: "Acompañamiento real",  /* el titulo */
+    titulo: "Acompañamiento real",  /* el título */
     texto: "No somos una firma distante. Hacemos un seguimiento cercano y personalizado de cada caso que nos confían.",  /* el texto que se muestra */
     clave: "cultura.bloque1"
   },
   {
-    titulo: "Aliados estratégicos",  /* el titulo */
+    titulo: "Aliados estratégicos",  /* el título */
     texto: "Nos convertimos en aliados de sus negocios porque compartimos la pasión por el crecimiento de las personas y las empresas.",  /* el texto que se muestra */
     clave: "cultura.bloque2"
   },
   {
-    titulo: "Respaldo integral",  /* el titulo */
+    titulo: "Respaldo integral",  /* el título */
     texto: "Nuestros clientes se sienten respaldados y bien representados en todos los escenarios del día a día.",  /* el texto que se muestra */
     clave: "cultura.bloque3"
   }
@@ -998,7 +1091,7 @@ const EQUIPO = [
     nombre: "Claudia Marcela Montes Castro",  /* el nombre de la firma */
     cargo: "Cofundadora y Directora General",  /* el puesto que ocupa */
     iniciales: "CM",  /* las dos letras del monograma */
-    linkedin: "",  /* el enlace de LinkedIn (si queda vacio, no se muestra el boton) */
+    linkedin: "",  /* el enlace de LinkedIn (si queda vacío, no se muestra el botón) */
     sinopsis:
       "Abogada de la Universidad del Rosario y especialista en Derecho Laboral y de la Seguridad " +
       "Social, con mas de doce anos de ejercicio profesional. Antes de asumir la direccion de MAA " +
@@ -1014,7 +1107,7 @@ const EQUIPO = [
     nombre: "Lucy Montes Castro",  /* el nombre de la firma */
     cargo: "Cofundadora",  /* el puesto que ocupa */
     iniciales: "LM",  /* las dos letras del monograma */
-    linkedin: "",  /* el enlace de LinkedIn (si queda vacio, no se muestra el boton) */
+    linkedin: "",  /* el enlace de LinkedIn (si queda vacío, no se muestra el botón) */
     sinopsis:
       "Abogada de la Universidad Libre, especialista en Derecho Administrativo de la misma " +
       "universidad y en Derecho Tributario de la Universidad del Rosario. Cofundo MAA en 2010 " +
@@ -1028,7 +1121,7 @@ const EQUIPO = [
     nombre: "Jorge Montes Castro",  /* el nombre de la firma */
     cargo: "Asociado Senior",  /* el puesto que ocupa */
     iniciales: "JM",  /* las dos letras del monograma */
-    linkedin: "",  /* el enlace de LinkedIn (si queda vacio, no se muestra el boton) */
+    linkedin: "",  /* el enlace de LinkedIn (si queda vacío, no se muestra el botón) */
     sinopsis:
       "Abogado especializado en derecho comercial, con experiencia en la gestion de cartera y en " +
       "cobranza prejuridica y judicial, en negociacion de relacionamientos comerciales y en la " +
@@ -1040,7 +1133,7 @@ const EQUIPO = [
     nombre: "Daniel Bertel Paternina",  /* el nombre de la firma */
     cargo: "Auxiliar Juridico",  /* el puesto que ocupa */
     iniciales: "DB",  /* las dos letras del monograma */
-    linkedin: "",  /* el enlace de LinkedIn (si queda vacio, no se muestra el boton) */
+    linkedin: "",  /* el enlace de LinkedIn (si queda vacío, no se muestra el botón) */
     sinopsis:
       "Profesional en formacion en Derecho, actualmente cursando IV semestre, con experiencia en " +
       "apoyo juridico, revision de expedientes, seguimiento de procesos judiciales y elaboracion " +
@@ -1084,24 +1177,24 @@ const CATEGORIAS_ACTUALIDAD = [
 //
 const PUBLICACIONES = [
   {
-    titulo: "Protección constitucional del fuero de salud",  /* el titulo */
+    titulo: "Protección constitucional del fuero de salud",  /* el título */
     fecha: "21 de febrero de 2024",  /* la fecha */
     autora: "Claudia Montes Castro",  /* quien lo escribe */
-    categoria: "Artículos",  /* a que categoria pertenece */
+    categoria: "Artículos",  /* a que categoría pertenece */
     resumen: "Qué protege el fuero de salud en Colombia, cómo se invoca y qué pasos deben seguir el trabajador y la empresa cuando se presenta una situación de esta naturaleza."
   },
   {
-    titulo: "Cómo preparar una reorganización societaria",  /* el titulo */
+    titulo: "Cómo preparar una reorganización societaria",  /* el título */
     fecha: "12 de mayo de 2024",  /* la fecha */
     autora: "Lucy Montes Castro",  /* quien lo escribe */
-    categoria: "Artículos",  /* a que categoria pertenece */
+    categoria: "Artículos",  /* a que categoría pertenece */
     resumen: "Los pasos que conviene revisar antes de una escisión, una fusión o una conversión de la compañía, y los documentos que hay que tener listos."
   },
   {
-    titulo: "La Ley 2300 de 2023 y las nuevas reglas de contacto en el recaudo de cartera",  /* el titulo */
+    titulo: "La Ley 2300 de 2023 y las nuevas reglas de contacto en el recaudo de cartera",  /* el título */
     fecha: "3 de septiembre de 2024",  /* la fecha */
     autora: "Lucy Montes Castro",  /* quien lo escribe */
-    categoria: "Novedades normativas",  /* a que categoria pertenece */
+    categoria: "Novedades normativas",  /* a que categoría pertenece */
     resumen: "Los canales, horarios y la frecuencia que permite la nueva norma en las gestiones de cobranza, y cómo afecta el manejo de la información del deudor."
   }
 ];
@@ -1138,7 +1231,7 @@ function asterisco(requerido) {
 }
 
 /* Devuelve la palabra "required", que es la que usa el navegador para
-   avisar que el campo no puede quedar vacio. El sitio tambien avisa
+   avisar que el campo no puede quedar vacío. El sitio también avisa
    con su propio estilo, pero esta palabra sirve para los lectores de
    pantalla y para el teclado. */
 function atributoObligatorio(requerido) {
@@ -1150,14 +1243,14 @@ function atributoObligatorio(requerido) {
 
 /* Arma el enlace de WhatsApp con el mensaje ya escrito.
    wa.me es el atajo de WhatsApp: abre el chat directo en el celular
-   o en la aplicacion de escritorio. */
+   o en la aplicación de escritorio. */
 function enlaceWhatsApp() {
   return "https://wa.me/" + SITIO.whatsappNumero +
     "?text=" + encodeURIComponent(SITIO.whatsappMensaje);
 }
 
 /* Convierte una matriz de objetos en una lista de puntos (<ul>).
-   Cada objeto lleva su texto y la clave de su traduccion al ingles.
+   Cada objeto lleva su texto y la clave de su traducción al inglés.
    Sirve para las listas que se arman con datos (los valores, el menu
    de la historia, los otros areas). */
 function crearListaHtml(conjunto) {
@@ -1188,7 +1281,7 @@ function crearOferta() {
 }
 
 /* Crea los enlaces del menu principal.
-   "pagina" es el archivo actual: ese enlace queda marcado como activo
+   "página" es el archivo actual: ese enlace queda marcado como activo
    (para que el visitante sepa donde esta). */
 function crearMenuNavegacion(pagina) {
   var html = "";
@@ -1234,7 +1327,7 @@ function crearServicios() {
   return html;
 }
 
-/* Crea los tres bloques de la seccion "Nuestra Cultura". */
+/* Crea los tres bloques de la sección "Nuestra Cultura". */
 function crearCulturaBloques() {
   var html = "";
   for (var i = 0; i < CULTURA_BLOQUES.length; i++) {
@@ -1278,7 +1371,7 @@ function crearEquipo() {
 }
 
 
-/* Crea los botones de las redes sociales del pie de pagina. */
+/* Crea los botones de las redes sociales del pie de página. */
 function crearRedesSociales() {
   var html = "";
   for (var i = 0; i < REDES.length; i++) {
@@ -1354,10 +1447,10 @@ function crearCamposFormulario() {
    ======================================================= */
 
 /* La barra de navegacion de arriba.
-   Lleva el logotipo, el boton de las tres rayitas (celular), los
-   enlaces del menu y los controles: el boton de persona, el de la
+   Lleva el logotipo, el botón de las tres rayitas (celular), los
+   enlaces del menu y los controles: el botón de persona, el de la
    luna (modo oscuro) y las dos banderas (idioma).
-   "pagina" es el archivo actual, para marcar el enlace activo. */
+   "página" es el archivo actual, para marcar el enlace activo. */
 function crearNav(pagina) {
   return `
   <nav>
@@ -1367,7 +1460,7 @@ function crearNav(pagina) {
         <span class="logo-inline logo-icon" role="img" aria-label="${SITIO.nombre}">${ICONOS.logoIcono}</span>
       </a>
 
-      <button class="menu-btn" id="menuBtn" aria-label="Abrir menú">
+      <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" data-i18n-aria="nav.menu">
         <span></span>
         <span></span>
         <span></span>
@@ -1378,13 +1471,13 @@ function crearNav(pagina) {
       </ul>
 
       <div class="controles">
-        <button class="btn-control btn-usuario" id="btnUsuario" title="Iniciar sesion o registrarse" aria-label="Iniciar sesion o registrarse">${ICONOS.usuario}</button>
+        <button class="btn-control btn-usuario" id="btnUsuario" title="Iniciar sesión o registrarse" aria-label="Iniciar sesión o registrarse" data-i18n-title="nav.sesion" data-i18n-aria="nav.sesion">${ICONOS.usuario}</button>
 
       <!-- El boton de persona: abre el recuadro de la cuenta. -->
         <button class="btn-control" id="btnTema" aria-label="Cambiar entre modo claro y modo oscuro">${ICONOS.luna}</button>
-        <div class="selector-idioma" role="group" aria-label="Cambiar el idioma de la página">
-          <button class="btn-bandera" data-idioma="es" aria-label="Cambiar a español" title="Español">${ICONOS.banderaEs}</button>
-          <button class="btn-bandera" data-idioma="en" aria-label="Switch to English" title="English">${ICONOS.banderaEn}</button>
+        <div class="selector-idioma" role="group" aria-label="Cambiar el idioma de la página" data-i18n-aria="nav.idioma">
+          <button class="btn-bandera" data-idioma="es" aria-label="Cambiar a español" title="Español" data-i18n-aria="nav.idioma.es" data-i18n-title="nav.idioma.titulo.es">${ICONOS.banderaEs}</button>
+          <button class="btn-bandera" data-idioma="en" aria-label="Switch to English" title="English" data-i18n-aria="nav.idioma.en" data-i18n-title="nav.idioma.titulo.en">${ICONOS.banderaEn}</button>
         </div>
       </div>
 
@@ -1405,10 +1498,10 @@ function crearBanner() {
 }
 
 
-/* La seccion "Quienes somos", con la mision, la vision y los seis
-   valores. Solo se usa en la pagina Nosotros.
+/* La sección "Quiénes somos", con la misión, la visión y los seis
+   valores. Solo se usa en la página Nosotros.
    "completo" = true muestra todo; false muestra solo el resumen
-   del inicio (que es otra funcion: crearQuienesResumen). */
+   del inicio (que es otra función: crearQuienesResumen). */
 function crearQuienesSomos(completo) {
   if (!completo) {
     return crearQuienesResumen();
@@ -1442,7 +1535,7 @@ function crearQuienesSomos(completo) {
   </section>`;
 }
 
-/* La seccion "Nuestra Cultura", con fondo azul.
+/* La sección "Nuestra Cultura", con fondo azul.
    Son los tres bloques que la empresa entrego con su texto. */
 function crearCultura() {
   return `
@@ -1525,9 +1618,9 @@ function crearSeccionServicios() {
   </section>`;
 }
 
-/* La seccion "Nuestro equipo", con las fichas completas.
+/* La sección "Nuestro equipo", con las fichas completas.
    "completo" = true muestra las fichas; false muestra solo el
-   resumen del inicio (que es otra funcion: crearEquipoResumen). */
+   resumen del inicio (que es otra función: crearEquipoResumen). */
 function crearSeccionEquipo(completo) {
   if (!completo) {
     return crearEquipoResumen();
@@ -1556,10 +1649,10 @@ function crearSeccionEquipo(completo) {
   </section>`;
 }
 
-/* La seccion de contacto: los datos a la izquierda y el formulario a
-   la derecha. Solo se usa en la pagina de contacto.
+/* La sección de contacto: los datos a la izquierda y el formulario a
+   la derecha. Solo se usa en la página de contacto.
    "completo" = true incluye el formulario; false es el resumen con
-   un enlace (que es otra funcion: crearContactoResumen). */
+   un enlace (que es otra función: crearContactoResumen). */
 function crearContacto(completo) {
   if (!completo) {
     return crearContactoResumen();
@@ -1629,7 +1722,7 @@ function crearContacto(completo) {
               <strong data-i18n="contacto.sitios">Sitios web</strong>
               <span>
                 <a href="https://${SITIO.sitioWeb}" target="_blank" rel="noopener">${SITIO.sitioWeb}</a><br>
-                <a href="https://${SITIO.sitioWebEspaña}" target="_blank" rel="noopener">${SITIO.sitioWebEspaña}</a>
+                <a href="https://${SITIO.sitioWebEspana}" target="_blank" rel="noopener">${SITIO.sitioWebEspana}</a>
               </span>
             </div>
           </div>
@@ -1728,12 +1821,12 @@ function crearContacto(completo) {
 
 
 
-/* La pagina completa de un area de practica.
-   "indice" es la posicion del area dentro de la matriz SERVICIOS (0 a 6).
-   La pagina trae: el icono, el tipo de asesoria, el titulo, la frase
+/* La página completa de un área de práctica.
+   "indice" es la posicion del área dentro de la matriz SERVICIOS (0 a 6).
+   La página trae: el icono, el tipo de asesoría, el título, la frase
    corta, los tres bloques (que resuelve, a quien va y como trabajamos),
    la frase de cobertura nacional (solo en las areas de litigio), el
-   boton de agendar y la lista de las otras areas. */
+   botón de agendar y la lista de las otras areas. */
 function crearPaginaArea(indice) {
   var area = SERVICIOS[indice];
 
@@ -1805,8 +1898,8 @@ function crearPaginaArea(indice) {
   </section>`;
 }
 
-/* El pie de pagina, con cuatro columnas: la firma y sus redes, la
-   navegacion, las areas de practica y los datos de contacto.
+/* El pie de página, con cuatro columnas: la firma y sus redes, la
+   navegacion, las areas de práctica y los datos de contacto.
    Usa push() para ir guardando los enlaces en una lista. */
 function crearFooter() {
   var serviciosPie = [];
@@ -1884,7 +1977,7 @@ function crearFooter() {
 }
 
 
-/* El boton flotante de WhatsApp, en la esquina inferior derecha. */
+/* El botón flotante de WhatsApp, en la esquina inferior derecha. */
 function crearBotonWhatsApp() {
   return `
   <a class="btn-whatsapp"
@@ -1895,8 +1988,8 @@ function crearBotonWhatsApp() {
      data-icono="whatsapp"></a>`;
 }
 
-/* La seccion "Nuestra Historia": el grupo y su historia.
-   "completo" = true para la pagina Nosotros; false es el resumen
+/* La sección "Nuestra Historia": el grupo y su historia.
+   "completo" = true para la página Nosotros; false es el resumen
    del inicio. */
 function crearHistoria(completo) {
   if (!completo) {
@@ -1951,7 +2044,7 @@ function crearHistoria(completo) {
   </section>`;
 }
 
-/* La seccion "Oferta especifica de servicio", con sus tres tarjetas. */
+/* La sección "Oferta especifica de servicio", con sus tres tarjetas. */
 function crearOfertaServicio() {
   return `
   <section class="seccion" id="oferta">
@@ -2119,20 +2212,20 @@ function crearContactoResumen() {
 }
 
 
-/* Devuelve SOLO las secciones de una pagina (sin barra ni pie).
+/* Devuelve SOLO las secciones de una página (sin barra ni pie).
    La version estatica usa esto para armar el archivo HTML de cada
-   pagina con estas secciones pegadas dentro.
+   página con estas secciones pegadas dentro.
 
    El mapa del sitio es el que pidio la empresa:
-     pagina-montes.html -> el inicio
-     nosotros.html      -> mision, vision, valores, cultura y equipo
+     página-montes.html -> el inicio
+     nosotros.html      -> misión, visión, valores, cultura y equipo
      areas.html         -> el indice de las siete areas
-     area-*.html        -> una pagina por cada area
-     actualidad.html    -> Actualidad Juridica
+     área-*.html        -> una página por cada área
+     actualidad.html    -> Actualidad Jurídica
      contacto.html      -> los datos y el formulario
 
-   Al final, el bucle de las areas arma la pagina de cada area sin
-   tocar esta funcion: si se agrega un area, su pagina aparece sola. */
+   Al final, el bucle de las areas arma la página de cada área sin
+   tocar esta función: si se agrega un área, su página aparece sola. */
 function construirSecciones(pagina) {
   var partes = [];
 
@@ -2187,7 +2280,7 @@ function crearPanelSesion() {
   <div class="capa-sesion oculto" id="capaSesion">
     <div class="modal-sesion" role="dialog" aria-modal="true" aria-labelledby="tituloSesion">
 
-      <button type="button" class="cerrar-sesion" id="cerrarSesion" aria-label="Cerrar">&times;</button>
+      <button type="button" class="cerrar-sesion" id="cerrarSesion" aria-label="Cerrar" data-i18n-aria="nav.cerrar">&times;</button>
 
       <!-- Vista: iniciar sesion -->
         <!-- Vista 1: iniciar sesion -->
@@ -2204,7 +2297,7 @@ function crearPanelSesion() {
             <label for="claveIngreso" data-i18n="sesion.clave">Contraseña</label>
                         <div class="campo-clave">
                           <input type="password" id="claveIngreso" autocomplete="current-password" placeholder="Su clave">
-                          <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('claveIngreso', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
+                          <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('claveIngreso', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña" data-i18n-aria="nav.clave.ver" data-i18n-title="nav.clave.ver"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
                         </div>
           </div>
           <button type="submit" class="btn-enviar" data-i18n="sesion.entrar">Ingresar</button>
@@ -2216,7 +2309,7 @@ function crearPanelSesion() {
         </p>
 
         <p class="pie-alternativo">
-          <a class="enlace-boton" href="../Admin/panel-administracion.html" target="_blank" rel="noopener"         data-i18n="sesion.soyAdmin">Soy administrador</a>
+          <a class="enlace-boton" href="panel-administracion.html" target="_blank" rel="noopener"         data-i18n="sesion.soyAdmin">Soy administrador</a>
         </p>
 
         <p class="pie-alternativo">
@@ -2252,14 +2345,14 @@ function crearPanelSesion() {
             <label for="regClave" data-i18n="sesion.clave">Contraseña</label>
                         <div class="campo-clave">
                           <input type="password" id="regClave" placeholder="Mínimo 6 caracteres">
-                          <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('regClave', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
+                          <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('regClave', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña" data-i18n-aria="nav.clave.ver" data-i18n-title="nav.clave.ver"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
                         </div>
           </div>
           <div class="campo">
             <label for="regClave2" data-i18n="sesion.repetir">Repetir la contraseña</label>
                         <div class="campo-clave">
                           <input type="password" id="regClave2" placeholder="Repita la contraseña">
-                          <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('regClave2', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
+                          <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('regClave2', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña" data-i18n-aria="nav.clave.ver" data-i18n-title="nav.clave.ver"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
                         </div>
           </div>
           <button type="submit" class="btn-enviar" data-i18n="sesion.crearCuenta">Crear cuenta</button>
@@ -2291,14 +2384,14 @@ function crearPanelSesion() {
             <label for="recClave" data-i18n="sesion.claveNueva">Contraseña nueva</label>
                         <div class="campo-clave">
                           <input type="password" id="recClave" placeholder="Mínimo 6 caracteres">
-                          <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('recClave', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
+                          <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('recClave', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña" data-i18n-aria="nav.clave.ver" data-i18n-title="nav.clave.ver"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
                         </div>
           </div>
           <div class="campo">
             <label for="recClave2" data-i18n="sesion.repetir">Repetir la contraseña</label>
                         <div class="campo-clave">
                           <input type="password" id="recClave2" placeholder="Repita la contraseña">
-                          <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('recClave2', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
+                          <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('recClave2', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña" data-i18n-aria="nav.clave.ver" data-i18n-title="nav.clave.ver"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
                         </div>
           </div>
           <button type="submit" class="btn-enviar" data-i18n="sesion.guardarClave">Guardar contraseña nueva</button>
@@ -2327,18 +2420,18 @@ function crearPanelSesion() {
 }
 
 /* =======================================================
-   3d. INICIO DE SESION Y REGISTRO DE CLIENTES
+   3d. INICIO DE SESIÓN Y REGISTRO DE CLIENTES
    -------------------------------------------------------
    Las cuentas se guardan en este navegador con la
-   contrasena cifrada (SHA-256), nunca en texto claro.
+   contraseña cifrada (SHA-256), nunca en texto claro.
    ======================================================= */
 
 var CLAVE_CUENTAS = "cuentasMontes";
 var CLAVE_SESION = "sesionMontes";
 
-/* Devuelve la lista de cuentas que estan registradas en este navegador.
+/* Devuelve la lista de cuentas que están registradas en este navegador.
    Se leen del almacenamiento local del navegador: no hay servidor.
-   Si no hay nada guardado, devuelve una lista vacia. */
+   Si no hay nada guardado, devuelve una lista vacía. */
 
 function leerCuentas() {
   try {
@@ -2367,9 +2460,9 @@ function guardarCuentas(cuentas) {
 /* Convierte una clave en una huella que no se puede leer.
    Usa SHA-256, que es el mismo metodo que usa el Gobierno para
    firmar documentos. Como la huella no se puede volver a convertir
-   en la clave, nadie (tampoco el sitio) puede leerla despues.
+   en la clave, nadie (tampoco el sitio) puede leerla después.
 
-   Si el navegador no tiene Web Crypto (porque la pagina se abrio con
+   Si el navegador no tiene Web Crypto (porque la página se abrio con
    doble clic y no por un servidor), se usa una codificacion simple
    para no dejar el sitio sin funcionar. */
 
@@ -2408,7 +2501,7 @@ function leerSesion() {
   return null;
 }
 
-/* Guarda la sesion del visitante en el navegador.
+/* Guarda la sesión del visitante en el navegador.
    Solo se guardan sus datos (nombre, correo, iniciales), nunca la clave. */
 
 function guardarSesion(usuario) {
@@ -2419,7 +2512,7 @@ function guardarSesion(usuario) {
   }
 }
 
-/* Cierra la sesion: borra los datos del visitante de este
+/* Cierra la sesión: borra los datos del visitante de este
    navegador y vuelve a mostrar el recuadro de ingreso. */
 
 function cerrarSesion() {
@@ -2436,7 +2529,7 @@ function cerrarSesion() {
    "vista" puede ser:
      "ingreso"    -> el formulario para entrar
      "registro"   -> el formulario para crear una cuenta
-     "sesion"     -> la sesion ya iniciada, con sus solicitudes
+     "sesión"     -> la sesión ya iniciada, con sus solicitudes
      "recuperar"  -> el formulario para poner una clave nueva
    Solo una vista se ve a la vez: las otras se esconden. */
 
@@ -2483,8 +2576,8 @@ function mostrarPanelSesion(vista) {
   ingreso.classList.remove("oculto");
 }
 
-/* Actualiza el boton de persona de la barra superior.
-   Sin sesion muestra el dibujo de la persona; con sesion, las
+/* Actualiza el botón de persona de la barra superior.
+   Sin sesión muestra el dibujo de la persona; con sesión, las
    iniciales del visitante. */
 
 function actualizarBotonUsuario() {
@@ -2504,8 +2597,8 @@ function actualizarBotonUsuario() {
   }
 }
 
-/* Muestra o esconde la contrasena de un campo.
-   El boton con el ojo cambia el campo entre oculto y visible,
+/* Muestra o esconde la contraseña de un campo.
+   El botón con el ojo cambia el campo entre oculto y visible,
    para que la persona este segura de como la escribio. */
 
 function verClave(campo, boton) {
@@ -2522,7 +2615,7 @@ function verClave(campo, boton) {
 
 /* Escapa los caracteres especiales de un texto (&, <, >, ").
    Sirve para que un nombre que escriba el visitante no rompa el
-   HTML al ponerlo dentro de la pagina. */
+   HTML al ponerlo dentro de la página. */
 
 function escaparTexto(texto) {
   return String(texto)
@@ -2533,7 +2626,7 @@ function escaparTexto(texto) {
 }
 
 /* Conecta todo lo de la cuenta del visitante:
-   el boton de persona de la barra, el formulario de ingreso, el de
+   el botón de persona de la barra, el formulario de ingreso, el de
    registro y el de restablecer la clave.
    Todo lo que se guarda vive en el navegador de cada visitante:
    las cuentas no se ven entre si. */
@@ -2645,8 +2738,8 @@ function iniciarSesionUsuario() {
         guardarSesion({
           usuario: encontrada.usuario,
           nombre: encontrada.nombre,  /* el nombre de la firma */
-          correo: encontrada.correo,  /* el correo de la Oficial de proteccion de datos */
-          telefono: encontrada.telefono,  /* el telefono de WhatsApp, como lo ve el visitante */
+          correo: encontrada.correo,  /* el correo de la Oficial de protección de datos */
+          telefono: encontrada.telefono,  /* el teléfono de WhatsApp, como lo ve el visitante */
           iniciales: encontrada.iniciales
         });
         mostrarPanelSesion("sesion");
@@ -2711,8 +2804,8 @@ function iniciarSesionUsuario() {
         cuentas.push({
           usuario: usuario,
           nombre: nombre,  /* el nombre de la firma */
-          correo: correo,  /* el correo de la Oficial de proteccion de datos */
-          telefono: telefono,  /* el telefono de WhatsApp, como lo ve el visitante */
+          correo: correo,  /* el correo de la Oficial de protección de datos */
+          telefono: telefono,  /* el teléfono de WhatsApp, como lo ve el visitante */
           iniciales: iniciales,  /* las dos letras del monograma */
           clave: hash
         });
@@ -2776,8 +2869,8 @@ function iniciarSesionUsuario() {
         guardarSesion({
           usuario: encontrada.usuario,
           nombre: encontrada.nombre,  /* el nombre de la firma */
-          correo: encontrada.correo,  /* el correo de la Oficial de proteccion de datos */
-          telefono: encontrada.telefono,  /* el telefono de WhatsApp, como lo ve el visitante */
+          correo: encontrada.correo,  /* el correo de la Oficial de protección de datos */
+          telefono: encontrada.telefono,  /* el teléfono de WhatsApp, como lo ve el visitante */
           iniciales: encontrada.iniciales
         });
         mostrarPanelSesion("sesion");
@@ -2879,7 +2972,7 @@ function crearActualidad() {
   </section>`;
 }
 
-/* Une la barra, las secciones de la pagina, el pie, el boton de
+/* Une la barra, las secciones de la página, el pie, el botón de
    WhatsApp y el recuadro de la cuenta: eso es el sitio completo. */
 function construirPagina(pagina) {
   var partes = [];
@@ -2896,18 +2989,18 @@ function construirPagina(pagina) {
 
 
 /* =======================================================
-   3c. AREA DEL CLIENTE: MIS SOLICITUDES
+   3c. ÁREA DEL CLIENTE: MIS SOLICITUDES
    -------------------------------------------------------
-   El visitante entra con el correo y el telefono que uso
+   El visitante entra con el correo y el teléfono que uso
    para escribirnos, ve las solicitudes que ha enviado y
-   puede enviar una nueva sin salir de la pagina.
+   puede enviar una nueva sin salir de la página.
    ======================================================= */
 
 var CLAVE_SOLICITUDES = "solicitudesMontes";
 var CLAVE_CLIENTE = "clienteMontes";
 
 /* Devuelve todas las solicitudes que se han enviado desde este
-   navegador. Si no hay ninguna, devuelve una lista vacia. */
+   navegador. Si no hay ninguna, devuelve una lista vacía. */
 
 function leerSolicitudes() {
   try {
@@ -2921,8 +3014,8 @@ function leerSolicitudes() {
   return [];
 }
 
-/* Guarda una solicitud nueva, con la fecha y la hora del dia.
-   Si hay sesion iniciada, la solicitud queda a nombre de ese usuario. */
+/* Guarda una solicitud nueva, con la fecha y la hora del día.
+   Si hay sesión iniciada, la solicitud queda a nombre de ese usuario. */
 
 function guardarSolicitud(solicitud) {
 
@@ -2964,7 +3057,7 @@ function correoValido(correo) {
   return formato.test(correo);
 }
 
-/* Revisa que el telefono tenga entre 10 y 15 digitos.
+/* Revisa que el teléfono tenga entre 10 y 15 digitos.
    Se quitan antes los espacios, los guiones y el signo +, que no
    cuentan como digitos. */
 
@@ -2977,7 +3070,7 @@ function telefonoValido(telefono) {
 }
 
 /* Muestra las solicitudes del visitante que esta conectado.
-   Cada una lleva la fecha, el area que consulto y un boton para
+   Cada una lleva la fecha, el área que consulto y un botón para
    volver a escribirle a la firma. */
 
 function mostrarSolicitudes() {
@@ -3007,7 +3100,7 @@ function mostrarSolicitudes() {
   }
 
   if (mias.length === 0) {
-    lista.innerHTML = '<p class="subtitulo-gris" data-i18n="cuenta.vacia">Todavia no has enviado solicitudes con estos datos.</p>';
+    lista.innerHTML = '<p class="subtitulo-gris" data-i18n="cuenta.vacia">Todavía no has enviado solicitudes con estos datos.</p>';
     return;
   }
 
@@ -3022,339 +3115,877 @@ function mostrarSolicitudes() {
         <p>${mias[j].mensaje}</p>
         <span class="solicitud-estado">${mias[j].estado}</span>
       </div>`;  // "const" = constante: su valor no se puede cambiar después.  // Objeto literal = pares clave-valor: { clave: valor }
-    // SITIO: los datos de la firma. Son los mas importantes del archivo,  // porque casi todos los textos que el visitante ve salen de aqui.
-    // Para cambiar un telefono, un correo o la direccion, se cambia en  // este bloque y nada mas: el resto del sitio se entera solo.
-    // Teléfonos y correos oficiales de la presentación corporativa.  // Los telefonos. "telefono" es como se ve (con espacios) y
-    // "telefonoEnlace" es el mismo numero sin espacios, que es lo que  // necesita el enlace que marca en el celular.
-    // Los correos: el de la Oficial de proteccion de datos, el comercial  // de la firma y el de la otra firma del grupo.
-    // El NIT: aparece en el pie de pagina de todo el sitio.  // Fecha de entrada en vigencia de la politica de datos que se publica.
+    // SITIO: los datos de la firma. Son los más importantes del archivo,
+    // porque casi todos los textos que el visitante ve salen de aquí.
+    // Para cambiar un teléfono, un correo o la dirección, se cambia en
+    // este bloque y nada más: el resto del sitio se entera solo.
+    // Teléfonos y correos oficiales de la presentación corporativa.
+    // Los teléfonos. "teléfono" es como se ve (con espacios) y
+    // "telefonoEnlace" es el mismo número sin espacios, que es lo que
+    // necesita el enlace que marca en el celular.
+    // Los correos: el de la Oficial de protección de datos, el comercial
+    // de la firma y el de la otra firma del grupo.
+    // El NIT: aparece en el pie de página de todo el sitio.
+    // Fecha de entrada en vigencia de la política de datos que se pública.
     // El documento de la empresa pedia corregir la fecha vieja (1 de enero de 2025).
-    // La frase que pide la empresa que aparezca en la portada, en el  // contacto y en el pie de todas las paginas.
-    // El enlace que abre el mapa con la direccion de la firma.  // Sede en España (Montes & Warren S.L.U.)
-    // Sede en Espana (Montes & Warren S.L.U.). La empresa pidio confirmar  // si esta sede sigue vigente: por eso esta apartada en un bloque.
-    // La version corta del horario, para el pie de pagina.  // El numero de WhatsApp, sin el "+" y sin espacios, que es como lo
-    // pide la pagina de wa.me para abrir el chat directo.  // Servicio que recibe el formulario y reenvía los datos al correo.
-    // Matriz de objetos: las páginas del menú principal.  // Cada página es un archivo HTML propio, igual que en el sitio en React.
-    // "clave" es el nombre con el que se busca la traducción.  // PAGINAS_MENU: las paginas del menu principal.
-    // Cada linea es un destino del menu y dice tres cosas:  // "archivo" = el nombre del archivo HTML al que lleva
-    // "clave"   = el nombre con el que se busca su traduccion al ingles  // "texto"   = la palabra que ve el visitante
-    // El menu del sitio se arma solo con esta lista: para agregar una  // pagina nueva basta con agregar una linea aqui y crear el archivo.
-    // Misión, visión y propuesta de valor de la firma.  // MAA: los tres textos que la firma entrego para la portada.
-    // mision         = la razon de ser de la firma  // vision         = donde quiere llegar  // propuestaValor = la frase corta de la portada
-    // subtitulo      = la frase de apoyo, debajo de la anterior  // Estan aparte para que el texto aprobado por la firma este siempre
-    // en un solo sitio y no se pueda cambiar por descuido.  // Matriz de objetos: los 6 valores de la firma.
-    // VALORES: los seis principios de la firma, con el texto que explica  // como se ponen en la practica. El orden es el que se ve en el sitio.
-    // Matriz de textos: las razones para elegir la firma.  // RAZONES: los motivos por los que un cliente elige a la firma.
-    // Se usan en las tarjetas de la seccion de inicio.  // Matriz de objetos: las 7 áreas de servicio oficiales.
-    // "icono" es la clave del dibujo SVG guardado en ICONOS (mas arriba).  // SERVICIOS: las siete areas de practica de la firma.
-    // Cada area tiene:  // numero     = el numero con que sale en la tarjeta (01, 02, ...)
-    // titulo     = el nombre completo, que es el titulo de su pagina  // corto      = el nombre corto, para el pie de pagina
-    // bloque     = "preventiva" o "litigio": asi el indice de areas  // las separa en los dos grupos que pidio la empresa
-    // texto      = la frase corta que explica que resuelve para el cliente  // icono      = clave del dibujo SVG (dentro de ICONOS)
-    // pagina     = el archivo de la pagina propia de esa area  // problemas  = los problemas que el area resuelve
-    // dirigidoA  = a quien va dirigida el area  // metodo     = como trabaja la firma en esa area
-    // De esta lista salen las siete paginas de area: el generador las  // crea solo, asi que agregar un area no obliga a tocar nada mas.
-    // Matriz de objetos: la oferta específica de servicio (3 paquetes).  // OFERTAS: la oferta especifica de servicio (los tres paquetes
-    // contratacion laboral, revision documental y acompanamiento).  // Se muestran en su propia seccion.
-    // Matriz de objetos: los 3 pilares de la cultura.  // CULTURA_BLOQUES: los tres pilares de la cultura de la firma.
-    // Cada uno lleva su titulo y su texto, como los escribio la empresa.  // Matriz de objetos: el equipo de la firma.
-    // "iniciales" son las letras del monograma y "linkedin" puede ir vacío.  // EQUIPO: las personas que forman la firma.
-    // nombre    = el nombre completo, tal como se publica  // cargo     = el puesto que ocupa
-    // iniciales = las dos letras del monograma (si no hay foto)  // linkedin  = el enlace; si queda vacio, no se muestra el boton
-    // sinopsis  = el parrafo que la presenta  // Matriz de objetos: las redes sociales de la firma.  // REDES: las redes sociales de la firma.
-    // Cada una dice el nombre (que se usa como descripcion para los  // lectores de pantalla), el dibujo y el enlace.
-    // Matriz de objetos: las áreas del desplegable del formulario.  // Las cuatro categorias de la seccion "Actualidad Juridica".
-    // CATEGORIAS_ACTUALIDAD: las cuatro categorias de la seccion de  // Actualidad Juridica, que son los filtros que pidio la empresa.
-    // Las publicaciones de la seccion "Actualidad Juridica".  // El dueño puede editarlas y agregar mas desde el panel de administracion.
-    // PUBLICACIONES: los articulos, sentencias y novedades que se muestran  // en la seccion de Actualidad Juridica.
-    // titulo    = el nombre del articulo  // fecha     = cuando se publico  // autora    = quien lo escribe
-    // categoria = una de las cuatro de arriba  // resumen   = el resumen de dos lineas
-    // imagen    = el dibujo (lo sube el administrador; puede ir vacio)  // pdf       = el nombre del archivo en PDF (va en la carpeta documentos)
-    // El administrador puede cambiarlas todas desde el panel.  // AREAS: las opciones del desplegable "Area de consulta" del formulario.
-    // Son las mismas siete que publica el sitio. El documento de la empresa  // retiro las areas que ya no se ofrecian (derecho de familia,
-    // contratacion estatal y propiedad intelectual).  // Matriz de objetos: los campos de texto del formulario.
-    // "mitad" = true significa que el campo va de a dos en una fila.  // CAMPOS: los campos de texto del formulario.
-    // id          = el nombre con el que se reconoce el campo  // etiqueta    = el texto de la etiqueta
-    // tipo        = el tipo de teclado que se abre en el celular  // placeholder = la frase de ayuda dentro del campo
-    // requerido  = true si es obligatorio (lleva asterisco)  // mitad       = true si el campo ocupa media fila (dos por linea)
-    // ayuda       = la frase de ayuda debajo del campo  // clave       = la llave de su traduccion al ingles  // si el campo es obligatorio
-    // devuelve un texto vacío  // si el campo es obligatorio  // devuelve un texto vacío
-    // El texto va con %20 y los acentos convertidos, para que no se  // rompa el enlace. encodeURIComponent hace esa conversion.
-    // un texto vacío que se va llenando  // Bucle for: 1) contador, 2) condición, 3) incremento.
-    // recorre la lista conjunto, una vuelta por cada elemento  // va pegando el texto  // va pegando el texto  // devuelve el texto que se armó
-    // un texto vacío que se va llenando  // recorre la lista OFERTAS, una vuelta por cada elemento  // va pegando el texto  // va pegando el texto
-    // devuelve el texto que se armó  // Crea los <li> del menú de navegación.  // un texto vacío que se va llenando
-    // Se recorre la lista de páginas y se arma un <li> por cada una.  // recorre la lista PAGINAS_MENU, una vuelta por cada elemento
-    // un texto vacío que se va llenando  // El enlace de la página actual queda marcado con
-    // aria-current, para que el visitante sepa dónde está.  // si este enlace es el de la pagina que se esta viendo  // va pegando el texto
-    // va pegando el texto  // devuelve el texto que se armó  // un texto vacío que se va llenando
-    // recorre la lista VALORES, una vuelta por cada elemento  // el valor que se esta armando  // va pegando el texto  // va pegando el texto
-    // devuelve el texto que se armó  // Crea las 6 tarjetas de áreas de servicio, cada una con su icono.  // un texto vacío que se va llenando
-    // recorre la lista SERVICIOS, una vuelta por cada elemento  // el area que se esta mirando  // va pegando el texto  // va pegando el texto
-    // devuelve el texto que se armó  // un texto vacío que se va llenando  // recorre la lista CULTURA_BLOQUES, una vuelta por cada elemento
-    // va pegando el texto  // va pegando el texto  // devuelve el texto que se armó  // Crea las tarjetas del equipo con monograma y LinkedIn.
-    // Bucles anidados: el de fuera recorre las personas,  // cada persona muestra sus iniciales, su cargo y su sinopsis.
-    // Arma las fichas del equipo. Solo devuelve las tarjetas: la seccion  // completa la arma crearSeccionEquipo().
-    // un texto vacío que se va llenando  // recorre la lista EQUIPO, una vuelta por cada elemento  // la persona que se esta mirando
-    // El enlace de LinkedIn solo se dibuja cuando existe.  // un texto vacío que se va llenando  // si esa persona tiene enlace de LinkedIn
-    // va pegando el texto  // va pegando el texto  // Aqui solo se arman las fichas. La seccion completa la hace
-    // crearSeccionEquipo(), para que no queden dos secciones anidadas.  // devuelve el texto que se armó  // un texto vacío que se va llenando
-    // recorre la lista REDES, una vuelta por cada elemento  // si esta red es la de WhatsApp  // va pegando el texto  // va pegando el texto
-    // devuelve el texto que se armó  // Crea las <option> del desplegable "Área de consulta".
-    // La primera opción es la de "seleccione un área": aparece  // marcada y no se puede dejar ahí (por eso lleva "disabled").
-    // recorre la lista AREAS, una vuelta por cada elemento  // va pegando el texto  // va pegando el texto  // devuelve el texto que se armó
-    // un texto vacío que se va llenando  // un texto vacío que se va llenando  // "html" guarda todos los campos y "pares" los que van de a dos
-    // en una fila (mitad: true).  // recorre la lista CAMPOS, una vuelta por cada elemento  // el campo del formulario que se esta armando
-    // un texto vacío que se va llenando  // si el campo ocupa media fila (van dos por linea)  // Campo de la fila doble (nombre y apellido).
-    // si no se cumplió lo de arriba  // Campo que ocupa toda la fila.  // La ayuda solo se pone si el campo la tiene (si no, saldría "undefined").
-    // un texto vacío que se va llenando  // si ese campo tiene frase de ayuda  // si el campo ocupa media fila (van dos por linea)
-    // si no se cumplió lo de arriba  // va pegando el texto  // va pegando el texto  // devuelve el texto de la pagina
-    // devuelve el texto de la pagina  // Portada azul (banner) con el nombre y los 2 botones.  // devuelve el texto de la pagina
-    // Sección "Quiénes Somos".  // si se pidio la version corta (el resumen)  // devuelve el texto de la pagina  // devuelve el texto de la pagina
-    // Sección "Áreas de Servicio" (fondo gris).  // un texto vacío que se va llenando  // un texto vacío que se va llenando
-    // Se recorre la lista de areas y se va armando cada tarjeta.  // recorre la lista SERVICIOS, una vuelta por cada elemento
-    // el area que se esta mirando  // La tarjeta lleva el icono, el numero, el titulo y la frase corta.  // si esta area es del grupo de litigio
-    // si no se cumplió lo de arriba  // devuelve el texto de la pagina  // Sección "Nuestro Equipo".  // si se pidio la version corta (el resumen)
-    // devuelve el texto de la pagina  // si se pidio la version corta (el resumen)  // devuelve el texto de la pagina
-    // Arma la pagina completa de un area de practica.  // Los demas areas se listan al final para que el visitante pueda seguir
-    // navegtando sin volver al menu.  // un texto vacío que se va llenando  // La lista de las otras áreas, para que el visitante pueda
-    // seguir mirando sin volver al menú.  // recorre la lista SERVICIOS, una vuelta por cada elemento  // si no es el area que se esta mostrando
-    // La frase de cobertura nacional se muestra solo en las areas de litigio,  // tal como lo pide el documento de la empresa.
-    // un texto vacío que se va llenando  // La frase de cobertura nacional: solo la llevan las áreas de
-    // litigio y recuperación, como lo pidió la empresa.  // si esta area lleva la frase de cobertura nacional
-    // Lista de problemas que resuelve el area.  // un texto vacío que se va llenando  // La lista de problemas que resuelve el área.
-    // devuelve el texto de la pagina  // Cada area lleva al enlace de su propia pagina (no a un ancla general).
-    // una lista vacía que se va llenando  // Los enlaces del pie: cada área lleva a su propia página.
-    // recorre la lista SERVICIOS, una vuelta por cada elemento  // agrega un elemento a la lista
-    // El pie repite el mapa del sitio: cada palabra abre su propia pagina.  // El mapa del sitio, tal como lo pidió la empresa.
-    // una lista vacía que se va llenando  // recorre la lista paginasPie, una vuelta por cada elemento  // agrega un elemento a la lista
-    // devuelve el texto de la pagina  // devuelve el texto de la pagina  // si se pidio la version corta (el resumen)
-    // devuelve el texto de la pagina  // devuelve el texto de la pagina  // Resumen de "Quiénes Somos" para la portada: un párrafo y un enlace.
-    // devuelve el texto de la pagina  // Resumen de la historia para la portada.  // devuelve el texto de la pagina
-    // Resumen del equipo para la portada: las fichas y un enlace.  // un texto vacío que se va llenando
-    // recorre la lista EQUIPO, una vuelta por cada elemento  // la persona que se esta mirando  // va pegando el texto  // va pegando el texto
-    // devuelve el texto de la pagina  // Resumen del contacto para la portada: los datos y un enlace, sin el formulario.
-    // devuelve el texto de la pagina  // una lista vacía que se va llenando  // Inicio: propuesta de valor, areas, perfiles de las socias,
-    // ultimas publicaciones y contacto resumido.  // si la pagina que se esta armando es el inicio  // agrega esta seccion a la lista de la pagina
-    // agrega esta seccion a la lista de la pagina  // agrega esta seccion a la lista de la pagina  // agrega esta seccion a la lista de la pagina
-    // agrega esta seccion a la lista de la pagina  // agrega esta seccion a la lista de la pagina
-    // Nosotros: mision, vision, valores, cultura y equipo  // si la pagina que se esta armando es Nosotros
-    // agrega esta seccion a la lista de la pagina  // agrega esta seccion a la lista de la pagina  // agrega esta seccion a la lista de la pagina
-    // agrega esta seccion a la lista de la pagina  // El indice de las siete areas de practica
-    // si la pagina que se esta armando es el indice de areas  // agrega esta seccion a la lista de la pagina  // Actualidad Juridica
-    // si la pagina que se esta armando es Actualidad Juridica  // agrega esta seccion a la lista de la pagina
-    // Contacto con el formulario completo  // si la pagina que se esta armando es Contacto  // agrega esta seccion a la lista de la pagina
-    // Una pagina por cada area de practica (siete en total).  // El nombre del archivo se busca dentro de la misma matriz SERVICIOS,
-    // asi que agregar un area nueva no obliga a tocar esta funcion.  // recorre la lista SERVICIOS, una vuelta por cada elemento
-    // si la pagina que se esta armando es la de esa area  // agrega esta seccion a la lista de la pagina
-    // junta todas las secciones en un solo texto  // Panel de inicio de sesion y registro.
-    // Es una ventana que se abre encima de la pagina, como en cualquier  // sitio normal: un cuadro en la barra superior.
-    // devuelve el texto de la pagina  // Claves de guardado en el navegador  // Devuelve todas las cuentas registradas.
-    // se intenta hacer esto; si algo falla, se avisa abajo  // lee el dato guardado en el navegador  // lee el dato guardado en el navegador
-    // si ya hay cuentas registradas  // convierte el texto guardado en un objeto  // si algo falló, se avisa por consola
-    // escribe un mensaje en la consola del navegador  // escribe un mensaje en la consola del navegador  // devuelve una lista vacia
-    // Guarda la lista de cuentas.  // se intenta hacer esto; si algo falla, se avisa abajo  // guarda el dato en el navegador
-    // guarda el dato en el navegador  // si algo falló, se avisa por consola  // escribe un mensaje en la consola del navegador
-    // escribe un mensaje en la consola del navegador  // Cifra un texto con SHA-256.
-    // Si el navegador no tiene Web Crypto (no es un contexto seguro),  // se usa una codificacion simple para no dejar el sitio sin funcionar.
-    // si el navegador puede cifrar la clave (esta seguro)  // un texto vacío que se va llenando
-    // recorre la lista bytes, una vuelta por cada elemento  // devuelve el texto final  // un texto vacío que se va llenando
-    // recorre la lista texto, una vuelta por cada elemento  // Devuelve el usuario que esta conectado (o null).
-    // se intenta hacer esto; si algo falla, se avisa abajo  // lee el dato guardado en el navegador  // lee el dato guardado en el navegador
-    // si hay algo guardado en el navegador  // convierte el texto guardado en un objeto  // si algo falló, se avisa por consola
-    // escribe un mensaje en la consola del navegador  // escribe un mensaje en la consola del navegador  // devuelve nada (no hay sesion abierta)
-    // Guarda la sesion del cliente.  // se intenta hacer esto; si algo falla, se avisa abajo  // guarda el dato en el navegador
-    // guarda el dato en el navegador  // si algo falló, se avisa por consola  // escribe un mensaje en la consola del navegador
-    // escribe un mensaje en la consola del navegador  // Cierra la sesion.  // se intenta hacer esto; si algo falla, se avisa abajo
-    // borra el dato guardado en el navegador  // borra el dato guardado en el navegador  // si algo falló, se avisa por consola
-    // escribe un mensaje en la consola del navegador  // escribe un mensaje en la consola del navegador
-    // muestra la vista {1} del recuadro de la cuenta  // pinta el boton de persona con los datos del visitante
-    // Cambia la vista del panel (ingreso, registro o sesion iniciada).  // busca el elemento vistaIngreso en la pagina
-    // busca el elemento vistaRegistro en la pagina  // busca el elemento vistaSesion en la pagina
-    // si falta alguna de las cuatro vistas del recuadro  // sale de la función  // si se quiere mostrar el formulario de registrarse  // lo esconde
-    // lo esconde  // lo muestra  // sale de la función  // si se quiere mostrar la sesion ya iniciada  // lo esconde  // lo esconde  // lo muestra
-    // sale de la función  // si se quiere mostrar el formulario de clave nueva  // busca el elemento vistaRecuperar en la pagina
-    // si el recuadro de clave nueva existe  // lo muestra  // lo esconde  // lo esconde  // lo esconde  // sale de la función  // lo esconde
-    // lo esconde  // busca el elemento vistaRecuperar en la pagina  // si el boton de volver existe  // lo esconde  // lo muestra
-    // Actualiza el cuadro de la barra con el nombre del usuario conectado.  // busca el elemento btnUsuario en la pagina
-    // si ese boton no existe en esta pagina  // sale de la función  // el visitante que esta conectado (o nada, si no hay sesion)
-    // si hay un visitante conectado  // escribe un atributo  // escribe un atributo  // si no se cumplió lo de arriba  // escribe un atributo
-    // escribe un atributo  // Muestra o esconde la contrasena de un campo.  // El boton con el ojo cambia el campo entre oculto y visible,
-    // para que la persona este segura de como la escribio.  // si se cumple: input.type === "password")  // si no se cumplió lo de arriba
-    // Escapa los caracteres especiales de un texto.  // Activa el boton de sesion, el formulario de ingreso y el de registro.
-    // busca el elemento btnUsuario en la pagina  // busca el elemento capaSesion en la pagina  // si se cumple: !boton || !capa)
-    // sale de la función  // Abrir el panel  // cuando la persona le pique a este boton, se hace lo de abajo
-    // cuando la persona le pique a este boton, se hace lo de abajo  // el visitante que esta conectado (o nada, si no hay sesion)
-    // si hay un visitante conectado  // muestra la vista {1} del recuadro de la cuenta  // dibuja el listado de solicitudes del visitante
-    // si no se cumplió lo de arriba  // muestra la vista {1} del recuadro de la cuenta  // lo muestra
-    // Abrir el panel desde el formulario de contacto  // busca el elemento btnVerMisSolicitudes en la pagina  // si se cumple: verSolicitudes)
-    // cuando pase esto, se hace lo de abajo  // el visitante que esta conectado (o nada, si no hay sesion)  // si hay un visitante conectado
-    // muestra la vista {1} del recuadro de la cuenta  // dibuja el listado de solicitudes del visitante  // si no se cumplió lo de arriba
-    // muestra la vista {1} del recuadro de la cuenta  // lo muestra  // Cerrar el panel  // busca el elemento cerrarSesion en la pagina
-    // si se cumple: cerrar)  // cuando pase esto, se hace lo de abajo  // lo esconde  // Cerrar al hacer clic fuera del recuadro
-    // cuando pase esto, se hace lo de abajo  // si se cumple: evento.target === capa)  // lo esconde  // Cambiar entre ingreso y registro
-    // busca el elemento irRegistro en la pagina  // si se cumple: irRegistro)  // cuando pase esto, se hace lo de abajo
-    // muestra la vista {1} del recuadro de la cuenta  // busca el elemento irIngreso en la pagina  // si se cumple: irIngreso)
-    // cuando pase esto, se hace lo de abajo  // muestra la vista {1} del recuadro de la cuenta  // busca el elemento irRecuperar en la pagina
-    // si se cumple: irRecuperar)  // cuando pase esto, se hace lo de abajo  // muestra la vista {1} del recuadro de la cuenta
-    // busca el elemento volverIngreso en la pagina  // si se cumple: volverIngreso)  // cuando pase esto, se hace lo de abajo
-    // muestra la vista {1} del recuadro de la cuenta  // Iniciar sesion  // busca el elemento formularioIngreso en la pagina
-    // si se cumple: formularioIngreso)  // cuando pase esto, se hace lo de abajo  // evita que la página se recargue
-    // busca el elemento avisoIngreso en la pagina  // si se cumple: usuario === "" || clave === "")  // escribe ese texto en el elemento
-    // sale de la función  // las cuentas que estan registradas en este navegador  // aun no hay nada (se llena después)
-    // recorre la lista cuentas, una vuelta por cada elemento  // si ese nombre de usuario ya esta usado  // sale del bucle
-    // si no se encontro la cuenta  // escribe ese texto en el elemento  // sale de la función
-    // cifra la clave y, cuando termine, sigue con lo de abajo  // si se cumple: hash !== encontrada.clave)  // escribe ese texto en el elemento
-    // sale de la función  // borra el mensaje de aviso  // muestra la vista {1} del recuadro de la cuenta
-    // pinta el boton de persona con los datos del visitante  // dibuja el listado de solicitudes del visitante  // Registrarse
-    // busca el elemento formularioRegistro en la pagina  // si se cumple: formularioRegistro)  // cuando pase esto, se hace lo de abajo
-    // evita que la página se recargue  // busca el elemento avisoRegistro en la pagina  // si el nombre quedo vacio
-    // escribe ese texto en el elemento  // sale de la función  // si el correo no tiene buena forma  // escribe ese texto en el elemento
-    // sale de la función  // si se cumple: !telefonoValido(telefono))  // escribe ese texto en el elemento  // sale de la función
-    // si se cumple: usuario.length < 3)  // escribe ese texto en el elemento  // sale de la función
-    // las cuentas que estan registradas en este navegador  // recorre la lista cuentas, una vuelta por cada elemento
-    // si ese nombre de usuario ya esta usado  // escribe ese texto en el elemento  // sale de la función  // si se cumple: clave !== repetir)
-    // escribe ese texto en el elemento  // sale de la función  // si se cumple: clave.length < 6)  // escribe ese texto en el elemento
-    // sale de la función  // cifra la clave y, cuando termine, sigue con lo de abajo  // agrega un elemento a la lista
-    // borra el mensaje de aviso  // muestra la vista {1} del recuadro de la cuenta  // pinta el boton de persona con los datos del visitante
-    // dibuja el listado de solicitudes del visitante  // Recuperar / restablecer la contrasena del cliente
-    // busca el elemento formularioRecuperar en la pagina  // si se cumple: formularioRecuperar)  // cuando pase esto, se hace lo de abajo
-    // evita que la página se recargue  // busca el elemento avisoRecuperar en la pagina  // si se cumple: usuario === "" || correo === "")
-    // escribe ese texto en el elemento  // sale de la función  // si el correo no tiene buena forma  // escribe ese texto en el elemento
-    // sale de la función  // si se cumple: nueva.length < 6)  // escribe ese texto en el elemento  // sale de la función
-    // si se cumple: nueva !== repetir)  // escribe ese texto en el elemento  // sale de la función
-    // las cuentas que estan registradas en este navegador  // aun no hay nada (se llena después)
-    // recorre la lista cuentas, una vuelta por cada elemento  // si se cumple: cuentas[i].usuario === usuario && cuentas[i].correo === correo)
-    // sale del bucle  // si no se encontro la cuenta  // escribe ese texto en el elemento  // sale de la función
-    // cifra la clave y, cuando termine, sigue con lo de abajo  // borra el mensaje de aviso  // muestra la vista {1} del recuadro de la cuenta
-    // pinta el boton de persona con los datos del visitante  // dibuja el listado de solicitudes del visitante  // Cerrar sesion
-    // busca el elemento btnCerrarSesion en la pagina  // si se cumple: btnCerrar)  // cuando pase esto, se hace lo de abajo  // lo esconde
-    // Si ya habia sesion, se actualiza el cuadro de la barra  // pinta el boton de persona con los datos del visitante
-    // Sección "Actualidad Jurídica".  // un texto vacío que se va llenando  // recorre la lista PUBLICACIONES, una vuelta por cada elemento
-    // la publicacion que se esta armando  // prepara el texto para que viaje dentro de un enlace  // La imagen que subio el administrador (si hay).
-    // un texto vacío que se va llenando  // si se cumple: publicacion.imagen)  // El archivo en PDF adjunto (si hay).
-    // un texto vacío que se va llenando  // si se cumple: publicacion.pdf)  // va pegando el texto  // va pegando el texto
-    // un texto vacío que se va llenando  // recorre la lista CATEGORIAS_ACTUALIDAD, una vuelta por cada elemento  // devuelve el texto de la pagina
-    // una lista vacía que se va llenando  // agrega esta seccion a la lista de la pagina  // agrega esta seccion a la lista de la pagina
-    // agrega esta seccion a la lista de la pagina  // agrega esta seccion a la lista de la pagina  // agrega esta seccion a la lista de la pagina
-    // junta todas las secciones en un solo texto  // Claves donde se guardan las solicitudes y la sesion en este navegador
-    // Devuelve todas las solicitudes guardadas.  // se intenta hacer esto; si algo falla, se avisa abajo  // lee el dato guardado en el navegador
-    // lee el dato guardado en el navegador  // si ya hay cuentas registradas  // convierte el texto guardado en un objeto
-    // si algo falló, se avisa por consola  // escribe un mensaje en la consola del navegador  // escribe un mensaje en la consola del navegador
-    // devuelve una lista vacia  // Guarda una solicitud nueva con la fecha del dia.  // las solicitudes que se han enviado desde este navegador
-    // la fecha y la hora de ahora  // Si hay sesion iniciada, la solicitud queda a nombre de ese usuario.
-    // el visitante que esta conectado (o nada, si no hay sesion)  // si hay un visitante conectado  // agrega un elemento a la lista
-    // se intenta hacer esto; si algo falla, se avisa abajo  // guarda el dato en el navegador  // guarda el dato en el navegador
-    // si algo falló, se avisa por consola  // escribe un mensaje en la consola del navegador  // escribe un mensaje en la consola del navegador
-    // Valida el correo electronico.  // Reglas:  // - Debe tener un @  // - Entre el @ y el punto siempre hay algo (ana@.com NO es valido)
-    // - El punto va seguido de al menos una letra  // - No puede haber espacios ni dos puntos seguidos  // si se cumple: !correo)
-    // devuelve que algo no está bien  // [^\s@]+        lo que hay antes del arroba, sin espacios ni arrobas
-    // [^\s@.]+       el dominio ANTES del punto: siempre hay algo en medio  // (\.[^\s@.]+)+  el punto seguido de al menos un caracter
-    // Valida que el telefono tenga entre 10 y 15 digitos.  // si se cumple: !telefono)  // devuelve que algo no está bien
-    // Muestra las solicitudes del cliente que esta conectado.  // el visitante que esta conectado (o nada, si no hay sesion)
-    // busca el elemento listaSolicitudes en la pagina  // si se cumple: !cliente)  // sale de la función
-    // las solicitudes que se han enviado desde este navegador  // una lista vacía que se va llenando
-    // recorre la lista solicitudes, una vuelta por cada elemento  // un interruptor en falso
-    // si se cumple: solicitudes[i].usuario && cliente.usuario)  // si no se cumplió lo de arriba  // si la solicitud es de este visitante
-    // agrega un elemento a la lista  // si se cumple: mias.length === 0)  // sale de la función  // un texto vacío que se va llenando
-    // Devuelve el cliente que esta conectado (o null).  // se intenta hacer esto; si algo falla, se avisa abajo
-    // lee el dato guardado en el navegador  // lee el dato guardado en el navegador  // si hay algo guardado en el navegador
-    // convierte el texto guardado en un objeto  // si algo falló, se avisa por consola  // escribe un mensaje en la consola del navegador
-    // escribe un mensaje en la consola del navegador  // devuelve nada (no hay sesion abierta)
-    // Area de cuenta del cliente: entrar, ver solicitudes y enviar una nueva.
-    // Activa el ingreso del cliente, el listado y el envio de una solicitud.  // Muestra el panel del cliente o el formulario de ingreso.
-    // busca el elemento cuentaLogin en la pagina  // busca el elemento cuentaPanel en la pagina  // si se cumple: !login || !panel)
-    // sale de la función  // si se cumple: cliente)  // lo esconde  // lo muestra  // busca un elemento por su id
-    // dibuja el listado de solicitudes del visitante  // si no se cumplió lo de arriba  // lo muestra  // lo esconde
-    // Aplica los datos guardados sobre los datos del sitio.  // si se cumple: !datos)  // sale de la función  // Empresa
-    // si se cumple: datos.empresa)  // 1. Los datos de la firma: nombre, grupo, color y logotipo.  // si se cumple: datos.empresa.nombre)
-    // si se cumple: datos.empresa.grupo)  // si se cumple: datos.empresa.colorMarca)
-    // El color de marca es una variable CSS: se cambia al instante.  // cambia un atributo de la pagina  // si se cumple: datos.empresa.logo)
-    // Contacto  // si se cumple: datos.contacto)  // 2. Los datos de contacto: se copian tal cual, porque sus
-    // nombres coinciden con los del objeto SITIO.  // si se cumple: datos.contacto.hasOwnProperty(clave))
-    // Servicios y equipo: se reemplazan completos.  // si se cumple: datos.servicios && datos.servicios.length)
-    // 3. Las áreas de práctica: se cambian título, texto y  // nombre corto, sin tocar el resto.
-    // recorre la lista SERVICIOS, una vuelta por cada elemento  // si se cumple: datos.servicios[i])
-    // Las publicaciones de Actualidad Juridica: se reemplazan enteras.  // si se cumple: datos.publicaciones && datos.publicaciones.length)
-    // repite esto mientras se cumpla: PUBLICACIONES.length > 0)  // quita el ultimo elemento de la lista  // agrega un elemento a la lista
-    // si se cumple: datos.equipo && datos.equipo.length)  // 4. El equipo: se reemplaza entero, pero las sinopsis que el
-    // administrador no escribió se conservan del sitio.  // Se guarda una copia de las sinopsis originales del sitio: si el
-    // administrador no escribio una, se conserva la que ya habia.  // una lista vacía que se va llenando
-    // recorre la lista EQUIPO, una vuelta por cada elemento  // agrega un elemento a la lista
-    // repite esto mientras se cumpla: EQUIPO.length > 0)  // quita el ultimo elemento de la lista  // agrega un elemento a la lista
-    // Vuelve a dibujar la pagina con los datos actuales.  // busca el elemento app en la pagina  // si en esta pagina no hay sitio donde dibujar
-    // sale de la función  // Busca los datos guardados por el administrador en este navegador.
-    // 1. Lo que guardo el administrador en este navegador  // se intenta hacer esto; si algo falla, se avisa abajo
-    // lee el dato guardado en el navegador  // lee el dato guardado en el navegador  // si hay algo guardado en el navegador
-    // Se redibuja para que se vean los textos nuevos.  // escribe un mensaje en la consola del navegador
-    // escribe un mensaje en la consola del navegador  // si algo falló, se avisa por consola  // escribe un mensaje en la consola del navegador
-    // escribe un mensaje en la consola del navegador  // Menú hamburguesa: abre y cierra en el celular.  // busca el elemento menuBtn en la pagina
-    // busca el elemento navLinks en la pagina  // toggle() pone la clase si no está, o la quita si está.
-    // addEventListener significa: "cuando pase esto, haz aquello".  // Aqui: cuando la persona pulse el boton de las tres rayitas,
-    // se abre o se cierra el menu.  // cuando la persona le pique a este boton, se hace lo de abajo
-    // cuando la persona le pique a este boton, se hace lo de abajo  // Cierra el menú al hacer clic en un enlace.
-    // recorre la lista todosLosEnlaces, una vuelta por cada elemento  // Cierra el menú al volver a una pantalla grande.
-    // cuando pase esto, se hace lo de abajo  // si se cumple: window.innerWidth > 600)
-    // Borra los errores rojos del formulario antes de volver a validar.  // busca todos los elementos .campo-error de la pagina
-    // recorre la lista campos, una vuelta por cada elemento  // busca todos los elementos .texto-error de la pagina
-    // recorre la lista textos, una vuelta por cada elemento  // Guarda la prueba de que la persona autorizo el tratamiento de sus datos.
-    // Con cada envio queda registrada la fecha y hora, el nombre, el correo,  // que casillas se marcaron y la version de la politica vigente.
-    // se intenta hacer esto; si algo falla, se avisa abajo  // lee el dato guardado en el navegador  // lee el dato guardado en el navegador
-    // agrega un elemento a la lista  // guarda el dato en el navegador  // guarda el dato en el navegador  // si algo falló, se avisa por consola
-    // escribe un mensaje en la consola del navegador  // escribe un mensaje en la consola del navegador
-    // Marca un campo en rojo y pone el motivo debajo.  // createElement() crea un <span> nuevo desde JavaScript.
-    // escribe ese texto en el elemento  // Muestra un aviso dentro del formulario.  // "tipo" puede ser "ok" (verde) o "error" (rojo).
-    // busca el elemento mensajeEnviado en la pagina  // escribe ese texto en el elemento
-    // Envía el formulario al servicio que lo reenvía al correo.  // FormData empaqueta los campos para mandarlos por HTTP.
-    // fetch() hace la petición; then() espera la respuesta.  // Se lee como texto y no con .json() porque en el PRIMER envío el
-    // servicio contesta con una página HTML (la de activación del formulario)  // y no con JSON. Con try / catch se comprueba sin romper nada.
-    // aun no hay nada (se llena después)  // se intenta hacer esto; si algo falla, se avisa abajo  // si algo falló, se avisa por consola
-    // no hay nada guardado todavia  // Dice si la página se abrió con doble clic (file://).
-    // El servicio de correo NO funciona así: la página debe abrirse  // con un servidor web (http://localhost).
-    // Valida el formulario y lo manda al correo.  // Usa try / catch / throw para manejar los errores.
-    // busca el elemento formulario en la pagina  // El formulario solo existe en la pagina de contacto.  // si se cumple: !formulario)
-    // sale de la función  // busca el elemento mensajeEnviado en la pagina  // cuando la persona envíe el formulario, se hace lo de abajo
-    // cuando la persona envíe el formulario, se hace lo de abajo  // Impide que la página se recargue al enviar.
-    // evita que la página se recargue  // cambia un estilo del elemento  // se intenta hacer esto; si algo falla, se avisa abajo
-    // OJO: la variable se llama "textoMensaje" y no "mensaje",  // porque "mensaje" es el nombre de la función de traducciones.
-    // throw lanza un error a propósito cuando falta algo.  // El texto del error es el nombre del campo, para poder marcarlo.
-    // si el nombre quedo vacio  // si se cumple: apellido === "")  // si el correo no tiene buena forma  // si se cumple: area === "")
-    // si se cumple: textoMensaje === "")  // si se cumple: !privacidad)  // escribe un mensaje en la consola del navegador
-    // escribe un mensaje en la consola del navegador  // Si la página se abrió con doble clic no se puede enviar el correo.
-    // si se cumple: abiertoComoArchivo())  // muestra un aviso (el texto va en las lineas de abajo)  // sale de la función
-    // La solicitud se guarda de inmediato en el navegador del  // visitante: si el servicio de correo falla o esta lento, el
-    // cliente no pierde su mensaje.  // Prueba de la autorizacion: con cada envio queda registrado
-    // la fecha y hora, el nombre, el correo, que casillas se marcaron  // y la version de la politica que estaba vigente.
-    // busca el elemento boletin en la pagina  // Prueba de la autorizacion: con cada envio se deja registro de
-    // fecha y hora, nombre, correo, que casillas se marcaron y la  // version de la politica que estaba vigente.
-    // busca el elemento boletin en la pagina  // El botón se desactiva para no mandar el formulario dos veces.  // escribe ese texto en el elemento
-    // Ahora sí se manda al servicio que reenvía el correo.  // Si el servicio dice success:false, se toma como error.
-    // si se cumple: respuesta.datos && respuesta.datos.success === false)  // si se cumple: exito)
-    // muestra un aviso (el texto va en las lineas de abajo)  // La solicitud ya estaba guardada: solo se marca como enviada.
-    // si no se cumplió lo de arriba  // muestra un aviso (el texto va en las lineas de abajo)  // escribe ese texto en el elemento
-    // Ocurrió un error de red o el servicio no respondió.  // escribe un mensaje en la consola del navegador
-    // escribe un mensaje en la consola del navegador  // La solicitud sigue guardada en el navegador del visitante.
-    // muestra un aviso (el texto va en las lineas de abajo)  // escribe ese texto en el elemento  // si algo falló, se avisa por consola
-    // catch atrapa el error y el programa sigue funcionando.  // El texto del error es el nombre del campo que falta.
-    // escribe un mensaje en la consola del navegador  // escribe un mensaje en la consola del navegador
-    // Muestra en la consola un resumen de los datos usados.  // escribe un mensaje en la consola del navegador
-    // escribe un mensaje en la consola del navegador  // escribe un mensaje en la consola del navegador
-    // object  // escribe un mensaje en la consola del navegador  // escribe un mensaje en la consola del navegador
-    // escribe un mensaje en la consola del navegador  // object (las matrices son objetos)  // escribe un mensaje en la consola del navegador
-    // escribe un mensaje en la consola del navegador  // escribe un mensaje en la consola del navegador
-    // escribe un mensaje en la consola del navegador  // escribe un mensaje en la consola del navegador
-    // escribe un mensaje en la consola del navegador  // escribe un mensaje en la consola del navegador
-    // escribe un mensaje en la consola del navegador  // escribe un mensaje en la consola del navegador
-    // escribe un mensaje en la consola del navegador  // escribe un mensaje en la consola del navegador
-    // escribe un mensaje en la consola del navegador  // escribe un mensaje en la consola del navegador
-    // escribe un mensaje en la consola del navegador  // escribe un mensaje en la consola del navegador
-    // function  // escribe un mensaje en la consola del navegador  // busca el elemento app en la pagina
-    // si en esta pagina no hay sitio donde dibujar  // Se lee el nombre de la página del atributo data-pagina
-    // del contenedor: pagina-montes.html, nosotros.html, areas.html...  // Se dibuja toda la página de una sola vez.
-    // Se buscan los datos que haya dejado el administrador.  // Se activan los comportamientos.
-    // El modo oscuro y el idioma (estan mas arriba en este archivo).  // Mensajes en la consola para aprender.
-    // escribe un mensaje en la consola del navegador  // escribe un mensaje en la consola del navegador
-    // Se ejecuta cuando el documento HTML ya está cargado.  // cuando pase esto, se hace lo de abajo
+    // La frase que pide la empresa que aparezca en la portada, en el
+    // contacto y en el pie de todas las páginas.
+    // El enlace que abre el mapa con la dirección de la firma.
+    // Sede en España (Montes & Warren S.L.U.)
+    // Sede en España (Montes & Warren S.L.U.). La empresa pidio confirmar
+    // si esta sede sigue vigente: por eso esta apartada en un bloque.
+    // La version corta del horario, para el pie de página.
+    // El número de WhatsApp, sin el "+" y sin espacios, que es como lo
+    // pide la página de wa.me para abrir el chat directo.
+    // Servicio que recibe el formulario y reenvía los datos al correo.
+    // Matriz de objetos: las páginas del menú principal.
+    // Cada página es un archivo HTML propio, igual que en el sitio en React.
+    // "clave" es el nombre con el que se busca la traducción.
+    // PAGINAS_MENU: las páginas del menu principal.
+    // Cada linea es un destino del menu y dice tres cosas:
+    // "archivo" = el nombre del archivo HTML al que lleva
+    // "clave"   = el nombre con el que se busca su traducción al inglés
+    // "texto"   = la palabra que ve el visitante
+    // El menu del sitio se arma solo con esta lista: para agregar una
+    // página nueva basta con agregar una linea aquí y crear el archivo.
+    // Misión, visión y propuesta de valor de la firma.
+    // MAA: los tres textos que la firma entrego para la portada.
+    // misión         = la razón de ser de la firma
+    // visión         = donde quiere llegar
+    // propuestaValor = la frase corta de la portada
+    // subtítulo      = la frase de apoyo, debajo de la anterior
+    // Están aparte para que el texto aprobado por la firma este siempre
+    // en un solo sitio y no se pueda cambiar por descuido.
+    // Matriz de objetos: los 6 valores de la firma.
+    // VALORES: los seis principios de la firma, con el texto que explica
+    // como se ponen en la práctica. El orden es el que se ve en el sitio.
+    // Matriz de textos: las razones para elegir la firma.
+    // RAZONES: los motivos por los que un cliente elige a la firma.
+    // Se usan en las tarjetas de la sección de inicio.
+    // Matriz de objetos: las 7 áreas de servicio oficiales.
+    // "icono" es la clave del dibujo SVG guardado en ICONOS (más arriba).
+    // SERVICIOS: las siete areas de práctica de la firma.
+    // Cada área tiene:
+    // número     = el número con que sale en la tarjeta (01, 02, ...)
+    // título     = el nombre completo, que es el título de su página
+    // corto      = el nombre corto, para el pie de página
+    // bloque     = "preventiva" o "litigio": asi el indice de areas
+    // las separa en los dos grupos que pidio la empresa
+    // texto      = la frase corta que explica que resuelve para el cliente
+    // icono      = clave del dibujo SVG (dentro de ICONOS)
+    // página     = el archivo de la página propia de esa área
+    // problemas  = los problemas que el área resuelve
+    // dirigidoA  = a quien va dirigida el área
+    // metodo     = como trabaja la firma en esa área
+    // De esta lista salen las siete páginas de área: el generador las
+    // crea solo, asi que agregar un área no obliga a tocar nada más.
+    // Matriz de objetos: la oferta específica de servicio (3 paquetes).
+    // OFERTAS: la oferta especifica de servicio (los tres paquetes
+    // contratación laboral, revision documental y acompanamiento).
+    // Se muestran en su propia sección.
+    // Matriz de objetos: los 3 pilares de la cultura.
+    // CULTURA_BLOQUES: los tres pilares de la cultura de la firma.
+    // Cada uno lleva su título y su texto, como los escribio la empresa.
+    // Matriz de objetos: el equipo de la firma.
+    // "iniciales" son las letras del monograma y "linkedin" puede ir vacío.
+    // EQUIPO: las personas que forman la firma.
+    // nombre    = el nombre completo, tal como se pública
+    // cargo     = el puesto que ocupa
+    // iniciales = las dos letras del monograma (si no hay foto)
+    // linkedin  = el enlace; si queda vacío, no se muestra el botón
+    // sinopsis  = el parrafo que la presenta
+    // Matriz de objetos: las redes sociales de la firma.
+    // REDES: las redes sociales de la firma.
+    // Cada una dice el nombre (que se usa como descripción para los
+    // lectores de pantalla), el dibujo y el enlace.
+    // Matriz de objetos: las áreas del desplegable del formulario.
+    // Las cuatro categorías de la sección "Actualidad Jurídica".
+    // CATEGORIAS_ACTUALIDAD: las cuatro categorías de la sección de
+    // Actualidad Jurídica, que son los filtros que pidio la empresa.
+    // Las publicaciones de la sección "Actualidad Jurídica".
+    // El dueño puede editarlas y agregar más desde el panel de administracion.
+    // Publicaciones: los artículos, sentencias y novedades que se muestran
+    // en la sección de Actualidad Jurídica.
+    // título    = el nombre del artículo
+    // fecha     = cuando se público
+    // autora    = quien lo escribe
+    // categoría = una de las cuatro de arriba
+    // resumen   = el resumen de dos lineas
+    // imagen    = el dibujo (lo sube el administrador; puede ir vacío)
+    // pdf       = el nombre del archivo en PDF (va en la carpeta documentos)
+    // El administrador puede cambiarlas todas desde el panel.
+    // AREAS: las opciones del desplegable "Área de consulta" del formulario.
+    // Son las mismas siete que pública el sitio. El documento de la empresa
+    // retiro las areas que ya no se ofrecian (derecho de familia,
+    // contratación estatal y propiedad intelectual).
+    // Matriz de objetos: los campos de texto del formulario.
+    // "mitad" = true significa que el campo va de a dos en una fila.
+    // CAMPOS: los campos de texto del formulario.
+    // id          = el nombre con el que se reconoce el campo
+    // etiqueta    = el texto de la etiqueta
+    // tipo        = el tipo de teclado que se abre en el celular
+    // placeholder = la frase de ayuda dentro del campo
+    // requerido  = true si es obligatorio (lleva asterisco)
+    // mitad       = true si el campo ocupa media fila (dos por linea)
+    // ayuda       = la frase de ayuda debajo del campo
+    // clave       = la llave de su traducción al inglés
+    // si el campo es obligatorio
+    // devuelve un texto vacío
+    // si el campo es obligatorio
+    // devuelve un texto vacío
+    // El texto va con %20 y los acentos convertidos, para que no se
+    // rompa el enlace. encodeURIComponent hace esa conversion.
+    // un texto vacío que se va llenando
+    // Bucle for: 1) contador, 2) condición, 3) incremento.
+    // recorre la lista conjunto, una vuelta por cada elemento
+    // va pegando el texto
+    // va pegando el texto
+    // devuelve el texto que se armó
+    // un texto vacío que se va llenando
+    // recorre la lista OFERTAS, una vuelta por cada elemento
+    // va pegando el texto
+    // va pegando el texto
+    // devuelve el texto que se armó
+    // Crea los <li> del menú de navegación.
+    // un texto vacío que se va llenando
+    // Se recorre la lista de páginas y se arma un <li> por cada una.
+    // recorre la lista PAGINAS_MENU, una vuelta por cada elemento
+    // un texto vacío que se va llenando
+    // El enlace de la página actual queda marcado con
+    // aria-current, para que el visitante sepa dónde está.
+    // si este enlace es el de la página que se esta viendo
+    // va pegando el texto
+    // va pegando el texto
+    // devuelve el texto que se armó
+    // un texto vacío que se va llenando
+    // recorre la lista VALORES, una vuelta por cada elemento
+    // el valor que se esta armando
+    // va pegando el texto
+    // va pegando el texto
+    // devuelve el texto que se armó
+    // Crea las 6 tarjetas de áreas de servicio, cada una con su icono.
+    // un texto vacío que se va llenando
+    // recorre la lista SERVICIOS, una vuelta por cada elemento
+    // el área que se esta mirando
+    // va pegando el texto
+    // va pegando el texto
+    // devuelve el texto que se armó
+    // un texto vacío que se va llenando
+    // recorre la lista CULTURA_BLOQUES, una vuelta por cada elemento
+    // va pegando el texto
+    // va pegando el texto
+    // devuelve el texto que se armó
+    // Crea las tarjetas del equipo con monograma y LinkedIn.
+    // Bucles anidados: el de fuera recorre las personas,
+    // cada persona muestra sus iniciales, su cargo y su sinopsis.
+    // Arma las fichas del equipo. Solo devuelve las tarjetas: la sección
+    // completa la arma crearSeccionEquipo().
+    // un texto vacío que se va llenando
+    // recorre la lista EQUIPO, una vuelta por cada elemento
+    // la persona que se esta mirando
+    // El enlace de LinkedIn solo se dibuja cuando existe.
+    // un texto vacío que se va llenando
+    // si esa persona tiene enlace de LinkedIn
+    // va pegando el texto
+    // va pegando el texto
+    // Aquí solo se arman las fichas. La sección completa la hace
+    // crearSeccionEquipo(), para que no queden dos secciones anidadas.
+    // devuelve el texto que se armó
+    // un texto vacío que se va llenando
+    // recorre la lista REDES, una vuelta por cada elemento
+    // si esta red es la de WhatsApp
+    // va pegando el texto
+    // va pegando el texto
+    // devuelve el texto que se armó
+    // Crea las <option> del desplegable "Área de consulta".
+    // La primera opción es la de "seleccione un área": aparece
+    // marcada y no se puede dejar ahí (por eso lleva "disabled").
+    // recorre la lista AREAS, una vuelta por cada elemento
+    // va pegando el texto
+    // va pegando el texto
+    // devuelve el texto que se armó
+    // un texto vacío que se va llenando
+    // un texto vacío que se va llenando
+    // "html" guarda todos los campos y "pares" los que van de a dos
+    // en una fila (mitad: true).
+    // recorre la lista CAMPOS, una vuelta por cada elemento
+    // el campo del formulario que se esta armando
+    // un texto vacío que se va llenando
+    // si el campo ocupa media fila (van dos por linea)
+    // Campo de la fila doble (nombre y apellido).
+    // si no se cumplió lo de arriba
+    // Campo que ocupa toda la fila.
+    // La ayuda solo se pone si el campo la tiene (si no, saldría "undefined").
+    // un texto vacío que se va llenando
+    // si ese campo tiene frase de ayuda
+    // si el campo ocupa media fila (van dos por linea)
+    // si no se cumplió lo de arriba
+    // va pegando el texto
+    // va pegando el texto
+    // devuelve el texto de la página
+    // devuelve el texto de la página
+    // Portada azul (banner) con el nombre y los 2 botones.
+    // devuelve el texto de la página
+    // Sección "Quiénes Somos".
+    // si se pidio la version corta (el resumen)
+    // devuelve el texto de la página
+    // devuelve el texto de la página
+    // Sección "Áreas de Servicio" (fondo gris).
+    // un texto vacío que se va llenando
+    // un texto vacío que se va llenando
+    // Se recorre la lista de areas y se va armando cada tarjeta.
+    // recorre la lista SERVICIOS, una vuelta por cada elemento
+    // el área que se esta mirando
+    // La tarjeta lleva el icono, el número, el título y la frase corta.
+    // si esta área es del grupo de litigio
+    // si no se cumplió lo de arriba
+    // devuelve el texto de la página
+    // Sección "Nuestro Equipo".
+    // si se pidio la version corta (el resumen)
+    // devuelve el texto de la página
+    // si se pidio la version corta (el resumen)
+    // devuelve el texto de la página
+    // Arma la página completa de un área de práctica.
+    // Los demás areas se listan al final para que el visitante pueda seguir
+    // navegtando sin volver al menu.
+    // un texto vacío que se va llenando
+    // La lista de las otras áreas, para que el visitante pueda
+    // seguir mirando sin volver al menú.
+    // recorre la lista SERVICIOS, una vuelta por cada elemento
+    // si no es el área que se esta mostrando
+    // La frase de cobertura nacional se muestra solo en las areas de litigio,
+    // tal como lo pide el documento de la empresa.
+    // un texto vacío que se va llenando
+    // La frase de cobertura nacional: solo la llevan las áreas de
+    // litigio y recuperación, como lo pidió la empresa.
+    // si esta área lleva la frase de cobertura nacional
+    // Lista de problemas que resuelve el área.
+    // un texto vacío que se va llenando
+    // La lista de problemas que resuelve el área.
+    // devuelve el texto de la página
+    // Cada área lleva al enlace de su propia página (no a un ancla general).
+    // una lista vacía que se va llenando
+    // Los enlaces del pie: cada área lleva a su propia página.
+    // recorre la lista SERVICIOS, una vuelta por cada elemento
+    // agrega un elemento a la lista
+    // El pie repite el mapa del sitio: cada palabra abre su propia página.
+    // El mapa del sitio, tal como lo pidió la empresa.
+    // una lista vacía que se va llenando
+    // recorre la lista paginasPie, una vuelta por cada elemento
+    // agrega un elemento a la lista
+    // devuelve el texto de la página
+    // devuelve el texto de la página
+    // si se pidio la version corta (el resumen)
+    // devuelve el texto de la página
+    // devuelve el texto de la página
+    // Resumen de "Quiénes Somos" para la portada: un párrafo y un enlace.
+    // devuelve el texto de la página
+    // Resumen de la historia para la portada.
+    // devuelve el texto de la página
+    // Resumen del equipo para la portada: las fichas y un enlace.
+    // un texto vacío que se va llenando
+    // recorre la lista EQUIPO, una vuelta por cada elemento
+    // la persona que se esta mirando
+    // va pegando el texto
+    // va pegando el texto
+    // devuelve el texto de la página
+    // Resumen del contacto para la portada: los datos y un enlace, sin el formulario.
+    // devuelve el texto de la página
+    // una lista vacía que se va llenando
+    // Inicio: propuesta de valor, areas, perfiles de las socias,
+    // últimas publicaciones y contacto resumido.
+    // si la página que se esta armando es el inicio
+    // agrega esta sección a la lista de la página
+    // agrega esta sección a la lista de la página
+    // agrega esta sección a la lista de la página
+    // agrega esta sección a la lista de la página
+    // agrega esta sección a la lista de la página
+    // agrega esta sección a la lista de la página
+    // Nosotros: misión, visión, valores, cultura y equipo
+    // si la página que se esta armando es Nosotros
+    // agrega esta sección a la lista de la página
+    // agrega esta sección a la lista de la página
+    // agrega esta sección a la lista de la página
+    // agrega esta sección a la lista de la página
+    // El indice de las siete areas de práctica
+    // si la página que se esta armando es el indice de areas
+    // agrega esta sección a la lista de la página
+    // Actualidad Jurídica
+    // si la página que se esta armando es Actualidad Jurídica
+    // agrega esta sección a la lista de la página
+    // Contacto con el formulario completo
+    // si la página que se esta armando es Contacto
+    // agrega esta sección a la lista de la página
+    // Una página por cada área de práctica (siete en total).
+    // El nombre del archivo se busca dentro de la misma matriz SERVICIOS,
+    // asi que agregar un área nueva no obliga a tocar esta función.
+    // recorre la lista SERVICIOS, una vuelta por cada elemento
+    // si la página que se esta armando es la de esa área
+    // agrega esta sección a la lista de la página
+    // junta todas las secciones en un solo texto
+    // Panel de inicio de sesión y registro.
+    // Es una ventana que se abre encima de la página, como en cualquier
+    // sitio normal: un cuadro en la barra superior.
+    // devuelve el texto de la página
+    // Claves de guardado en el navegador
+    // Devuelve todas las cuentas registradas.
+    // se intenta hacer esto; si algo falla, se avisa abajo
+    // lee el dato guardado en el navegador
+    // lee el dato guardado en el navegador
+    // si ya hay cuentas registradas
+    // convierte el texto guardado en un objeto
+    // si algo falló, se avisa por consola
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // devuelve una lista vacía
+    // Guarda la lista de cuentas.
+    // se intenta hacer esto; si algo falla, se avisa abajo
+    // guarda el dato en el navegador
+    // guarda el dato en el navegador
+    // si algo falló, se avisa por consola
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // Cifra un texto con SHA-256.
+    // Si el navegador no tiene Web Crypto (no es un contexto seguro),
+    // se usa una codificacion simple para no dejar el sitio sin funcionar.
+    // si el navegador puede cifrar la clave (esta seguro)
+    // un texto vacío que se va llenando
+    // recorre la lista bytes, una vuelta por cada elemento
+    // devuelve el texto final
+    // un texto vacío que se va llenando
+    // recorre la lista texto, una vuelta por cada elemento
+    // Devuelve el usuario que esta conectado (o null).
+    // se intenta hacer esto; si algo falla, se avisa abajo
+    // lee el dato guardado en el navegador
+    // lee el dato guardado en el navegador
+    // si hay algo guardado en el navegador
+    // convierte el texto guardado en un objeto
+    // si algo falló, se avisa por consola
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // devuelve nada (no hay sesión abierta)
+    // Guarda la sesión del cliente.
+    // se intenta hacer esto; si algo falla, se avisa abajo
+    // guarda el dato en el navegador
+    // guarda el dato en el navegador
+    // si algo falló, se avisa por consola
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // Cierra la sesión.
+    // se intenta hacer esto; si algo falla, se avisa abajo
+    // borra el dato guardado en el navegador
+    // borra el dato guardado en el navegador
+    // si algo falló, se avisa por consola
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // muestra la vista {1} del recuadro de la cuenta
+    // pinta el botón de persona con los datos del visitante
+    // Cambia la vista del panel (ingreso, registro o sesión iniciada).
+    // busca el elemento vistaIngreso en la página
+    // busca el elemento vistaRegistro en la página
+    // busca el elemento vistaSesion en la página
+    // si falta alguna de las cuatro vistas del recuadro
+    // sale de la función
+    // si se quiere mostrar el formulario de registrarse
+    // lo esconde
+    // lo esconde
+    // lo muestra
+    // sale de la función
+    // si se quiere mostrar la sesión ya iniciada
+    // lo esconde
+    // lo esconde
+    // lo muestra
+    // sale de la función
+    // si se quiere mostrar el formulario de clave nueva
+    // busca el elemento vistaRecuperar en la página
+    // si el recuadro de clave nueva existe
+    // lo muestra
+    // lo esconde
+    // lo esconde
+    // lo esconde
+    // sale de la función
+    // lo esconde
+    // lo esconde
+    // busca el elemento vistaRecuperar en la página
+    // si el botón de volver existe
+    // lo esconde
+    // lo muestra
+    // Actualiza el cuadro de la barra con el nombre del usuario conectado.
+    // busca el elemento btnUsuario en la página
+    // si ese botón no existe en esta página
+    // sale de la función
+    // el visitante que esta conectado (o nada, si no hay sesión)
+    // si hay un visitante conectado
+    // escribe un atributo
+    // escribe un atributo
+    // si no se cumplió lo de arriba
+    // escribe un atributo
+    // escribe un atributo
+    // Muestra o esconde la contraseña de un campo.
+    // El botón con el ojo cambia el campo entre oculto y visible,
+    // para que la persona este segura de como la escribio.
+    // si se cumple: input.type === "password")
+    // si no se cumplió lo de arriba
+    // Escapa los caracteres especiales de un texto.
+    // Activa el botón de sesión, el formulario de ingreso y el de registro.
+    // busca el elemento btnUsuario en la página
+    // busca el elemento capaSesion en la página
+    // si se cumple: !botón || !capa)
+    // sale de la función
+    // Abrir el panel
+    // cuando la persona le pique a este botón, se hace lo de abajo
+    // cuando la persona le pique a este botón, se hace lo de abajo
+    // el visitante que esta conectado (o nada, si no hay sesión)
+    // si hay un visitante conectado
+    // muestra la vista {1} del recuadro de la cuenta
+    // dibuja el listado de solicitudes del visitante
+    // si no se cumplió lo de arriba
+    // muestra la vista {1} del recuadro de la cuenta
+    // lo muestra
+    // Abrir el panel desde el formulario de contacto
+    // busca el elemento btnVerMisSolicitudes en la página
+    // si se cumple: verSolicitudes)
+    // cuando pase esto, se hace lo de abajo
+    // el visitante que esta conectado (o nada, si no hay sesión)
+    // si hay un visitante conectado
+    // muestra la vista {1} del recuadro de la cuenta
+    // dibuja el listado de solicitudes del visitante
+    // si no se cumplió lo de arriba
+    // muestra la vista {1} del recuadro de la cuenta
+    // lo muestra
+    // Cerrar el panel
+    // busca el elemento cerrarSesion en la página
+    // si se cumple: cerrar)
+    // cuando pase esto, se hace lo de abajo
+    // lo esconde
+    // Cerrar al hacer clic fuera del recuadro
+    // cuando pase esto, se hace lo de abajo
+    // si se cumple: evento.target === capa)
+    // lo esconde
+    // Cambiar entre ingreso y registro
+    // busca el elemento irRegistro en la página
+    // si se cumple: irRegistro)
+    // cuando pase esto, se hace lo de abajo
+    // muestra la vista {1} del recuadro de la cuenta
+    // busca el elemento irIngreso en la página
+    // si se cumple: irIngreso)
+    // cuando pase esto, se hace lo de abajo
+    // muestra la vista {1} del recuadro de la cuenta
+    // busca el elemento irRecuperar en la página
+    // si se cumple: irRecuperar)
+    // cuando pase esto, se hace lo de abajo
+    // muestra la vista {1} del recuadro de la cuenta
+    // busca el elemento volverIngreso en la página
+    // si se cumple: volverIngreso)
+    // cuando pase esto, se hace lo de abajo
+    // muestra la vista {1} del recuadro de la cuenta
+    // Iniciar sesión
+    // busca el elemento formularioIngreso en la página
+    // si se cumple: formularioIngreso)
+    // cuando pase esto, se hace lo de abajo
+    // evita que la página se recargue
+    // busca el elemento avisoIngreso en la página
+    // si se cumple: usuario === "" || clave === "")
+    // escribe ese texto en el elemento
+    // sale de la función
+    // las cuentas que están registradas en este navegador
+    // aun no hay nada (se llena después)
+    // recorre la lista cuentas, una vuelta por cada elemento
+    // si ese nombre de usuario ya esta usado
+    // sale del bucle
+    // si no se encontro la cuenta
+    // escribe ese texto en el elemento
+    // sale de la función
+    // cifra la clave y, cuando termine, sigue con lo de abajo
+    // si se cumple: hash !== encontrada.clave)
+    // escribe ese texto en el elemento
+    // sale de la función
+    // borra el mensaje de aviso
+    // muestra la vista {1} del recuadro de la cuenta
+    // pinta el botón de persona con los datos del visitante
+    // dibuja el listado de solicitudes del visitante
+    // Registrarse
+    // busca el elemento formularioRegistro en la página
+    // si se cumple: formularioRegistro)
+    // cuando pase esto, se hace lo de abajo
+    // evita que la página se recargue
+    // busca el elemento avisoRegistro en la página
+    // si el nombre quedo vacío
+    // escribe ese texto en el elemento
+    // sale de la función
+    // si el correo no tiene buena forma
+    // escribe ese texto en el elemento
+    // sale de la función
+    // si se cumple: !telefonoValido(teléfono))
+    // escribe ese texto en el elemento
+    // sale de la función
+    // si se cumple: usuario.length < 3)
+    // escribe ese texto en el elemento
+    // sale de la función
+    // las cuentas que están registradas en este navegador
+    // recorre la lista cuentas, una vuelta por cada elemento
+    // si ese nombre de usuario ya esta usado
+    // escribe ese texto en el elemento
+    // sale de la función
+    // si se cumple: clave !== repetir)
+    // escribe ese texto en el elemento
+    // sale de la función
+    // si se cumple: clave.length < 6)
+    // escribe ese texto en el elemento
+    // sale de la función
+    // cifra la clave y, cuando termine, sigue con lo de abajo
+    // agrega un elemento a la lista
+    // borra el mensaje de aviso
+    // muestra la vista {1} del recuadro de la cuenta
+    // pinta el botón de persona con los datos del visitante
+    // dibuja el listado de solicitudes del visitante
+    // Recuperar / restablecer la contraseña del cliente
+    // busca el elemento formularioRecuperar en la página
+    // si se cumple: formularioRecuperar)
+    // cuando pase esto, se hace lo de abajo
+    // evita que la página se recargue
+    // busca el elemento avisoRecuperar en la página
+    // si se cumple: usuario === "" || correo === "")
+    // escribe ese texto en el elemento
+    // sale de la función
+    // si el correo no tiene buena forma
+    // escribe ese texto en el elemento
+    // sale de la función
+    // si se cumple: nueva.length < 6)
+    // escribe ese texto en el elemento
+    // sale de la función
+    // si se cumple: nueva !== repetir)
+    // escribe ese texto en el elemento
+    // sale de la función
+    // las cuentas que están registradas en este navegador
+    // aun no hay nada (se llena después)
+    // recorre la lista cuentas, una vuelta por cada elemento
+    // si se cumple: cuentas[i].usuario === usuario && cuentas[i].correo === correo)
+    // sale del bucle
+    // si no se encontro la cuenta
+    // escribe ese texto en el elemento
+    // sale de la función
+    // cifra la clave y, cuando termine, sigue con lo de abajo
+    // borra el mensaje de aviso
+    // muestra la vista {1} del recuadro de la cuenta
+    // pinta el botón de persona con los datos del visitante
+    // dibuja el listado de solicitudes del visitante
+    // Cerrar sesión
+    // busca el elemento btnCerrarSesion en la página
+    // si se cumple: btnCerrar)
+    // cuando pase esto, se hace lo de abajo
+    // lo esconde
+    // Si ya había sesión, se actualiza el cuadro de la barra
+    // pinta el botón de persona con los datos del visitante
+    // Sección "Actualidad Jurídica".
+    // un texto vacío que se va llenando
+    // recorre la lista Publicaciones, una vuelta por cada elemento
+    // la publicación que se esta armando
+    // prepara el texto para que viaje dentro de un enlace
+    // La imagen que subio el administrador (si hay).
+    // un texto vacío que se va llenando
+    // si se cumple: publicacion.imagen)
+    // El archivo en PDF adjunto (si hay).
+    // un texto vacío que se va llenando
+    // si se cumple: publicacion.pdf)
+    // va pegando el texto
+    // va pegando el texto
+    // un texto vacío que se va llenando
+    // recorre la lista CATEGORIAS_ACTUALIDAD, una vuelta por cada elemento
+    // devuelve el texto de la página
+    // una lista vacía que se va llenando
+    // agrega esta sección a la lista de la página
+    // agrega esta sección a la lista de la página
+    // agrega esta sección a la lista de la página
+    // agrega esta sección a la lista de la página
+    // agrega esta sección a la lista de la página
+    // junta todas las secciones en un solo texto
+    // Claves donde se guardan las solicitudes y la sesión en este navegador
+    // Devuelve todas las solicitudes guardadas.
+    // se intenta hacer esto; si algo falla, se avisa abajo
+    // lee el dato guardado en el navegador
+    // lee el dato guardado en el navegador
+    // si ya hay cuentas registradas
+    // convierte el texto guardado en un objeto
+    // si algo falló, se avisa por consola
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // devuelve una lista vacía
+    // Guarda una solicitud nueva con la fecha del día.
+    // las solicitudes que se han enviado desde este navegador
+    // la fecha y la hora de ahora
+    // Si hay sesión iniciada, la solicitud queda a nombre de ese usuario.
+    // el visitante que esta conectado (o nada, si no hay sesión)
+    // si hay un visitante conectado
+    // agrega un elemento a la lista
+    // se intenta hacer esto; si algo falla, se avisa abajo
+    // guarda el dato en el navegador
+    // guarda el dato en el navegador
+    // si algo falló, se avisa por consola
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // Valida el correo electrónico.
+    // Reglas:
+    // - Debe tener un @
+    // - Entre el @ y el punto siempre hay algo (ana@.com NO es valido)
+    // - El punto va seguido de al menos una letra
+    // - No puede haber espacios ni dos puntos seguidos
+    // si se cumple: !correo)
+    // devuelve que algo no está bien
+    // [^\s@]+        lo que hay antes del arroba, sin espacios ni arrobas
+    // [^\s@.]+       el dominio ANTES del punto: siempre hay algo en medio
+    // (\.[^\s@.]+)+  el punto seguido de al menos un caracter
+    // Valida que el teléfono tenga entre 10 y 15 digitos.
+    // si se cumple: !teléfono)
+    // devuelve que algo no está bien
+    // Muestra las solicitudes del cliente que esta conectado.
+    // el visitante que esta conectado (o nada, si no hay sesión)
+    // busca el elemento listaSolicitudes en la página
+    // si se cumple: !cliente)
+    // sale de la función
+    // las solicitudes que se han enviado desde este navegador
+    // una lista vacía que se va llenando
+    // recorre la lista solicitudes, una vuelta por cada elemento
+    // un interruptor en falso
+    // si se cumple: solicitudes[i].usuario && cliente.usuario)
+    // si no se cumplió lo de arriba
+    // si la solicitud es de este visitante
+    // agrega un elemento a la lista
+    // si se cumple: mias.length === 0)
+    // sale de la función
+    // un texto vacío que se va llenando
+    // Devuelve el cliente que esta conectado (o null).
+    // se intenta hacer esto; si algo falla, se avisa abajo
+    // lee el dato guardado en el navegador
+    // lee el dato guardado en el navegador
+    // si hay algo guardado en el navegador
+    // convierte el texto guardado en un objeto
+    // si algo falló, se avisa por consola
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // devuelve nada (no hay sesión abierta)
+    // Área de cuenta del cliente: entrar, ver solicitudes y enviar una nueva.
+    // Activa el ingreso del cliente, el listado y el envio de una solicitud.
+    // Muestra el panel del cliente o el formulario de ingreso.
+    // busca el elemento cuentaLogin en la página
+    // busca el elemento cuentaPanel en la página
+    // si se cumple: !login || !panel)
+    // sale de la función
+    // si se cumple: cliente)
+    // lo esconde
+    // lo muestra
+    // busca un elemento por su id
+    // dibuja el listado de solicitudes del visitante
+    // si no se cumplió lo de arriba
+    // lo muestra
+    // lo esconde
+    // Aplica los datos guardados sobre los datos del sitio.
+    // si se cumple: !datos)
+    // sale de la función
+    // Empresa
+    // si se cumple: datos.empresa)
+    // 1. Los datos de la firma: nombre, grupo, color y logotipo.
+    // si se cumple: datos.empresa.nombre)
+    // si se cumple: datos.empresa.grupo)
+    // si se cumple: datos.empresa.colorMarca)
+    // El color de marca es una variable CSS: se cambia al instante.
+    // cambia un atributo de la página
+    // si se cumple: datos.empresa.logo)
+    // Contacto
+    // si se cumple: datos.contacto)
+    // 2. Los datos de contacto: se copian tal cual, porque sus
+    // nombres coinciden con los del objeto SITIO.
+    // si se cumple: datos.contacto.hasOwnProperty(clave))
+    // Servicios y equipo: se reemplazan completos.
+    // si se cumple: datos.servicios && datos.servicios.length)
+    // 3. Las áreas de práctica: se cambian título, texto y
+    // nombre corto, sin tocar el resto.
+    // recorre la lista SERVICIOS, una vuelta por cada elemento
+    // si se cumple: datos.servicios[i])
+    // Las publicaciones de Actualidad Jurídica: se reemplazan enteras.
+    // si se cumple: datos.publicaciones && datos.publicaciones.length)
+    // repite esto mientras se cumpla: Publicaciones.length > 0)
+    // quita el último elemento de la lista
+    // agrega un elemento a la lista
+    // si se cumple: datos.equipo && datos.equipo.length)
+    // 4. El equipo: se reemplaza entero, pero las sinopsis que el
+    // administrador no escribió se conservan del sitio.
+    // Se guarda una copia de las sinopsis originales del sitio: si el
+    // administrador no escribio una, se conserva la que ya había.
+    // una lista vacía que se va llenando
+    // recorre la lista EQUIPO, una vuelta por cada elemento
+    // agrega un elemento a la lista
+    // repite esto mientras se cumpla: EQUIPO.length > 0)
+    // quita el último elemento de la lista
+    // agrega un elemento a la lista
+    // Vuelve a dibujar la página con los datos actuales.
+    // busca el elemento app en la página
+    // si en esta página no hay sitio donde dibujar
+    // sale de la función
+    // Busca los datos guardados por el administrador en este navegador.
+    // 1. Lo que guardo el administrador en este navegador
+    // se intenta hacer esto; si algo falla, se avisa abajo
+    // lee el dato guardado en el navegador
+    // lee el dato guardado en el navegador
+    // si hay algo guardado en el navegador
+    // Se redibuja para que se vean los textos nuevos.
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // si algo falló, se avisa por consola
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // Menú hamburguesa: abre y cierra en el celular.
+    // busca el elemento menuBtn en la página
+    // busca el elemento navLinks en la página
+    // toggle() pone la clase si no está, o la quita si está.
+    // addEventListener significa: "cuando pase esto, haz aquello".
+    // Aquí: cuando la persona pulse el botón de las tres rayitas,
+    // se abre o se cierra el menu.
+    // cuando la persona le pique a este botón, se hace lo de abajo
+    // cuando la persona le pique a este botón, se hace lo de abajo
+    // Cierra el menú al hacer clic en un enlace.
+    // recorre la lista todosLosEnlaces, una vuelta por cada elemento
+    // Cierra el menú al volver a una pantalla grande.
+    // cuando pase esto, se hace lo de abajo
+    // si se cumple: window.innerWidth > 600)
+    // Borra los errores rojos del formulario antes de volver a validar.
+    // busca todos los elementos .campo-error de la página
+    // recorre la lista campos, una vuelta por cada elemento
+    // busca todos los elementos .texto-error de la página
+    // recorre la lista textos, una vuelta por cada elemento
+    // Guarda la prueba de que la persona autorizo el tratamiento de sus datos.
+    // Con cada envio queda registrada la fecha y hora, el nombre, el correo,
+    // que casillas se marcaron y la version de la política vigente.
+    // se intenta hacer esto; si algo falla, se avisa abajo
+    // lee el dato guardado en el navegador
+    // lee el dato guardado en el navegador
+    // agrega un elemento a la lista
+    // guarda el dato en el navegador
+    // guarda el dato en el navegador
+    // si algo falló, se avisa por consola
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // Marca un campo en rojo y pone el motivo debajo.
+    // createElement() crea un <span> nuevo desde JavaScript.
+    // escribe ese texto en el elemento
+    // Muestra un aviso dentro del formulario.
+    // "tipo" puede ser "ok" (verde) o "error" (rojo).
+    // busca el elemento mensajeEnviado en la página
+    // escribe ese texto en el elemento
+    // Envía el formulario al servicio que lo reenvía al correo.
+    // FormData empaqueta los campos para mandarlos por HTTP.
+    // fetch() hace la petición; then() espera la respuesta.
+    // Se lee como texto y no con .json() porque en el PRIMER envío el
+    // servicio contesta con una página HTML (la de activación del formulario)
+    // y no con JSON. Con try / catch se comprueba sin romper nada.
+    // aun no hay nada (se llena después)
+    // se intenta hacer esto; si algo falla, se avisa abajo
+    // si algo falló, se avisa por consola
+    // no hay nada guardado todavía
+    // Dice si la página se abrió con doble clic (file://).
+    // El servicio de correo NO funciona así: la página debe abrirse
+    // con un servidor web (http://localhost).
+    // Valida el formulario y lo manda al correo.
+    // Usa try / catch / throw para manejar los errores.
+    // busca el elemento formulario en la página
+    // El formulario solo existe en la página de contacto.
+    // si se cumple: !formulario)
+    // sale de la función
+    // busca el elemento mensajeEnviado en la página
+    // cuando la persona envíe el formulario, se hace lo de abajo
+    // cuando la persona envíe el formulario, se hace lo de abajo
+    // Impide que la página se recargue al enviar.
+    // evita que la página se recargue
+    // cambia un estilo del elemento
+    // se intenta hacer esto; si algo falla, se avisa abajo
+    // OJO: la variable se llama "textoMensaje" y no "mensaje",
+    // porque "mensaje" es el nombre de la función de traducciones.
+    // throw lanza un error a propósito cuando falta algo.
+    // El texto del error es el nombre del campo, para poder marcarlo.
+    // si el nombre quedo vacío
+    // si se cumple: apellido === "")
+    // si el correo no tiene buena forma
+    // si se cumple: área === "")
+    // si se cumple: textoMensaje === "")
+    // si se cumple: !privacidad)
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // Si la página se abrió con doble clic no se puede enviar el correo.
+    // si se cumple: abiertoComoArchivo())
+    // muestra un aviso (el texto va en las lineas de abajo)
+    // sale de la función
+    // La solicitud se guarda de inmediato en el navegador del
+    // visitante: si el servicio de correo falla o esta lento, el
+    // cliente no pierde su mensaje.
+    // Prueba de la autorización: con cada envio queda registrado
+    // la fecha y hora, el nombre, el correo, que casillas se marcaron
+    // y la version de la política que estaba vigente.
+    // busca el elemento boletín en la página
+    // Prueba de la autorización: con cada envio se deja registro de
+    // fecha y hora, nombre, correo, que casillas se marcaron y la
+    // version de la política que estaba vigente.
+    // busca el elemento boletín en la página
+    // El botón se desactiva para no mandar el formulario dos veces.
+    // escribe ese texto en el elemento
+    // Ahora sí se manda al servicio que reenvía el correo.
+    // Si el servicio no dice success:"true" (viene como texto), es error.
+    // si se cumple: String(respuesta.datos.success).toLowerCase() === "true")
+    // si se cumple: exito)
+    // muestra un aviso (el texto va en las lineas de abajo)
+    // La solicitud ya estaba guardada: solo se marca como enviada.
+    // si no se cumplió lo de arriba
+    // muestra un aviso (el texto va en las lineas de abajo)
+    // escribe ese texto en el elemento
+    // Ocurrió un error de red o el servicio no respondió.
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // La solicitud sigue guardada en el navegador del visitante.
+    // muestra un aviso (el texto va en las lineas de abajo)
+    // escribe ese texto en el elemento
+    // si algo falló, se avisa por consola
+    // catch atrapa el error y el programa sigue funcionando.
+    // El texto del error es el nombre del campo que falta.
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // Muestra en la consola un resumen de los datos usados.
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // object
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // object (las matrices son objetos)
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // function
+    // escribe un mensaje en la consola del navegador
+    // busca el elemento app en la página
+    // si en esta página no hay sitio donde dibujar
+    // Se lee el nombre de la página del atributo data-página
+    // del contenedor: página-montes.html, nosotros.html, areas.html...
+    // Se dibuja toda la página de una sola vez.
+    // Se buscan los datos que haya dejado el administrador.
+    // Se activan los comportamientos.
+    // El modo oscuro y el idioma (están más arriba en este archivo).
+    // Mensajes en la consola para aprender.
+    // escribe un mensaje en la consola del navegador
+    // escribe un mensaje en la consola del navegador
+    // Se ejecuta cuando el documento HTML ya está cargado.
+    // cuando pase esto, se hace lo de abajo
   }
   lista.innerHTML = html;
 }
@@ -3369,7 +4000,7 @@ function leerCliente() {
       return JSON.parse(guardado);
     }
   } catch (error) {
-    console.log("No se pudo leer la sesion:", error.message);
+    console.log("No se pudo leer la sesión:", error.message);
   }
   return null;
 }
@@ -3377,8 +4008,8 @@ function leerCliente() {
 
 
 
-/* Muestra el area "Mi cuenta": si hay cliente, el panel con sus
-   datos y el boton de salir; si no, el formulario de ingreso. */
+/* Muestra el área "Mi cuenta": si hay cliente, el panel con sus
+   datos y el botón de salir; si no, el formulario de ingreso. */
 
 function mostrarPanelCuenta(cliente) {
   var login = document.getElementById("cuentaLogin");
@@ -3403,23 +4034,28 @@ function mostrarPanelCuenta(cliente) {
    3b. DATOS QUE PUEDE EDITAR EL ADMINISTRADOR
    -------------------------------------------------------
    El panel de administracion deja un archivo datos.json
-   (subido al hosting) y tambien guarda cambios en este
-   navegador. Aqui se aplican esos cambios sobre los datos.
+   (subido al hosting) y también guarda cambios en este
+   navegador. Aquí se aplican esos cambios sobre los datos.
    ======================================================= */
 
 /* Aplica sobre el sitio los cambios que hizo el administrador.
    Se van cambiando uno por uno los objetos de datos (SITIO,
-   SERVICIOS, EQUIPO, PUBLICACIONES) y al final se vuelve a dibujar
-   la pagina para que se vean los cambios. */
+   SERVICIOS, EQUIPO, Publicaciones) y al final se vuelve a dibujar
+   la página para que se vean los cambios. */
 
 function aplicarDatosGuardados(datos) {
 
   /* Se van tocando uno por uno los objetos de datos del sitio.
-     Al final, redibujarPagina() vuelve a pintar la pagina con los
+     Al final, redibujarPagina() vuelve a pintar la página con los
      cambios. */
   if (!datos) {
     return;
   }
+
+  /* Traducciones automaticas que genero el panel al guardar. */
+  TRADUCCIONES_DINAMICAS = (datos.traducciones && typeof datos.traducciones === "object")
+    ? datos.traducciones
+    : {};
 
   /* Diapositivas del carrusel: solo las que tienen imagen. */
   if (Array.isArray(datos.carrusel)) {
@@ -3471,12 +4107,12 @@ function aplicarDatosGuardados(datos) {
     for (var p = 0; p < datos.publicaciones.length; p++) {
       var nueva = datos.publicaciones[p];
       PUBLICACIONES.push({
-        titulo: nueva.titulo,  /* el titulo */
+        titulo: nueva.titulo,  /* el título */
         fecha: nueva.fecha,  /* la fecha */
         autora: nueva.autora,  /* quien lo escribe */
-        categoria: nueva.categoria,  /* a que categoria pertenece */
+        categoria: nueva.categoria,  /* a que categoría pertenece */
         resumen: nueva.resumen,  /* el resumen de dos lineas */
-        imagen: nueva.imagen || "",  /* el dibujo de la publicacion */
+        imagen: nueva.imagen || "",  /* el dibujo de la publicación */
         pdf: nueva.pdf || ""
       });
     }
@@ -3502,14 +4138,14 @@ function aplicarDatosGuardados(datos) {
           nombre: persona.nombre,  /* el nombre de la firma */
           cargo: persona.cargo,  /* el puesto que ocupa */
           iniciales: persona.iniciales,  /* las dos letras del monograma */
-          linkedin: persona.linkedin || "",  /* el enlace de LinkedIn (si queda vacio, no se muestra el boton) */
+          linkedin: persona.linkedin || "",  /* el enlace de LinkedIn (si queda vacío, no se muestra el botón) */
           sinopsis: sinopsis
         });
       }
     }
 }
 
-/* Vuelve a dibujar la pagina con los datos actuales.
+/* Vuelve a dibujar la página con los datos actuales.
    Se usa cuando el administrador cambia algo y hay que ver el
    resultado sin recargar el navegador. */
 
@@ -3528,10 +4164,35 @@ function redibujarPagina() {
 /* Busca los datos que el administrador guardo en este navegador
    (la clave es "datosMontesSitio") y los aplica al sitio. */
 
+/* Compara las fechas de dos conjuntos de datos y dice si "nuevo" es
+   más reciente que "viejo". Reglas simples:
+   - Si "viejo" no existe, gana "nuevo".
+   - Gana el que traiga la fecha más reciente (las fechas se guardan
+     en formato ISO, que se puede comparar letra por letra).
+   - Si "nuevo" no trae fecha, no pisa a "viejo": los archivos
+     antiguos no traen fecha y no deben borrar lo guardado. */
+function esMasReciente(nuevo, viejo) {
+  if (!viejo) {
+    return true;
+  }
+  var fechaNuevo = (nuevo && nuevo.fechaActualizacion) || "";
+  var fechaViejo = (viejo && viejo.fechaActualizacion) || "";
+  if (!fechaNuevo) {
+    return false;
+  }
+  if (!fechaViejo) {
+    return true;
+  }
+  return fechaNuevo > fechaViejo;
+}
+
 /* Devuelve los datos del sitio. Prioridad:
-   1) los guardados en este navegador (vista previa del administrador);
-   2) el archivo datos.json publicado junto al sitio (lo ven todos).
-   Si no hay ninguno (o se abre como archivo file://), devuelve null. */
+   1) lo más reciente entre lo guardado en este navegador (vista previa
+      del administrador) y el archivo datos.json publicado;
+   2) si no hay ninguno (o se abre como archivo file://), devuelve null.
+   De esta forma, cuando se sube un datos.json nuevo (por ejemplo, con
+   las imágenes nuevas del carrusel), el sitio las muestra aunque el
+   navegador todavía tenga guardada una copia vieja. */
 function obtenerDatosDelSitio() {
   var local = null;
   try {
@@ -3542,15 +4203,19 @@ function obtenerDatosDelSitio() {
   } catch (error) {
     local = null;
   }
-  if (local) {
-    return Promise.resolve(local);
-  }
+
   return fetch("datos.json", { cache: "no-store" })
     .then(function (respuesta) {
       return respuesta.ok ? respuesta.json() : null;
     })
     .catch(function () {
       return null;
+    })
+    .then(function (publicado) {
+      if (esMasReciente(publicado, local)) {
+        return publicado;
+      }
+      return local || publicado;
     });
 }
 
@@ -3590,7 +4255,11 @@ function buscarDatosGuardados(datos) {
         equipoActualizado = true;
       }
 
-      if (equipoActualizado) {
+      /* Solo se guarda en el navegador si el archivo trae los datos
+         completos del sitio (trae "empresa"). Si el archivo viene
+         incompleto (por ejemplo, solo con el carrusel), NO se pisa
+         lo que el administrador guardo en este navegador. */
+      if (equipoActualizado && datos.empresa) {
         try {
           localStorage.setItem("datosMontesSitio", JSON.stringify(datos));
         } catch (error) {
@@ -3608,13 +4277,13 @@ function buscarDatosGuardados(datos) {
 }
 
 /* =======================================================
-   4. COMPORTAMIENTO: lo que pasa al hacer clic
+   4. COMPORTAMIENTO: LO QUE PASA AL HACER CLIC
    ======================================================= */
 
 /* Menú hamburguesa: abre y cierra en el celular.
    toggle() pone la clase si no esta, o la quita si esta.
    addEventListener significa: "cuando pase esto, haz aquello".
-   Aqui: cuando la persona pulse el boton de las tres rayitas,
+   Aquí: cuando la persona pulse el botón de las tres rayitas,
    se muestra o se esconde la lista de enlaces. */
 
 function iniciarMenu() {
@@ -3657,9 +4326,9 @@ function limpiarErrores() {
 
 /* Guarda la prueba de que la persona autorizo el tratamiento de sus datos.
    Con cada envio queda registrada la fecha y hora, el nombre, el correo,
-   que casillas se marcaron y la version de la politica vigente.
-   Es lo que la politica de datos exige: "MAA conserva prueba de
-   cada autorizacion". */
+   que casillas se marcaron y la version de la política vigente.
+   Es lo que la política de datos exige: "MAA conserva prueba de
+   cada autorización". */
 
 function guardarPruebaAutorizacion(prueba) {
   try {
@@ -3669,7 +4338,7 @@ function guardarPruebaAutorizacion(prueba) {
     lista.push(prueba);
     localStorage.setItem(clave, JSON.stringify(lista));
   } catch (error) {
-    console.log("No se pudo guardar la prueba de autorizacion:", error.message);
+    console.log("No se pudo guardar la prueba de autorización:", error.message);
   }
 }
 
@@ -3725,8 +4394,8 @@ function enviarFormulario(formulario) {
   });
 }
 
-/* Dice si la pagina se abrio con doble clic (file://).
-   El servicio de correo NO funciona asi: la pagina debe abrirse
+/* Dice si la página se abrio con doble clic (file://).
+   El servicio de correo NO funciona asi: la página debe abrirse
    con un servidor web (http://localhost). */
 
 function abiertoComoArchivo() {
@@ -3782,8 +4451,8 @@ function iniciarFormulario() {
       console.log("Formulario válido. Datos:", {
         nombre: nombre,  /* el nombre de la firma */
         apellido: apellido,
-        correo: correo,  /* el correo de la Oficial de proteccion de datos */
-        telefono: telefono,  /* el telefono de WhatsApp, como lo ve el visitante */
+        correo: correo,  /* el correo de la Oficial de protección de datos */
+        telefono: telefono,  /* el teléfono de WhatsApp, como lo ve el visitante */
         area: area,
         mensaje: textoMensaje
       });
@@ -3800,15 +4469,15 @@ function iniciarFormulario() {
       guardarPruebaAutorizacion({
         fecha: new Date().toLocaleString("es-CO"),  /* la fecha */
         nombre: nombre + " " + apellido,  /* el nombre de la firma */
-        correo: correo,  /* el correo de la Oficial de proteccion de datos */
+        correo: correo,  /* el correo de la Oficial de protección de datos */
         casillaObligatoria: true,
         casillaBoletin: casillaBoletin ? casillaBoletin.checked : false,
         versionPolitica: SITIO.versionPolitica
       });
 
       var registro = guardarSolicitud({
-        correo: correo,  /* el correo de la Oficial de proteccion de datos */
-        telefono: telefono,  /* el telefono de WhatsApp, como lo ve el visitante */
+        correo: correo,  /* el correo de la Oficial de protección de datos */
+        telefono: telefono,  /* el teléfono de WhatsApp, como lo ve el visitante */
         area: area,
         mensaje: textoMensaje,
         nombre: nombre + " " + apellido,  /* el nombre de la firma */
@@ -3821,9 +4490,16 @@ function iniciarFormulario() {
 
       enviarFormulario(formulario)
         .then(function (respuesta) {
-          var exito = respuesta.ok;
-          if (respuesta.datos && respuesta.datos.success === false) {
-            exito = false;
+          /* FormSubmit devuelve success como TEXTO ("true" o "false"),
+             no como true/false de JavaScript. Además, en el primer
+             envío puede contestar con HTML (la página de activación)
+             y no con JSON. Solo se toma por bueno success === "true":
+             así la página no agradece un envío que no salió. */
+          var exito = respuesta.ok && !!respuesta.datos &&
+            String(respuesta.datos.success).toLowerCase() === "true";
+
+          if (!exito && respuesta.datos && respuesta.datos.message) {
+            console.log("El servicio de correo respondió:", respuesta.datos.message);
           }
 
           if (exito) {
@@ -3861,7 +4537,7 @@ function iniciarFormulario() {
 
 /* Muestra en la consola un resumen de los datos usados.
    Sirve para que el programador vea de un vistazo que esta pasando
-   con la pagina. */
+   con la página. */
 
 function mostrarResumenConsola() {
   console.log("=== Montes Abogados: página construida con JavaScript ===");
@@ -3879,7 +4555,7 @@ function mostrarResumenConsola() {
 
 
 /* Activa una animacion suave de aparicion cuando el visitante
-   baja por la pagina (scroll). */
+   baja por la página (scroll). */
 
 function iniciarAnimacionesScroll() {
   if (typeof IntersectionObserver === "undefined") {
@@ -3909,13 +4585,13 @@ function iniciarAnimacionesScroll() {
 }
 
 /* =======================================================
-   5. INICIO: aquí arranca todo
+   5. INICIO: AQUÍ ARRANCA TODO
    ======================================================= */
 
-/* Punto de partida: dibuja la pagina y hace que los botones y los
+/* Punto de partida: dibuja la página y hace que los botones y los
    formularios respondan cuando la persona los usa. */
 /* =======================================================
-   CARRUSEL DE IMAGENES (pagina de inicio)
+   CARRUSEL DE IMÁGENES (PÁGINA DE INICIO)
    -------------------------------------------------------
    Las diapositivas las sube el administrador en el panel
    (datos.carrusel). Solo se dibujan las que tienen imagen.
@@ -3923,7 +4599,7 @@ function iniciarAnimacionesScroll() {
    ======================================================= */
 
 var CARRUSEL = [];  /* las diapositivas que se dibujan */
-var CARRUSEL_RELOJ = null;  /* el temporizador del avance automatico */
+var CARRUSEL_RELOJ = null;  /* el temporizador del avance automático */
 
 /* Acepta solo enlaces http(s) o rutas internas (por ejemplo contacto.html).
    Bloquea javascript: y cualquier otro esquema. */
@@ -3958,14 +4634,21 @@ function crearCarrusel() {
         '<span class="es">Ver más</span><span class="en">Learn more</span></a>'
       : "";
 
-    diapositivas +=
-      '<figure class="carrusel-diapositiva' + (i === 0 ? " activa" : "") + '" data-indice="' + i + '">' +
-        '<img src="' + escaparTexto(d.imagen) + '" alt="' + titulo + '" loading="lazy">' +
-        '<figcaption class="carrusel-texto">' +
+    // El texto es opcional: si no hay título, subtítulo ni enlace,
+    // no se dibuja el recuadro y la imagen queda sola.
+    var hayTexto = titulo || tituloEn || texto || textoEn || boton;
+    var pie = hayTexto
+      ? '<figcaption class="carrusel-texto">' +
           '<strong><span class="es">' + titulo + '</span><span class="en">' + tituloEn + '</span></strong>' +
           '<span class="es">' + texto + '</span><span class="en">' + textoEn + '</span>' +
           boton +
-        '</figcaption>' +
+        '</figcaption>'
+      : "";
+
+    diapositivas +=
+      '<figure class="carrusel-diapositiva' + (i === 0 ? " activa" : "") + '" data-indice="' + i + '">' +
+        '<img src="' + escaparTexto(d.imagen) + '" alt="' + titulo + '" loading="lazy">' +
+        pie +
       '</figure>';
 
     puntos += '<button type="button" class="carrusel-punto' + (i === 0 ? " activo" : "") +
@@ -3993,7 +4676,7 @@ function detenerCarrusel() {
   }
 }
 
-/* Activa el carrusel: avance automatico cada 6 segundos (se pausa al
+/* Activa el carrusel: avance automático cada 6 segundos (se pausa al
    pasar el mouse o el foco, y no avanza si el visitante pide menos
    movimiento), botones, puntos, teclas de flecha y deslizar en el celular. */
 function iniciarCarrusel() {

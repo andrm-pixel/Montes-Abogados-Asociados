@@ -1,5 +1,5 @@
 node_modules/
-dist/
+salida/
 *.log
 .DS_Store
 .vscode/

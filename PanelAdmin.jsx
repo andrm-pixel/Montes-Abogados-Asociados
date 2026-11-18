@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import cuerpo from "../paginas/admin-cuerpo.html?raw";
-import { iniciarAdmin } from "../legacy/admin.js";
+import cuerpo from "./admin-cuerpo.html?raw";
+import { iniciarAdmin } from "./admin.js";
 
 /* Panel del administrador: React monta su marcado y luego activa su lógica. */
 export default function PanelAdmin() {
