@@ -56,11 +56,8 @@ var DATOS_POR_DEFECTO = {
   },
   contacto: {
     telefono: "+57 300 725 7266",
-    telefonoAlterno: "+57 601 467 2868",
     correo: "claudia@montes-a.com",
     correoGeneral: "claudia@montes-a.com",
-    correoOficialDatos: "claudia@montes-a.com",
-    correoAlterno: "contacto@mwabogados.com",
     direccion: "Calle 106 # 58-27, Oficina 706",
     nit: "900.383.659-0",
     direccionEspana: "Calle Monte Esquinza 30, bajo izquierda, 28010",
@@ -182,9 +179,7 @@ function guardar() {
   DATOS.empresa.colorMarca = $("colorMarca").value;
 
   DATOS.contacto.telefono = $("telefono").value;
-  DATOS.contacto.telefonoAlterno = $("telefonoAlterno").value;
   DATOS.contacto.correo = $("correo").value;
-  DATOS.contacto.correoAlterno = $("correoAlterno").value;
   DATOS.contacto.direccion = $("direccion").value;
   DATOS.contacto.direccionEspana = $("direccionEspana").value;
   DATOS.contacto.sitioWeb = $("sitioWeb").value;
@@ -423,9 +418,7 @@ function cargarDesde(guardado) {
   $("colorMarcaTexto").value = DATOS.empresa.colorMarca;
 
   $("telefono").value = DATOS.contacto.telefono;
-  $("telefonoAlterno").value = DATOS.contacto.telefonoAlterno;
   $("correo").value = DATOS.contacto.correo;
-  $("correoAlterno").value = DATOS.contacto.correoAlterno;
   $("direccion").value = DATOS.contacto.direccion;
   $("direccionEspana").value = DATOS.contacto.direccionEspana;
   $("sitioWeb").value = DATOS.contacto.sitioWeb;

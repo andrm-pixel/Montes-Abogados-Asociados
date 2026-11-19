@@ -69,6 +69,8 @@ describe("página de inicio", () => {
 
   it("usa la traducción automática que guardó el panel en la versión en inglés", async () => {
     // Así queda el navegador después de que el panel guarda y traduce.
+    // Se mira en areas.html, porque ahí vive la sección de servicios
+    // (el inicio ya no la muestra).
     localStorage.setItem("datosMontesSitio", JSON.stringify({
       servicios: [{ titulo: "Derecho Comercial y Contratos", texto: "Texto actualizado desde el panel." }],
       traducciones: {
@@ -76,7 +78,7 @@ describe("página de inicio", () => {
       },
     }));
 
-    const { container } = render(<PaginaSitio pagina="pagina-montes.html" />);
+    const { container } = render(<PaginaSitio pagina="areas.html" />);
     const titulo = () => container.querySelector('[data-i18n="servicios.0.titulo"]');
     await waitFor(() => expect(titulo()).not.toBeNull());
 

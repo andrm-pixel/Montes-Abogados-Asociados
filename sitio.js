@@ -62,6 +62,12 @@ var ICONOS = {
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" aria-hidden="true"><rect width="60" height="40" fill="#012169"/><path d="M0,0 60,40 M60,0 0,40" stroke="#ffffff" stroke-width="8"/><path d="M0,0 60,40 M60,0 0,40" stroke="#C8102E" stroke-width="4"/><path d="M30,0 V40 M0,20 H60" stroke="#ffffff" stroke-width="12"/><path d="M30,0 V40 M0,20 H60" stroke="#C8102E" stroke-width="7"/></svg>',
   usuario:
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>',
+  ubicacion:
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>',
+  telefono:
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.07 21 3 13.93 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.25 1.01l-2.2 2.2z"/></svg>',
+  correo:
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>',
   servicios: {
     rrhh:
       '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm-8 0a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>',
@@ -169,7 +175,6 @@ var TRADUCCIONES = {
   "nav.cerrar": "Close",
 
   "banner.titulo": "Montes Abogados Asociados S.A.S.",
-  "banner.texto": "Legal guidance for individuals, families and organizations in Colombia. We work shoulder to shoulder with our clients.",
   "banner.cta1": "Request a consultation",
   "banner.cta2": "View practice areas",
 
@@ -272,7 +277,6 @@ var TRADUCCIONES = {
   "contacto.direccion": "Address",
   "contacto.sede.bogota": "Bogota Office",
   "contacto.sede.madrid": "Madrid Office",
-  "contacto.sitios": "Websites",
   "contacto.telefono": "Phones",
   "contacto.whatsapp": "WhatsApp",
   "contacto.correo": "Email",
@@ -367,7 +371,7 @@ var TRADUCCIONES = {
   "footer.nit": "Tax ID 900.383.659-0",
   "footer.aviso": "Privacy notice",
   "aviso.titulo": "Privacy notice",
-  "aviso.texto": "Montes Abogados Asociados S.A.S. (MAA), Tax ID 900.383.659-0, with domicile at Calle 106 # 58-27, office 706, Bogot\u00e1 D.C., is responsible for the processing of the personal data you send us through this form. We will use your name, company, email address, phone number and message to answer your request, to contact you about our services and, only if you authorise it, to send you our legal updates newsletter. You have the right to know, update, rectify and delete your data, to withdraw this authorisation and to the other rights granted by Law 1581 of 2012. We ask you not to include sensitive data in your message, such as health information; you are not obliged to provide it. You can exercise your rights by writing to claudia@montes-a.com or by calling +57 601 467 2868 or +57 300 725 7266. Please read our <a href=\"politica-datos.html\" target=\"_blank\" rel=\"noopener\">Personal Data Processing Policy</a>, where we will also publish any change.",
+  "aviso.texto": "Montes Abogados Asociados S.A.S. (MAA), Tax ID 900.383.659-0, with domicile at Calle 106 # 58-27, office 706, Bogot\u00e1 D.C., is responsible for the processing of the personal data you send us through this form. We will use your name, company, email address, phone number and message to answer your request, to contact you about our services and, only if you authorise it, to send you our legal updates newsletter. You have the right to know, update, rectify and delete your data, to withdraw this authorisation and to the other rights granted by Law 1581 of 2012. We ask you not to include sensitive data in your message, such as health information; you are not obliged to provide it. You can exercise your rights by writing to claudia@montes-a.com or by calling +57 300 725 7266. Please read our <a href=\"politica-datos.html\" target=\"_blank\" rel=\"noopener\">Personal Data Processing Policy</a>, where we will also publish any change.",
   "actualidad.titulo": "Legal Updates",
   "actualidad.subtitulo": "Legal analysis, case law, regulatory news and press notes published by the MAA team.",
   "actualidad.nota": "This content is informative and does not constitute legal advice for a specific case.",
@@ -847,10 +851,8 @@ const SITIO = {
   descripcion: "Montes Abogados Asociados S.A.S. · Firma jurídica colombiana. Bogotá, Colombia.",  /* la descripción corta que usan los buscadores */
   telefono: "+57 300 725 7266",  /* el teléfono de WhatsApp, como lo ve el visitante */
   telefonoEnlace: "+573007257266",  /* el mismo teléfono sin espacios, para el enlace que marca */
-  telefonoAlterno: "+57 601 467 2868",  /* el teléfono fijo de Bogota */
   correo: "claudia@montes-a.com",  /* el correo de la Oficial de protección de datos */
   correoGeneral: "claudia@montes-a.com",  /* el correo comercial de la firma */
-  correoAlterno: "contacto@mwabogados.com",  /* el correo de la otra firma del grupo */
   direccion: "Calle 106 # 58-27, Oficina 706",  /* la dirección de la oficina */
   ciudad: "Bogotá D.C., Colombia",  /* la ciudad donde esta la oficina */
   direccionCorta: "Calle 106 # 58-27, Oficina 706, Bogotá D.C.",  /* la dirección con la ciudad, para el pie de página */
@@ -892,10 +894,7 @@ const MAA = {
     "Desde Bogotá y con cobertura en todo el país, ser reconocidos como una firma boutique de " +
     "referencia en derecho comercial, laboral, litigio e insolvencia empresarial, por la calidad de " +
     "nuestra asesoría y por la confianza duradera que construimos con cada cliente.",
-  propuestaValor: "Asesoría jurídica de alto nivel, con la cercanía de una firma boutique.",
-  subtitulo:
-    "Atención directa de abogados con experiencia, respuestas oportunas y soluciones claras para " +
-    "empresas y empresarios. Sede en Bogotá D.C., con cobertura nacional."
+  propuestaValor: "Asesoría jurídica de alto nivel, con la cercanía de una firma boutique."
 };
 
 const VALORES = [
@@ -1488,12 +1487,22 @@ function crearNav(pagina) {
 function crearBanner() {
   return `
   <section class="banner" id="inicio">
-    <h1 class="banner-titulo" data-i18n="banner.titulo">${SITIO.nombre}</h1>
-    <p class="banner-valor" data-i18n="banner.valor">${MAA.propuestaValor}</p>
-    <p class="banner-texto" data-i18n="banner.texto">${MAA.subtitulo}</p>
-    <p class="banner-cobertura" data-i18n="banner.cobertura">${SITIO.cobertura}</p>
-    <a href="contacto.html" class="btn-banner" data-i18n="banner.cta">Agende una consulta</a>
-    <a href="areas.html" class="btn-banner btn-borde" data-i18n="banner.cta2">Ver las áreas de práctica</a>
+    <div class="banner-marca">
+      <div class="banner-info">
+        <div class="banner-texto-marca">
+          <h1 class="banner-titulo-marca" data-i18n="banner.titulo">${SITIO.nombre}</h1>
+          <p class="banner-valor" data-i18n="banner.valor">${MAA.propuestaValor}</p>
+        </div>
+        <p class="banner-cobertura" data-i18n="banner.cobertura">${SITIO.cobertura}</p>
+        <div class="banner-botones">
+          <a href="contacto.html" class="btn-banner" data-i18n="banner.cta">Agende una consulta</a>
+          <a href="areas.html" class="btn-banner btn-borde" data-i18n="banner.cta2">Ver las áreas de práctica</a>
+        </div>
+      </div>
+      <div class="banner-logo">
+        <span role="img" aria-label="${SITIO.nombre}">${ICONOS.logo}</span>
+      </div>
+    </div>
   </section>`;
 }
 
@@ -1514,14 +1523,16 @@ function crearQuienesSomos(completo) {
       <h2 class="titulo-seccion" data-i18n="quienes.titulo">Quiénes somos</h2>
       <div class="linea-azul"></div>
 
-      <div class="bloque-mision">
-        <h3 data-i18n="quienes.mision">Nuestra misión</h3>
-        <p data-i18n="quienes.misionTexto">${MAA.mision}</p>
-      </div>
+      <div class="mision-vision">
+        <div class="bloque-mision">
+          <h3 data-i18n="quienes.mision">Nuestra misión</h3>
+          <p data-i18n="quienes.misionTexto">${MAA.mision}</p>
+        </div>
 
-      <div class="bloque-mision">
-        <h3 data-i18n="quienes.vision">Nuestra visión</h3>
-        <p data-i18n="quienes.visionTexto">${MAA.vision}</p>
+        <div class="bloque-mision">
+          <h3 data-i18n="quienes.vision">Nuestra visión</h3>
+          <p data-i18n="quienes.visionTexto">${MAA.vision}</p>
+        </div>
       </div>
 
       <div class="valores-titulo">
@@ -1678,7 +1689,7 @@ function crearContacto(completo) {
             <span class="contacto-dato-icono">&#128205;</span>
             <div class="contacto-dato-texto">
               <strong data-i18n="contacto.sede.bogota">Sede Bogotá</strong>
-              <span>${SITIO.direccion}<br>${SITIO.ciudad}</span>
+              <span>${SITIO.direccion}<span class="dir-ciudad">${SITIO.direccionCorta.slice(SITIO.direccion.length)}</span></span>
               <a class="enlace-mapa" href="${SITIO.mapa}" target="_blank" rel="noopener"
                  data-i18n="contacto.verMapa">Ver en el mapa</a>
             </div>
@@ -1690,8 +1701,7 @@ function crearContacto(completo) {
             <div class="contacto-dato-texto">
               <strong data-i18n="contacto.telefono">Teléfonos</strong>
               <span>
-                <a href="tel:${SITIO.telefonoEnlace}">${SITIO.telefono}</a><br>
-                <a href="tel:+576014672868">${SITIO.telefonoAlterno}</a>
+                <a href="tel:${SITIO.telefonoEnlace}">${SITIO.telefono}</a>
               </span>
             </div>
           </div>
@@ -1707,22 +1717,9 @@ function crearContacto(completo) {
           <div class="contacto-dato">
             <span class="contacto-dato-icono">&#9993;</span>
             <div class="contacto-dato-texto">
-              <strong data-i18n="contacto.correo">Correos electrónicos</strong>
+              <strong data-i18n="contacto.correo">Correo electrónico</strong>
               <span>
-                <a href="mailto:${SITIO.correoGeneral}">${SITIO.correoGeneral}</a><br>
-                <a href="mailto:${SITIO.correo}">${SITIO.correo}</a><br>
-                <a href="mailto:${SITIO.correoAlterno}">${SITIO.correoAlterno}</a>
-              </span>
-            </div>
-          </div>
-
-          <div class="contacto-dato">
-            <span class="contacto-dato-icono">&#127760;</span>
-            <div class="contacto-dato-texto">
-              <strong data-i18n="contacto.sitios">Sitios web</strong>
-              <span>
-                <a href="https://${SITIO.sitioWeb}" target="_blank" rel="noopener">${SITIO.sitioWeb}</a><br>
-                <a href="https://${SITIO.sitioWebEspana}" target="_blank" rel="noopener">${SITIO.sitioWebEspana}</a>
+                <a href="mailto:${SITIO.correoGeneral}">${SITIO.correoGeneral}</a>
               </span>
             </div>
           </div>
@@ -1735,6 +1732,14 @@ function crearContacto(completo) {
               ${SITIO.horario}<br>
               ${SITIO.horarioSabado}
             </p>
+          </div>
+
+          <div class="contacto-mapa">
+            <iframe title="Mapa de la sede en Bogotá"
+                    src="https://www.google.com/maps?q=${encodeURIComponent(SITIO.direccionCorta)}&z=16&output=embed&hl=es"
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <a class="contacto-mapa-enlace" href="${SITIO.mapa}" target="_blank" rel="noopener"
+               data-i18n="contacto.verMapa">Ver en el mapa</a>
           </div>
         </div>
 
@@ -1759,7 +1764,7 @@ function crearContacto(completo) {
                 a revocar esta autorización y a los demás derechos que le otorga la Ley 1581 de 2012.
                 Le pedimos no incluir en su mensaje datos sensibles, como información de salud; no
                 está obligado a entregarlos. Puede ejercer sus derechos escribiendo a
-                ${SITIO.correo} o llamando al ${SITIO.telefonoAlterno} o al ${SITIO.telefono}.
+                ${SITIO.correo} o llamando al ${SITIO.telefono}.
                 Consulte nuestra
                 <a href="politica-datos.html" target="_blank" rel="noopener">Política de Tratamiento de Datos Personales</a>,
                 donde también publicaremos cualquier cambio.
@@ -1898,29 +1903,10 @@ function crearPaginaArea(indice) {
   </section>`;
 }
 
-/* El pie de página, con cuatro columnas: la firma y sus redes, la
-   navegacion, las areas de práctica y los datos de contacto.
-   Usa push() para ir guardando los enlaces en una lista. */
+/* El pie de página, con dos columnas: la firma y sus redes, y los
+   datos de contacto. Se quitaron las columnas de navegación y de
+   áreas de práctica (el menú superior ya lleva a esas páginas). */
 function crearFooter() {
-  var serviciosPie = [];
-  for (var i = 0; i < SERVICIOS.length; i++) {
-    serviciosPie.push(`<a href="${SERVICIOS[i].pagina}" data-i18n="servicios.${i}.corto">${SERVICIOS[i].corto}</a>`);
-  }
-
-  var paginasPie = [
-    { texto: "Inicio", archivo: "pagina-montes.html", clave: "nav.inicio" },
-    { texto: "Nosotros", archivo: "nosotros.html", clave: "nav.nosotros" },
-    { texto: "Áreas de práctica", archivo: "areas.html", clave: "nav.areas" },
-    { texto: "Actualidad Jurídica", archivo: "actualidad.html", clave: "nav.actualidad" },
-    { texto: "Contacto", archivo: "contacto.html", clave: "nav.contacto" },
-    { texto: "Política de Tratamiento de Datos Personales", archivo: "politica-datos.html", clave: "footer.politica" }
-  ];
-
-  var navegacionPie = [];
-  for (var j = 0; j < paginasPie.length; j++) {
-    navegacionPie.push(`<a href="${paginasPie[j].archivo}" data-i18n="${paginasPie[j].clave}">${paginasPie[j].texto}</a>`);
-  }
-
   return `
   <footer>
     <div class="footer-grid">
@@ -1931,33 +1917,35 @@ function crearFooter() {
         <p>${SITIO.ciudad}</p>
         <p class="footer-cobertura" data-i18n="footer.cobertura">${SITIO.cobertura}</p>
 
+      </div>
+
+      <div class="footer-redes">
         <div class="redes-sociales">
-          <a href="https://www.linkedin.com/company/montes-abogados-asociados/" target="_blank" rel="noopener" aria-label="LinkedIn" data-icono="linkedin"></a>
-          <a href="https://www.instagram.com/montesabogadosasoc/" target="_blank" rel="noopener" aria-label="Instagram" data-icono="instagram"></a>
-          <a href="https://www.facebook.com/profile.php?id=61557949184503" target="_blank" rel="noopener" aria-label="Facebook" data-icono="facebook"></a>
-          <a href="${enlaceWhatsApp()}" target="_blank" rel="noopener" aria-label="WhatsApp" data-icono="whatsapp"></a>
+          <a href="https://www.linkedin.com/company/montes-abogados-asociados/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <span class="red-social-icono" data-icono="linkedin"></span>
+            <span class="red-social-usuario">montes-abogados-asociados</span>
+          </a>
+          <a href="https://www.instagram.com/montesabogadosasoc/" target="_blank" rel="noopener" aria-label="Instagram">
+            <span class="red-social-icono" data-icono="instagram"></span>
+            <span class="red-social-usuario">@montesabogadosasoc</span>
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61557949184503" target="_blank" rel="noopener" aria-label="Facebook">
+            <span class="red-social-icono" data-icono="facebook"></span>
+            <span class="red-social-usuario">Montes Abogados Asociados</span>
+          </a>
+          <a href="${enlaceWhatsApp()}" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <span class="red-social-icono" data-icono="whatsapp"></span>
+            <span class="red-social-usuario">${SITIO.telefono}</span>
+          </a>
         </div>
       </div>
 
       <div class="footer-col">
-        <h4 data-i18n="footer.navegacion">Navegación</h4>
-        ${navegacionPie.join("")}
-      </div>
-
-      <div class="footer-col">
-        <h4 data-i18n="footer.servicios">Áreas de práctica</h4>
-        ${serviciosPie.join("")}
-      </div>
-
-      <div class="footer-col">
         <h4 data-i18n="footer.contacto">Contacto</h4>
-        <p class="contacto-pie"><span>&#128205;</span><span>${SITIO.direccionCorta}</span></p>
-        <p class="contacto-pie"><span>&#128222;</span><a href="tel:${SITIO.telefonoEnlace}">${SITIO.telefono}</a></p>
-        <p class="contacto-pie"><span>&#128222;</span><a href="tel:+576014672868">${SITIO.telefonoAlterno}</a></p>
-        <p class="contacto-pie"><span>&#128172;</span><a class="whatsapp" href="${enlaceWhatsApp()}" target="_blank" rel="noopener">WhatsApp: ${SITIO.telefono}</a></p>
-        <p class="contacto-pie"><span>&#9993;</span><a href="mailto:${SITIO.correoGeneral}">${SITIO.correoGeneral}</a></p>
-        <p class="contacto-pie"><span>&#9993;</span><a href="mailto:${SITIO.correo}">${SITIO.correo}</a></p>
-        <p class="contacto-pie"><span>&#127760;</span><a href="https://${SITIO.sitioWeb}" target="_blank" rel="noopener">${SITIO.sitioWeb}</a></p>
+        <p class="contacto-pie"><span class="contacto-pie-icono" data-icono="ubicacion"></span><a href="${SITIO.mapa}" target="_blank" rel="noopener">${SITIO.direccionCorta}</a></p>
+        <p class="contacto-pie"><span class="contacto-pie-icono" data-icono="telefono"></span><a href="tel:${SITIO.telefonoEnlace}">${SITIO.telefono}</a></p>
+        <p class="contacto-pie"><span class="contacto-pie-icono" data-icono="whatsapp"></span><a class="whatsapp" href="${enlaceWhatsApp()}" target="_blank" rel="noopener">WhatsApp: ${SITIO.telefono}</a></p>
+        <p class="contacto-pie"><span class="contacto-pie-icono" data-icono="correo"></span><a href="mailto:${SITIO.correoGeneral}">${SITIO.correoGeneral}</a></p>
       </div>
 
     </div>
@@ -2151,7 +2139,7 @@ function crearEquipoResumen() {
 
 function crearContactoResumen() {
   return `
-  <section class="seccion seccion-gris" id="contacto">
+  <section class="seccion" id="contacto">
     <div class="contenedor">
 
       <h2 class="titulo-seccion" data-i18n="contacto.titulo">Contáctenos</h2>
@@ -2167,7 +2155,7 @@ function crearContactoResumen() {
             <span class="contacto-dato-icono">&#128205;</span>
             <div class="contacto-dato-texto">
               <strong data-i18n="contacto.sede.bogota">Sede Bogotá</strong>
-              <span>${SITIO.direccion}<br>${SITIO.ciudad}</span>
+              <span>${SITIO.direccion}<span class="dir-ciudad">${SITIO.direccionCorta.slice(SITIO.direccion.length)}</span></span>
             </div>
           </div>
 
@@ -2182,15 +2170,22 @@ function crearContactoResumen() {
           <div class="contacto-dato">
             <span class="contacto-dato-icono">&#9993;</span>
             <div class="contacto-dato-texto">
-              <strong data-i18n="contacto.correo">Correos electrónicos</strong>
+              <strong data-i18n="contacto.correo">Correo electrónico</strong>
               <span>
-                <a href="mailto:${SITIO.correo}">${SITIO.correo}</a><br>
-                <a href="mailto:${SITIO.correoAlterno}">${SITIO.correoAlterno}</a>
+                <a href="mailto:${SITIO.correo}">${SITIO.correo}</a>
               </span>
             </div>
           </div>
 
           <p class="contacto-cobertura" data-i18n="contacto.cobertura">${SITIO.cobertura}</p>
+
+          <div class="contacto-mapa">
+            <iframe title="Mapa de la sede en Bogotá"
+                    src="https://www.google.com/maps?q=${encodeURIComponent(SITIO.direccionCorta)}&z=16&output=embed&hl=es"
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <a class="contacto-mapa-enlace" href="${SITIO.mapa}" target="_blank" rel="noopener"
+               data-i18n="contacto.verMapa">Ver en el mapa</a>
+          </div>
         </div>
 
         <div class="formulario formulario-cta">
@@ -2230,11 +2225,11 @@ function construirSecciones(pagina) {
   var partes = [];
 
   if (pagina === "pagina-montes.html") {
+    // El inicio ya no muestra "Áreas de práctica" ni "Equipo":
+    // esas dos secciones viven en areas.html y nosotros.html.
     partes.push(crearBanner());
     partes.push(crearCarrusel());
     partes.push(crearQuienesSomos(false));
-    partes.push(crearSeccionServicios());
-    partes.push(crearSeccionEquipo(false));
     partes.push(crearActualidad());
     partes.push(crearContacto(false));
   }
