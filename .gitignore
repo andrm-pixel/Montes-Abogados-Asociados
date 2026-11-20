@@ -6,3 +6,8 @@ salida/
 .idea/
 capturas-cuerpo.html
 capturas/
+
+# Secretos: nunca se suben al repositori
+.env
+.env.*
+!.env.example

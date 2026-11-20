@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Agente de IA · Montes Abogados Asociados</title>
+  <!--
+    AGENTE DE IA (herramienta aparte)
+    ==================================
+    Asistente de contenido para el marketing de la firma.
+    Corre con IA gratuita de Pollinations: no necesita claves ni pago.
+
+    Uso: escriba su pedido o pulse una plantilla (post de LinkedIn,
+    carrusel, newsletter, guion de video...), envíe y copie la respuesta.
+
+    Más adelante esta herramienta se integra en el panel de
+    administración del sitio.
+  -->
+  <style>
+    :root {
+      --azul: #006cb7;
+      --azul-oscuro: #2e3092;
+      --celeste: #00aeef;
+      --fondo: #f5f6f8;
+      --panel: #ffffff;
+      --texto: #22252b;
+      --texto-suave: #5b616c;
+      --borde: #dfe3e8;
+      --radio: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Inter, system-ui, -apple-system, sans-serif;
+      background: var(--fondo);
+      color: var(--texto);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---------- encabezado ---------- */
+    header {
+      background: linear-gradient(120deg, var(--azul-oscuro), var(--azul) 60%, var(--celeste));
+      color: #fff;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    header .logo {
+      width: 38px; height: 38px;
+      border-radius: 9px;
+      background: #fff;
+      color: var(--azul);
+      font-weight: 800;
+      display: grid; place-items: center;
+      font-size: 18px;
+      flex: none;
+    }
+    header h1 { font-size: 17px; margin: 0; font-weight: 700; letter-spacing: .01em; }
+    header p { margin: 2px 0 0; font-size: 12.5px; opacity: .85; }
+    header .motor {
+      margin-left: auto;
+      font-size: 12px;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.35);
+      padding: 5px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    /* ---------- plantillas ---------- */
+    .plantillas {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      overflow-x: auto;
+      background: var(--panel);
+      border-bottom: 1px solid var(--borde);
+    }
+    .plantillas button {
+      flex: none;
+      border: 1px solid var(--borde);
+      background: #fff;
+      color: var(--azul);
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: .15s;
+    }
+    .plantillas button:hover {
+      background: var(--azul);
+      color: #fff;
+      border-color: var(--azul);
+    }
+
+    /* ---------- chat ---------- */
+    #chat {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 16px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scroll-behavior: smooth;
+    }
+    .mensaje {
+      max-width: min(760px, 92%);
+      padding: 12px 15px;
+      border-radius: var(--radio);
+      font-size: 14.5px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      animation: entrar .18s ease;
+    }
+    @keyframes entrar { from { opacity: 0; transform: translateY(6px); } }
+    .mensaje.usuario {
+      align-self: flex-end;
+      background: var(--azul);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+    .mensaje.ia {
+      align-self: flex-start;
+      background: var(--panel);
+      border: 1px solid var(--borde);
+      border-bottom-left-radius: 4px;
+    }
+    .mensaje.ia .acciones {
+      margin-top: 9px;
+      display: flex;
+      gap: 8px;
+    }
+    .mensaje.ia .acciones button {
+      border: 1px solid var(--borde);
+      background: #fff;
+      color: var(--azul);
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 4px 10px;
+      cursor: pointer;
+    }
+    .mensaje.ia .acciones button:hover { background: var(--azul); color: #fff; }
+    .cargando {
+      align-self: flex-start;
+      background: var(--panel);
+      border: 1px solid var(--borde);
+      border-radius: var(--radio);
+      border-bottom-left-radius: 4px;
+      padding: 13px 16px;
+      color: var(--texto-suave);
+      font-size: 14px;
+    }
+    .cargando .puntos span {
+      display: inline-block;
+      width: 7px; height: 7px;
+      margin-left: 4px;
+      border-radius: 50%;
+      background: var(--celeste);
+      animation: latido 1s infinite ease-in-out;
+    }
+    .cargando .puntos span:nth-child(2) { animation-delay: .2s; }
+    .cargando .puntos span:nth-child(3) { animation-delay: .4s; }
+    @keyframes latido { 0%, 100% { transform: scale(.7); opacity: .4; } 50% { transform: scale(1); opacity: 1; } }
+    .error {
+      align-self: center;
+      background: #fff3f3;
+      border: 1px solid #f0c2c2;
+      color: #9b2c2c;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13.5px;
+      max-width: min(760px, 92%);
+    }
+    .vacio {
+      margin: auto;
+      text-align: center;
+      color: var(--texto-suave);
+      max-width: 460px;
+      padding: 30px 16px;
+    }
+    .vacio strong { color: var(--azul); display: block; font-size: 17px; margin-bottom: 6px; }
+
+    /* ---------- barra de entrada ---------- */
+    .entrada {
+      background: var(--panel);
+      border-top: 1px solid var(--borde);
+      padding: 12px 16px 14px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+    }
+    .entrada textarea {
+      flex: 1;
+      resize: none;
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+      padding: 11px 13px;
+      font: inherit;
+      font-size: 14.5px;
+      line-height: 1.45;
+      min-height: 46px;
+      max-height: 170px;
+      background: #fff;
+      color: var(--texto);
+    }
+    .entrada textarea:focus {
+      outline: none;
+      border-color: var(--celeste);
+      box-shadow: 0 0 0 3px rgba(0,174,239,.18);
+    }
+    .entrada .grupo { display: flex; gap: 8px; }
+    .entrada button {
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 12px 18px;
+      transition: .15s;
+    }
+    #btnEnviar { background: var(--azul); color: #fff; min-width: 96px; }
+    #btnEnviar:hover:not(:disabled) { background: var(--azul-oscuro); }
+    #btnEnviar:disabled { opacity: .55; cursor: wait; }
+    #btnBorrar {
+      background: #fff;
+      color: var(--texto-suave);
+      border: 1px solid var(--borde) !important;
+      padding: 12px 14px !important;
+    }
+    #btnBorrar:hover { color: #9b2c2c; border-color: #f0c2c2 !important; }
+    .pie-nota {
+      text-align: center;
+      font-size: 11.5px;
+      color: var(--texto-suave);
+      padding: 0 16px 10px;
+      background: var(--panel);
+    }
+
+    @media (max-width: 640px) {
+      header .motor { margin-left: 0; }
+      .entrada { flex-direction: column; align-items: stretch; }
+      .entrada .grupo { justify-content: flex-end; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo" aria-hidden="true">M</div>
+    <div>
+      <h1>Agente de IA · Montes Abogados Asociados</h1>
+      <p>Asistente de contenido jurídico: posts, carruseles, newsletters y guiones de video</p>
+    </div>
+    <span class="motor" id="estadoMotor">Motor gratuito · sin claves</span>
+  </header>
+
+  <nav class="plantillas" aria-label="Plantillas de contenido">
+    <button data-tipo="linkedin">Post de LinkedIn</button>
+    <button data-tipo="carrusel">Carrusel de Instagram</button>
+    <button data-tipo="newsletter">Newsletter a clientes</button>
+    <button data-tipo="video">Guion de video</button>
+    <button data-tipo="actualidad">Actualidad jurídica</button>
+    <button data-tipo="tweet">Tweet / X</button>
+    <button data-tipo="whatsapp">Mensaje de WhatsApp</button>
+  </nav>
+
+  <main id="chat" aria-live="polite">
+    <div class="vacio" id="vacio">
+      <strong>¿Qué contenido necesita hoy?</strong>
+      Escriba su pedido (por ejemplo: “carrusel sobre despido sin justa causa”)
+      o pulse una plantilla de arriba. La respuesta se puede copiar de un clic.
+    </div>
+  </main>
+
+  <form class="entrada" id="formulario">
+    <textarea id="entrada" rows="2" placeholder="Escriba aquí su pedido… (Enter envía · Shift+Enter salta línea)"></textarea>
+    <div class="grupo">
+      <button type="button" id="btnBorrar" title="Borrar la conversación">Borrar</button>
+      <button type="submit" id="btnEnviar">Enviar</button>
+    </div>
+  </form>
+  <p class="pie-nota">Respuestas generadas con inteligencia artificial gratuita. Revise los datos legales antes de publicar.</p>
+
+<script>
+(function () {
+  "use strict";
+
+  /* =======================================================
+     1. MOTOR GRATIS (Pollinations) — sin claves ni pago.
+     ======================================================= */
+  var URL_MOTOR = "https://text.pollinations.ai/openai";
+  var MODELO = "openai";
+  var CLAVE_HISTORIAL = "historialAgenteMAA";
+
+  /* Quién es la firma: el contexto que se le da a la IA en cada
+     pregunta, para que las respuestas suenen a Montes Abogados. */
+  var SISTEMA =
+    "Eres el asistente de marketing de Montes Abogados Asociados S.A.S., firma boutique de abogados " +
+    "con sede en Calle 106 # 58-27, oficina 706, Bogotá D.C., Colombia, con cobertura nacional. " +
+    "Atiende empresas y empresarios en derecho comercial, laboral, litigio e insolvencia empresarial, " +
+    "derecho administrativo, migratorio y recaudo de cartera. " +
+    "Teléfono y WhatsApp: +57 300 725 7266. Correo: claudia@montes-a.com. Sitio: www.montes-a.com. " +
+    "Redes: LinkedIn montes-abogados-asociados e Instagram @montesabogadosasoc. " +
+    "Reglas de estilo: " +
+    "(1) escribe en español neutro, claro y profesional, sin tecnicismos innecesarios; " +
+    "(2) tono cercano y confiable, nunca promocional agresivo; " +
+    "(3) nada de promesas de resultados ni datos legales inventados: si un dato legal es verificable " +
+    "pero no lo tienes seguro, indícalo con 'verifique con su abogado'; " +
+    "(4) cuando encaje, termina con una llamada a la acción breve hacia WhatsApp +57 300 725 7266 " +
+    "o el sitio www.montes-a.com; " +
+    "(5) responde solo con el contenido pedido, listo para copiar y publicar, sin explicaciones " +
+    "previas ni saludos; " +
+    "(6) si el usuario pide otro idioma, respeta ese idioma.";
+
+  /* =======================================================
+     2. PLANTILLAS — un clic arma el pedido.
+     ======================================================= */
+  var PLANTILLAS = {
+    linkedin:
+      "Escribe un post de LinkedIn para Montes Abogados Asociados sobre: " +
+      "[tema]. Extensión: 1200 a 1500 caracteres, 4 a 6 párrafos cortos, " +
+      "una frase gancho al inicio, un dato o ejemplo práctico en el medio y " +
+      "cierre con pregunta o llamada a la acción. Termina con 3 a 5 hashtags pertinentes.",
+    carrusel:
+      "Diseña un carrusel de Instagram de 7 diapositivas para Montes Abogados Asociados sobre: " +
+      "[tema]. Para cada diapositiva da: título corto (máximo 8 palabras) y el texto completo " +
+      "(máximo 30 palabras). La última diapositiva es el cierre con la llamada a la acción y " +
+      "el WhatsApp +57 300 725 7266. Formato: numerado, fácil de copiar a un diseño.",
+    newsletter:
+      "Escribe un boletín por correo para clientes de Montes Abogados Asociados sobre: [tema]. " +
+      "Incluye: asunto del correo (máximo 10 palabras), saludo, introducción de 2 a 3 frases, " +
+      "3 puntos clave con explicación breve, párrafo de cierre con llamada a la acción y firma " +
+      "de Montes Abogados Asociados. Total: 300 a 400 palabras.",
+    video:
+      "Escribe un guion de video corto (30 a 45 segundos) para Montes Abogados Asociados sobre: " +
+      "[tema]. Formato en columnas: [Escena] | [Qué se ve] | [Lo que se dice]. " +
+      "Empieza con un gancho de los primeros 3 segundos, desarrolla una sola idea, " +
+      "termina con llamada a la acción al WhatsApp +57 300 725 7266. " +
+      "Al final agrega 3 sugerencias de título para publicarlo.",
+    actualidad:
+      "Escribe una nota de actualidad jurídica para el sitio web de Montes Abogados Asociados sobre: " +
+      "[tema]. Estructura: título (máximo 12 palabras), entradilla de 2 frases, " +
+      "desarrollo en 3 secciones con subtítulos, y un cierre práctico para empresas. " +
+      "Entre 400 y 500 palabras, lenguaje claro para público no abogado, " +
+      "sin inventar normas: si cita una norma, que sea cierta y vigente o no la cites.",
+    tweet:
+      "Escribe 3 opciones de tweet (máximo 280 caracteres cada uno) para Montes Abogados " +
+      "Asociados sobre: [tema]. Directos, con una idea útil por tweet, sin hashtag de más. " +
+      "Indica cuál recomiendas publicar primero y por qué (una frase).",
+    whatsapp:
+      "Escribe un mensaje de WhatsApp corto (máximo 400 caracteres) de Montes Abogados Asociados " +
+      "para clientes sobre: [tema]. Cordial, claro, con una sola llamada a la acción al final. " +
+      "No uses emojis excesivos (máximo 1)."
+  };
+
+  /* =======================================================
+     3. HISTORIAL — lo que se ha hablado (en este navegador).
+     ======================================================= */
+  var historial = [];
+
+  function leerHistorial() {
+    try {
+      var guardado = localStorage.getItem(CLAVE_HISTORIAL);
+      if (guardado) { historial = JSON.parse(guardado) || []; }
+    } catch (e) { historial = []; }
+  }
+
+  function guardarHistorial() {
+    try {
+      localStorage.setItem(CLAVE_HISTORIAL, JSON.stringify(historial.slice(-20)));
+    } catch (e) { /* sin espacio: se queda solo en pantalla */ }
+  }
+
+  /* =======================================================
+     4. PANTALLA
+     ======================================================= */
+  var chat = document.getElementById("chat");
+  var vacio = document.getElementById("vacio");
+  var formulario = document.getElementById("formulario");
+  var campo = document.getElementById("entrada");
+  var botonEnviar = document.getElementById("btnEnviar");
+  var botonBorrar = document.getElementById("btnBorrar");
+
+  function bajar() { chat.scrollTop = chat.scrollHeight; }
+
+  function agregarMensaje(clase, texto) {
+    if (vacio) { vacio.remove(); vacio = null; }
+    var burbuja = document.createElement("div");
+    burbuja.className = "mensaje " + clase;
+    burbuja.textContent = texto;
+    chat.appendChild(burbuja);
+    bajar();
+    return burbuja;
+  }
+
+  function agregarCopiable(texto) {
+    var burbuja = agregarMensaje("ia", texto);
+    var acciones = document.createElement("div");
+    acciones.className = "acciones";
+
+    var boton = document.createElement("button");
+    boton.type = "button";
+    boton.textContent = "Copiar";
+    boton.addEventListener("click", function () {
+      var listo = function () {
+        boton.textContent = "¡Copiado!";
+        setTimeout(function () { boton.textContent = "Copiar"; }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(texto).then(listo, function () { fallbackCopia(texto, listo); });
+      } else {
+        fallbackCopia(texto, listo);
+      }
+    });
+
+    acciones.appendChild(boton);
+    burbuja.appendChild(acciones);
+    bajar();
+  }
+
+  function fallbackCopia(texto, listo) {
+    var auxiliar = document.createElement("textarea");
+    auxiliar.value = texto;
+    auxiliar.style.position = "fixed";
+    auxiliar.style.opacity = "0";
+    document.body.appendChild(auxiliar);
+    auxiliar.select();
+    try { document.execCommand("copy"); listo(); } catch (e) { /* nada */ }
+    document.body.removeChild(auxiliar);
+  }
+
+  function agregarError(texto) {
+    if (vacio) { vacio.remove(); vacio = null; }
+    var aviso = document.createElement("div");
+    aviso.className = "error";
+    aviso.textContent = texto;
+    chat.appendChild(aviso);
+    bajar();
+  }
+
+  /* =======================================================
+     5. PREGUNTA A LA IA
+     ======================================================= */
+  function preguntar() {
+    var mensajes = [{ role: "system", content: SISTEMA }];
+
+    // Últimas 10 intervenciones para que la IA recuerde el hilo.
+    var recientes = historial.slice(-10);
+    for (var i = 0; i < recientes.length; i++) {
+      mensajes.push({ role: recientes[i].rol, content: recientes[i].texto });
+    }
+
+    return fetch(URL_MOTOR, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ model: MODELO, messages: mensajes })
+    }).then(function (respuesta) {
+      if (!respuesta.ok) { throw new Error("HTTP " + respuesta.status); }
+      return respuesta.json();
+    }).then(function (datos) {
+      var mensaje = datos && datos.choices && datos.choices[0] &&
+        datos.choices[0].message && datos.choices[0].message.content;
+      if (!mensaje) { throw new Error("respuesta vacía"); }
+      return mensaje.trim();
+    });
+  }
+
+  function enviar(texto) {
+    texto = (texto || "").trim();
+    if (!texto || botonEnviar.disabled) { return; }
+
+    agregarMensaje("usuario", texto);
+    historial.push({ rol: "user", texto: texto });
+    guardarHistorial();
+
+    campo.value = "";
+    ajustarAltura();
+    botonEnviar.disabled = true;
+
+    var cargando = document.createElement("div");
+    cargando.className = "cargando";
+    cargando.innerHTML = "Pensando<span class=\"puntos\"><span></span><span></span><span></span></span>";
+    chat.appendChild(cargando);
+    bajar();
+
+    preguntar().then(function (respuesta) {
+      cargando.remove();
+      agregarCopiable(respuesta);
+      historial.push({ rol: "assistant", texto: respuesta });
+      guardarHistorial();
+    }).catch(function () {
+      cargando.remove();
+      agregarError(
+        "No se pudo contactar la IA. Revise su conexión e inténtelo de nuevo. " +
+        "Si persiste, siga trabajando con ChatGPT o Gemini usando el pedido que escribió."
+      );
+    }).then(function () {
+      botonEnviar.disabled = false;
+      campo.focus();
+    });
+  }
+
+  /* =======================================================
+     6. EVENTOS
+     ======================================================= */
+  formulario.addEventListener("submit", function (evento) {
+    evento.preventDefault();
+    enviar(campo.value);
+  });
+
+  campo.addEventListener("keydown", function (evento) {
+    if (evento.key === "Enter" && !evento.shiftKey) {
+      evento.preventDefault();
+      enviar(campo.value);
+    }
+  });
+
+  function ajustarAltura() {
+    campo.style.height = "auto";
+    campo.style.height = Math.min(campo.scrollHeight, 170) + "px";
+  }
+  campo.addEventListener("input", ajustarAltura);
+
+  document.querySelectorAll(".plantillas button").forEach(function (boton) {
+    boton.addEventListener("click", function () {
+      var plantilla = PLANTILLAS[boton.getAttribute("data-tipo")];
+      if (!plantilla) { return; }
+      campo.value = plantilla;
+      ajustarAltura();
+      campo.focus();
+      // Pone el cursor justo donde va el tema ([tema]).
+      var posicion = plantilla.indexOf("[tema]");
+      if (posicion >= 0 && campo.setSelectionRange) {
+        campo.setSelectionRange(posicion, posicion + 6);
+      }
+    });
+  });
+
+  botonBorrar.addEventListener("click", function () {
+    historial = [];
+    try { localStorage.removeItem(CLAVE_HISTORIAL); } catch (e) { /* nada */ }
+    chat.innerHTML =
+      '<div class="vacio" id="vacio"><strong>¿Qué contenido necesita hoy?</strong>' +
+      "Escriba su pedido o pulse una plantilla de arriba.</div>";
+    vacio = document.getElementById("vacio");
+    campo.focus();
+  });
+
+  /* Restaura la conversación anterior de este navegador. */
+  leerHistorial();
+  if (historial.length > 0 && vacio) {
+    vacio.remove();
+    vacio = null;
+    for (var i = 0; i < historial.length; i++) {
+      if (historial[i].rol === "user") {
+        agregarMensaje("usuario", historial[i].texto);
+      } else {
+        agregarCopiable(historial[i].texto);
+      }
+    }
+  }
+})();
+</script>
+</body>
+</html>

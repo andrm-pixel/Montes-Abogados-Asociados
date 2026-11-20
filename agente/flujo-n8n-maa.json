@@ -1,0 +1,287 @@
+{
+  "name": "Agente MAA — Contenido y Video",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "n1-chat",
+      "name": "Cuando llega un mensaje",
+      "type": "n8n-nodes-base.chatTrigger",
+      "typeVersion": 1,
+      "position": [-560, 0],
+      "webhookId": "maa-chat"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "cond-video",
+              "leftValue": "={{ $json.chatInput }}",
+              "rightValue": "video",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "n2-if",
+      "name": "¿Pide video?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [-330, 0]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "Eres el asistente de marketing de Montes Abogados Asociados S.A.S., firma boutique de abogados con sede en Calle 106 # 58-27, oficina 706, Bogota D.C., Colombia, con cobertura nacional. Atiende empresas en derecho comercial, laboral, litigio e insolvencia empresarial, administrativo, migratorio y recaudo de cartera. Telefono y WhatsApp: +57 300 725 7266. Correo: claudia@montes-a.com. Sitio: www.montes-a.com. Reglas: espanol neutro claro y profesional; tono cercano sin promesas agresivas; nada de datos legales inventados (si no esta seguro, indique 'verifique con su abogado'); termine con llamada a la action breve a WhatsApp +57 300 725 7266 o www.montes-a.com cuando encaje; responda solo con el contenido pedido, listo para publicar, sin saludos previos."
+        }
+      },
+      "id": "n3-agente-texto",
+      "name": "Agente: responde en texto",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.2,
+      "position": [-110, -150]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "Te piden un video. Escribe SOLO el guion de 30 a 45 segundos en espanol para que lo diga un presentador: ganchos de los primeros 3 segundos, una sola idea util, cierre con llamada al WhatsApp +57 300 725 7266. Sin titulos, sin viñetas, sin explicaciones: solo el texto limpio que se va a grabar, entre 70 y 110 palabras."
+        }
+      },
+      "id": "n4-agente-guion",
+      "name": "Agente: escribe el guion",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.2,
+      "position": [-110, 130]
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "id": "n5-gemini",
+      "name": "Google Gemini",
+      "type": "@n8n/n8n-nodes-langchain.googleGeminiChat",
+      "typeVersion": 1,
+      "position": [-330, 300],
+      "credentials": {
+        "googleGeminiApi": {
+          "id": "maa-gemini",
+          "name": "Google Gemini (clave MAA)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "id": "n6-memoria",
+      "name": "Memoria de la charla",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [-110, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.d-id.com/talks",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ source_url: 'PEGA_AQUI_LA_URL_DE_TU_FOTO', script: { type: 'text', input: String($json.output || ''), provider: { type: 'microsoft', voice_id: 'es-ElviraNeural' } } }) }}",
+        "options": {}
+      },
+      "id": "n7-did-crear",
+      "name": "D-ID: crea el video",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [110, 130],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "maa-did",
+          "name": "D-ID (Authorization)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 45,
+        "unit": "seconds"
+      },
+      "id": "n8-espera",
+      "name": "Espera 45 segundos",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [330, 130],
+      "webhookId": "maa-wait"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.d-id.com/talks/{{ $json.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "n9-did-estado",
+      "name": "D-ID: trae el video",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [550, 130],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "maa-did",
+          "name": "D-ID (Authorization)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "out-video",
+              "name": "output",
+              "type": "string",
+              "value": "={{ 'Video listo: ' + ($json.result_url || ('estado ' + $json.status + ', espere un minuto y repita el pedido')) }}"
+            }
+          ]
+        },
+        "includeOtherFields": false
+      },
+      "id": "n10-salida",
+      "name": "Agregar salida",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [770, 130]
+    }
+  ],
+  "connections": {
+    "Cuando llega un mensaje": {
+      "main": [
+        [
+          {
+            "node": "¿Pide video?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Pide video?": {
+      "main": [
+        [
+          {
+            "node": "Agente: escribe el guion",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agente: responde en texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente: responde en texto",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Agente: escribe el guion",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memoria de la charla": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente: responde en texto",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Agente: escribe el guion",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente: escribe el guion": {
+      "main": [
+        [
+          {
+            "node": "D-ID: crea el video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "D-ID: crea el video": {
+      "main": [
+        [
+          {
+            "node": "Espera 45 segundos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Espera 45 segundos": {
+      "main": [
+        [
+          {
+            "node": "D-ID: trae el video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "D-ID: trae el video": {
+      "main": [
+        [
+          {
+            "node": "Agregar salida",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false,
+  "meta": {
+    "instanceId": "maa"
+  }
+}
