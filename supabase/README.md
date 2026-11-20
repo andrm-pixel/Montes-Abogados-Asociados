@@ -9,6 +9,11 @@ Esquema completo para reemplazar el `localStorage` + `datos.json` del sitio
 - **Es idempotente:** se puede volver a ejecutar en el SQL Editor sin duplicar
   datos (usa `if not exists`, `on conflict do nothing` y `drop policy if exists`).
 
+> **Orden de ejecución en el SQL Editor:**
+> 1. `montes_supabase.sql` (obligatorio).
+> 2. `esquema_agente_seguro.sql` (opcional, tablas del agente de IA).
+> **No ejecutes `esquema.sql`**: es la versión antigua y deja las tablas del agente abiertas a cualquiera con la clave anon.
+
 ---
 
 ## 1. Cómo aplicarlo

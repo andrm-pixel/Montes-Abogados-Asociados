@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { readdirSync } from "node:fs";
+import { readdirSync, copyFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
 
@@ -14,8 +14,19 @@ const paginas = Object.fromEntries(
     .map((f) => [f.replace(/\.html$/, ""), resolve(raiz, f)])
 );
 
+// datos.json vive en la raíz (así se reemplaza fácil desde el panel), pero el
+// sitio lo pide en tiempo de ejecución: sin esta copia, en Netlify da 404 y el
+// carrusel y las imágenes de las publicaciones no aparecen.
+const copiarDatosJson = {
+  name: "copiar-datos-json",
+  closeBundle() {
+    const origen = resolve(raiz, "datos.json");
+    if (existsSync(origen)) copyFileSync(origen, resolve(raiz, "salida", "datos.json"));
+  },
+};
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), copiarDatosJson],
   base: "./",
   build: {
     outDir: "salida",

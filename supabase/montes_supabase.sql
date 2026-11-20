@@ -19,6 +19,9 @@
 --  0. EXTENSIONES
 -- ============================================================================
 
+-- Permite crear is_staff()/is_admin() antes de la tabla profiles.
+set check_function_bodies = off;
+
 create extension if not exists pgcrypto;   -- gen_random_uuid()
 create extension if not exists pg_trgm;    -- búsquedas "contiene" rápidas
 
