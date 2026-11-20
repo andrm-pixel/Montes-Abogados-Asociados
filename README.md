@@ -175,8 +175,26 @@ cmd /c "npm run build"
 
 Eso genera la carpeta **`salida/`**. Suba **el contenido de `salida/`** al hosting.
 El sitio usa rutas relativas (`base: "./"`), así que funciona en cualquier carpeta.
-La página `index.html` redirige al inicio, por lo que también funciona en hostings
-que buscan esa página en la raíz.
+`index.html` es la portada real (no una redirección), así que también funciona en
+hostings que buscan esa página en la raíz.
+
+### Netlify
+
+El repositorio ya incluye `netlify.toml`:
+
+- **Build command:** `npm run build`
+- **Publish directory:** `salida`
+- **Production branch:** `main`
+
+En Netlify, el sitio debe estar configurado con la rama `main` y, después de
+cada `push`, ejecutar **Deploys → Trigger deploy → Clear cache and deploy site**.
+La dirección `montes-abogados-asociados.netlify.app` tiene activada una
+protección de acceso (responde `401`); hay que desactivarla en
+**Site configuration → Access & security → Visitor access** para que sea pública.
+El dominio `montes-a.com` sigue apuntando al hosting anterior (WordPress): hay
+que cambiar el DNS en ColombiaHosting (registro `A` del dominio y `CNAME` de
+`www`) o trasladar los nameservers a Netlify. Si se cambian los nameservers,
+hay que volver a crear antes los registros `MX` para no perder el correo.
 
 ### Aparecer en Google
 
