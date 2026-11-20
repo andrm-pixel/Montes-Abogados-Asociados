@@ -1,0 +1,52 @@
+# Netlify — sitio multipágina de Vite
+# La portada es index.html; las demás páginas se publican como /nosotros.html, etc.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Si alguien entra a la raíz, sirve la portada.
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
+
+# URLs limpias opcionales: /nosotros -> /nosotros.html
+[[redirects]]
+  from = "/nosotros"
+  to = "/nosotros.html"
+  status = 301
+
+[[redirects]]
+  from = "/areas"
+  to = "/areas.html"
+  status = 301
+
+[[redirects]]
+  from = "/actualidad"
+  to = "/actualidad.html"
+  status = 301
+
+[[redirects]]
+  from = "/contacto"
+  to = "/contacto.html"
+  status = 301
+
+[[redirects]]
+  from = "/politica-datos"
+  to = "/politica-datos.html"
+  status = 301
+
+[[redirects]]
+  from = "/panel-administracion"
+  to = "/panel-administracion.html"
+  status = 301
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
