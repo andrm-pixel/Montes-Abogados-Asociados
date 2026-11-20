@@ -1487,6 +1487,7 @@ function crearNav(pagina) {
 function crearBanner() {
   return `
   <section class="banner" id="inicio">
+    <div class="banner-textura" aria-hidden="true"></div>
     <div class="banner-marca">
       <div class="banner-info">
         <div class="banner-texto-marca">
@@ -1586,16 +1587,17 @@ function crearSeccionServicios() {
 
   for (var i = 0; i < SERVICIOS.length; i++) {
     var servicio = SERVICIOS[i];
+    /* Tarjeta minimalista: SOLO numero, titulo y logo.
+       Toda la tarjeta es un enlace a la pagina del detalle del area
+       (ahi si esta la explicacion a fondo). */
     var tarjeta = `
-        <div class="servicio-card">
+        <a href="${servicio.pagina}" class="servicio-card">
           <div class="servicio-top">
             <span class="servicio-icono" data-icono="${servicio.icono}"></span>
             <span class="numero">${servicio.numero}</span>
           </div>
           <h3 data-i18n="servicios.${i}.titulo">${servicio.titulo}</h3>
-          <p data-i18n="servicios.${i}.texto">${servicio.texto}</p>
-          <a href="${servicio.pagina}" class="enlace-servicio" data-i18n="servicios.consultar">Ver esta área</a>
-        </div>`;
+        </a>`;
 
     if (servicio.bloque === "litigio") {
       litigio = litigio + tarjeta;
@@ -1610,14 +1612,21 @@ function crearSeccionServicios() {
 
       <h2 class="titulo-seccion" data-i18n="servicios.titulo">Áreas de práctica</h2>
       <div class="linea-azul"></div>
-      <h3 class="titulo-bloque" data-i18n="servicios.bloquePreventiva">Asesoría preventiva</h3>
-      <div class="servicios-grid">
-        ${preventiva}
-      </div>
 
-      <h3 class="titulo-bloque" data-i18n="servicios.bloqueLitigio">Litigio y recuperación</h3>
-      <div class="servicios-grid">
-        ${litigio}
+      <div class="areas-bloques">
+        <div class="areas-bloque">
+          <h3 class="titulo-bloque" data-i18n="servicios.bloquePreventiva">Asesoría preventiva</h3>
+          <div class="servicios-grid">
+            ${preventiva}
+          </div>
+        </div>
+
+        <div class="areas-bloque">
+          <h3 class="titulo-bloque" data-i18n="servicios.bloqueLitigio">Litigio y recuperación</h3>
+          <div class="servicios-grid">
+            ${litigio}
+          </div>
+        </div>
       </div>
 
       <p class="nota-legal" data-i18n="servicios.notaBloques">

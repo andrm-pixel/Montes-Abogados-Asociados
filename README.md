@@ -29,6 +29,11 @@ cmd /c "npm run build"   # genera la carpeta salida/ para subir al hosting
 cmd /c "npm run preview" # revisa la compilación en local
 ```
 
+En Windows, también puede abrir **`abrir-en-edge.bat`**: inicia el servidor local
+si hace falta y abre el sitio en Microsoft Edge. El servidor debe seguir activo
+mientras se usa la página; al cerrar su ventana, la dirección local deja de estar
+disponible.
+
 ---
 
 ## Cómo está organizado
@@ -38,6 +43,7 @@ Solo existen 4 carpetas: `.git`, `.vscode`, `node_modules` y `salida`.
 
 ```
 ├── *.html                      14 páginas: una URL por archivo (entrada de Vite)
+│   ├── index.html              Entrada raíz: redirige al inicio
 │   ├── pagina-montes.html      Inicio
 │   ├── panel-administracion.html   Panel de administración
 │   ├── politica-datos.html     Política de datos
@@ -169,8 +175,8 @@ cmd /c "npm run build"
 
 Eso genera la carpeta **`salida/`**. Suba **el contenido de `salida/`** al hosting.
 El sitio usa rutas relativas (`base: "./"`), así que funciona en cualquier carpeta.
-Si el hosting busca `index.html`, renombre `pagina-montes.html` a `index.html`
-o agregue un `index.html` que redirija.
+La página `index.html` redirige al inicio, por lo que también funciona en hostings
+que buscan esa página en la raíz.
 
 ### Aparecer en Google
 

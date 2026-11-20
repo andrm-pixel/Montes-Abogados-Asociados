@@ -4471,3 +4471,537 @@ html[lang="en"] .carrusel .en { display: inline; }
 :is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .formulario-cabecera p {
   color: #ffffff;  /* blanco puro sobre el degradado azul */
 }
+
+/* Refinamiento editorial inspirado en firmas jurídicas actuales.
+   Mantiene intactos el banner, el logo, el azul de marca y los textos. */
+nav {
+  border-bottom: 1px solid #dce4ea;
+  border-image: none;
+  box-shadow: 0 2px 12px rgba(11, 34, 57, 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.nav-contenido {
+  max-width: 1200px;
+  height: 74px;
+}
+
+.nav-links {
+  gap: 3px;
+}
+
+.nav-links a {
+  padding: 8px 12px;
+  border-radius: 3px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.nav-links a[aria-current="page"] {
+  background: rgba(0, 108, 183, 0.08);
+}
+
+.nav-links a:hover {
+  background: rgba(0, 108, 183, 0.1);
+  color: var(--azul-titulo);
+  transform: none;
+  box-shadow: none;
+}
+
+.nav-links a::after {
+  height: 2px;
+  background: var(--marca);
+}
+
+/* Refinamiento editorial: padding para todas las secciones, pero el
+   fondo blanco SOLO para las normales. Sin la salvedad, esta regla
+   pisaba el fondo de .seccion-azul (Nuestra Cultura) y dejaba el
+   texto blanco sobre blanco. */
+.seccion {
+  padding: clamp(38px, 4.4vw, 56px) 24px;
+}
+
+.seccion:not(.seccion-azul) {
+  background: #fff;
+}
+
+.seccion-gris {
+  background: #f6f7f8;
+  background-image: none;
+}
+
+/* El fondo gris editorial solo en secciones grises de verdad
+   (si no, el :not() de arriba ganaría por especificidad). */
+.seccion.seccion-gris {
+  background: #f6f7f8;
+  background-image: none;
+}
+
+.contenedor {
+  width: min(100% - 3rem, 1200px);
+  max-width: 1200px;
+}
+
+.titulo-seccion {
+  margin-bottom: 12px;
+  font-size: clamp(2rem, 3vw, 2.65rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+}
+
+.linea-azul {
+  width: 44px;
+  height: 2px;
+  margin-bottom: 22px;
+  border-radius: 0;
+  background: var(--marca);
+  animation: none;
+}
+
+.seccion:hover .linea-azul {
+  width: 44px;
+}
+
+.subtitulo-gris {
+  max-width: 760px;
+  margin-bottom: 18px;
+  line-height: 1.65;
+  text-align: left;
+}
+
+.servicios-grid {
+  gap: 16px;
+}
+
+.servicio-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 20px;
+  border: 1px solid var(--borde);
+  border-top: 1px solid var(--borde);
+  border-radius: 4px;
+  box-shadow: 0 4px 16px rgba(11, 34, 57, 0.045);
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.servicio-card:hover {
+  transform: translateY(-3px);
+  border-color: #aebfcb;
+  border-top-color: #aebfcb;
+  box-shadow: 0 10px 24px rgba(11, 34, 57, 0.08);
+}
+
+.servicio-card h3 {
+  font-size: clamp(1.2rem, 1.7vw, 1.5rem);
+  line-height: 1.25;
+}
+
+.servicio-card p {
+  flex: 1;
+  text-align: left;
+}
+
+/* Las tarjetas de areas ahora son enlaces (numero + titulo + logo
+   y toda la caja clicable hacia la pagina del detalle). */
+a.servicio-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;  /* sin subrayado heredado de los enlaces */
+  color: inherit;
+  cursor: pointer;
+}
+
+a.servicio-card h3 {
+  margin-bottom: 0;  /* ya no hay parrafo debajo */
+}
+
+a.servicio-card:focus-visible {
+  outline: 3px solid var(--marca);
+  outline-offset: 3px;
+}
+
+.enlace-servicio {
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.filtros-categoria {
+  gap: 8px;
+  margin: 0 0 22px;
+}
+
+.filtro-categoria {
+  padding: 6px 11px;
+  border-color: #d8e0e6;
+  border-radius: 3px;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.filtro-categoria:hover {
+  transform: none;
+  border-color: var(--marca);
+  background: rgba(0, 108, 183, 0.08);
+  color: var(--azul-titulo);
+  box-shadow: none;
+}
+
+/* Tres publicaciones en columnas parejas, sin estirar la primera tarjeta. */
+.publicaciones-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto;
+  gap: 14px;
+}
+
+.publicacion-card {
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+  border: 1px solid var(--borde);
+  border-top: 1px solid var(--borde);
+  border-radius: 4px;
+  box-shadow: 0 4px 16px rgba(11, 34, 57, 0.045);
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.publicacion-card:first-child {
+  grid-row: auto;
+  padding: 18px;
+  background: #fff;
+}
+
+.publicacion-card:hover {
+  transform: translateY(-2px);
+  border-color: #b8c6d0;
+  border-top-color: #b8c6d0;
+  box-shadow: 0 9px 22px rgba(11, 34, 57, 0.075);
+}
+
+.publicacion-categoria {
+  align-self: flex-start;
+  margin-bottom: 12px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--marca);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+/* Títulos de las tarjetas de Actualidad: grandes y en negrita,
+   como en la referencia (antes solo la primera tarjeta era grande
+   y las demás quedaban en 19px). */
+.publicacion-card h3 {
+  font-size: clamp(1.3rem, 1.1vw + 0.85rem, 1.5rem);  /* ≈24px en PC */
+  font-weight: 700;
+  line-height: 1.28;
+  text-align: left;
+}
+
+/* Todas las tarjetas con el MISMO tamaño de título (24px en PC),
+   tanto la primera como las demás. */
+.publicacion-card:first-child h3 {
+  max-width: 24ch;
+  font-size: clamp(1.3rem, 1.1vw + 0.85rem, 1.5rem);
+  font-weight: 700;
+  line-height: 1.28;
+}
+
+.publicacion-resumen {
+  max-width: 68ch;
+  text-align: left;
+}
+
+.publicacion-pie {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 6px 12px;
+  margin-top: 8px;
+  padding-top: 10px;
+}
+
+.publicacion-nota {
+  margin-top: 14px;
+  text-align: left;
+}
+
+.carrusel {
+  max-width: 1160px;
+  margin: 34px auto;
+  border-radius: 8px;
+}
+
+.carrusel-diapositiva img {
+  height: clamp(280px, 34vw, 420px);
+}
+
+@media (max-width: 900px) {
+  .nav-contenido {
+    padding-inline: 16px;
+  }
+
+  .nav-links a {
+    padding: 7px 8px;
+    font-size: 13px;
+  }
+
+  .publicaciones-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .nav-links {
+    top: 74px;
+    border-bottom: 1px solid #dce4ea;
+  }
+
+  .seccion {
+    padding: 34px 18px;
+  }
+
+  .contenedor {
+    width: 100%;
+  }
+
+  .publicaciones-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .publicacion-card:first-child {
+    grid-column: auto;
+    grid-row: auto;
+    padding: 18px 16px;
+  }
+
+  .carrusel {
+    width: calc(100% - 28px);
+    margin: 18px auto;
+    border-radius: 5px;
+  }
+
+  .carrusel-diapositiva img {
+    height: 220px;
+  }
+}
+
+/* Contacto más compacto y alineado a la izquierda. */
+.formulario-cabecera {
+  padding: 14px 18px;
+  text-align: left;
+}
+
+.formulario-cabecera h3 {
+  margin-bottom: 3px;
+  font-size: clamp(1.55rem, 2.2vw, 1.9rem);
+  line-height: 1.2;
+  text-align: left;
+}
+
+.formulario-cabecera p,
+.formulario-cta .formulario-cabecera p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  text-align: left;
+}
+
+.formulario-cta .formulario-cuerpo {
+  padding: 16px 18px;
+  text-align: left;
+}
+
+.formulario-cta .formulario-cuerpo p {
+  max-width: 62ch;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+/* La sede y la cobertura siguen visibles, con menos peso visual.
+   Selector con p + clase: sin él, .banner p (clamp a 20px) ganaba
+   por especificidad y la frase seguía grande. */
+.banner p.banner-cobertura {
+  padding: 5px 14px;
+  font-size: 16px;
+  letter-spacing: 0.35px;
+}
+
+/* ==========================================================
+   ÁREAS DE PRÁCTICA: dos bloques lado a lado
+   (izquierda: Asesoría preventiva / derecha: Litigio), con
+   tarjetas más compactas para que cada fila quepa con
+   4 tarjetas: 2 de asesoría + 2 de litigio.
+   ========================================================== */
+.areas-bloques {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.areas-bloque .servicios-grid {
+  grid-template-columns: 1fr 1fr;  /* 2 tarjetas por fila dentro de cada bloque */
+  gap: 14px;
+}
+
+/* Tarjetas más reducidas (número + título + logo). */
+.areas-bloque .servicio-card {
+  padding: 16px 14px;
+}
+
+.areas-bloque .servicio-card .numero {
+  font-size: 26px;
+}
+
+.areas-bloque .servicio-card h3 {
+  font-size: clamp(1.05rem, 1.1vw, 1.2rem);
+}
+
+.areas-bloque .servicio-icono {
+  width: 40px;
+  height: 40px;
+}
+
+@media (max-width: 900px) {
+  .areas-bloques {
+    grid-template-columns: 1fr;  /* en pantallas angostas, un bloque bajo el otro */
+  }
+}
+
+@media (max-width: 600px) {
+  .areas-bloque .servicios-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================
+   MODO OSCURO: contraste de los dos botones que quedaban
+   con letra clara sobre fondo claro (medido: 1.67:1 y 1.42:1).
+   ========================================================== */
+
+/* "Agende una consulta": el botón sólido conserva fondo blanco en
+   modo oscuro, pero --azul-titulo se vuelve celeste (#7dd3fc) y la
+   letra quedaba ilegible (1.67:1). Aquí vuelve a azul marino. */
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked))
+  .banner a:not(.btn-borde) {
+  color: #0b1626;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked))
+  .banner a:not(.btn-borde):hover {
+  color: #ffffff;  /* hover: fondo azul marino, texto en blanco */
+}
+
+/* "Ir al formulario de contacto": dentro de la tarjeta CTA (oscura
+   en modo oscuro) la regla del bloque WCAG le pintaba el azul oscuro
+   de la marca (1.42:1). Selector más específico que esa regla. */
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked))
+  .seccion .contacto-grid .formulario-cta .btn-seccion {
+  color: #7dd3fc;
+  border-color: #7dd3fc;
+}
+
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked))
+  .seccion .contacto-grid .formulario-cta .btn-seccion:hover {
+  color: #0b1626;  /* hover: fondo celeste, texto oscuro */
+}
+
+/* ==========================================================
+   MEJORA 2: TIPOGRAFÍA CON MÁS JERARQUÍA
+   Escala clara de títulos: sección (51px) > bloque (29px) >
+   tarjeta (24px) > texto (17px), todos con ritmo de interlineado
+   propio y "balance" para que ningún título quede huérfano.
+   ========================================================== */
+
+.titulo-seccion {
+  font-size: clamp(2.2rem, 4vw, 3.2rem);  /* antes tope 2.65rem: sube el
+                                             contraste con el resto */
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-wrap: balance;  /* reparte las líneas sin dejar una palabra sola */
+}
+
+.titulo-bloque {
+  font-size: clamp(1.5rem, 2vw, 1.9rem);  /* escalón intermedio visible */
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.subtitulo-gris {
+  font-size: clamp(1rem, 0.4vw + 0.95rem, 1.15rem);  /* entradilla un punto
+                                                         mayor que el cuerpo */
+}
+
+/* La categoría de las tarjetas de Actualidad, como "cejilla" editorial:
+   en mayúsculas y con letter-spacing para separarla del título. */
+.publicacion-categoria {
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+/* ==========================================================
+   MEJORA 3: PORTADA MÁS CUIDADA
+   Textura fina de retícula sobre el degradado (sin romper la
+   animación de fondo) + filo celeste que separa la portada del
+   contenido. El texto queda por encima con z-index.
+   ========================================================== */
+
+.banner-marca {
+  position: relative;
+  z-index: 1;  /* el contenido por encima de la textura y los círculos */
+}
+
+.banner-textura {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(135deg,
+      rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 22px),
+    radial-gradient(circle at 18% 24%,
+      rgba(255, 255, 255, 0.09), transparent 42%);
+  border-bottom: 2px solid rgba(0, 174, 239, 0.55);  /* filo celeste de marca */
+}
+
+/* ==========================================================
+   MEJORA 5: IMÁGENES CON MARCO
+   Passpartú blanco con filo fino alrededor de las fotos de
+   Actualidad, y doble aro (filo + paspartú celeste) en torno
+   al carrusel de portada.
+   ========================================================== */
+
+.publicacion-imagen {
+  border: 6px solid #ffffff;  /* paspartú blanco alrededor de la foto */
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 1px var(--borde),  /* filo fino que cierra el marco */
+    0 10px 24px rgba(11, 34, 57, 0.12);  /* sombra que levanta la foto */
+}
+
+.carrusel {
+  box-shadow:
+    0 0 0 1px var(--borde),
+    0 0 0 7px rgba(0, 108, 183, 0.16),  /* paspartú celeste de marca */
+    0 20px 44px rgba(11, 34, 57, 0.16);
+}
+
+/* En modo oscuro el paspartú blanco de las fotos sería demasiado
+   luminoso: pasa a un gris azulado de la tarjeta. */
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked))
+  .publicacion-imagen {
+  border-color: #24384f;
+}
