@@ -1,0 +1,105 @@
+# Netlify — sitio multipágina de Vite
+# La portada es index.html; las demás páginas se publican como /nosotros.html, etc.
+
+[build]
+  command = "npm run build"
+  publish = "salida"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Si alguien entra a la raíz, sirve la portada.
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
+
+# La portada histórica sigue funcionando.
+[[redirects]]
+  from = "/pagina-montes"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/pagina-montes.html"
+  to = "/"
+  status = 301
+  force = true
+
+# URLs limpias opcionales: /nosotros -> /nosotros.html
+[[redirects]]
+  from = "/nosotros"
+  to = "/nosotros.html"
+  status = 301
+
+[[redirects]]
+  from = "/areas"
+  to = "/areas.html"
+  status = 301
+
+[[redirects]]
+  from = "/actualidad"
+  to = "/actualidad.html"
+  status = 301
+
+[[redirects]]
+  from = "/contacto"
+  to = "/contacto.html"
+  status = 301
+
+[[redirects]]
+  from = "/politica-datos"
+  to = "/politica-datos.html"
+  status = 301
+
+[[redirects]]
+  from = "/panel-administracion"
+  to = "/panel-administracion.html"
+  status = 301
+
+[[redirects]]
+  from = "/area-comercial"
+  to = "/area-comercial.html"
+  status = 301
+
+[[redirects]]
+  from = "/area-laboral"
+  to = "/area-laboral.html"
+  status = 301
+
+[[redirects]]
+  from = "/area-administrativo"
+  to = "/area-administrativo.html"
+  status = 301
+
+[[redirects]]
+  from = "/area-migratorio"
+  to = "/area-migratorio.html"
+  status = 301
+
+[[redirects]]
+  from = "/area-litigio"
+  to = "/area-litigio.html"
+  status = 301
+
+[[redirects]]
+  from = "/area-recaudo"
+  to = "/area-recaudo.html"
+  status = 301
+
+[[redirects]]
+  from = "/area-insolvencia"
+  to = "/area-insolvencia.html"
+  status = 301
+
+# Los assets con hash se pueden cachear para siempre.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
