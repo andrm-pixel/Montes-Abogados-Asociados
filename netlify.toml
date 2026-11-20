@@ -1,0 +1,7 @@
+# El sitio no tiene index.html: la página de inicio es pagina-montes.html.
+# Esta regla hace que la dirección principal (/) muestre el inicio
+# en lugar de "Page not found".
+[[redirects]]
+  from = "/"
+  to = "/pagina-montes.html"
+  status = 200
