@@ -4969,11 +4969,8 @@ a.servicio-card:focus-visible {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-image:
-    repeating-linear-gradient(135deg,
-      rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 22px),
-    radial-gradient(circle at 18% 24%,
-      rgba(255, 255, 255, 0.09), transparent 42%);
+  background-image: radial-gradient(circle at 18% 24%,
+    rgba(255, 255, 255, 0.09), transparent 42%);
   border-bottom: 2px solid rgba(0, 174, 239, 0.55);  /* filo celeste de marca */
 }
 
