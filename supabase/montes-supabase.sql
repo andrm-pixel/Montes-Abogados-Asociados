@@ -1,5 +1,5 @@
 -- ============================================================================
---  MONTES ABOGADOS ASOCIADOS — BASE DE DATOS PARA SUPABASE
+--  MONTES ABOGADOS ASOCIADOS — BASE DE DATOS PARA SUPABASE (VERSIÓN CORREGIDA)
 --  ---------------------------------------------------------------------------
 --  Reemplaza la persistencia actual del sitio (localStorage + datos.json):
 --
@@ -566,6 +566,10 @@ begin
   if v_base = '' then
     v_base := 'cliente';
   end if;
+  -- profiles exige usuario de 3+ caracteres: si es corto, se completa.
+  if char_length(v_base) < 3 then
+    v_base := 'cliente' || v_base;
+  end if;
 
   v_usuario := v_base;
   while exists (select 1 from public.profiles where lower(usuario) = lower(v_usuario)) loop
@@ -588,7 +592,11 @@ begin
     v_nombre,
     v_apellido,
     lower(new.email),
-    nullif(btrim(new.raw_user_meta_data ->> 'telefono'), ''),
+    case
+      when char_length(btrim(coalesce(new.raw_user_meta_data ->> 'telefono', ''))) between 7 and 25
+        then btrim(new.raw_user_meta_data ->> 'telefono')
+      else null
+    end,
     nullif(v_iniciales, ''),
     'cliente'
   )
@@ -614,8 +622,9 @@ begin
   -- auth.uid() es null cuando se ejecuta desde el SQL Editor o service_role.
   if auth.uid() is not null and not public.is_admin() then
     if new.rol is distinct from old.rol
-       or new.activo is distinct from old.activo then
-      raise exception 'Solo un administrador puede cambiar el rol o el estado de una cuenta';
+       or new.activo is distinct from old.activo
+       or new.correo is distinct from old.correo then
+      raise exception 'Solo un administrador puede cambiar el rol, el estado o el correo de una cuenta';
     end if;
   end if;
   return new;
@@ -694,6 +703,12 @@ begin
   if not coalesce(p_acepta_politica, false) then
     raise exception 'Debe aceptar la política de tratamiento de datos';
   end if;
+  -- Freno básico contra spam: máximo 5 solicitudes por correo cada hora.
+  if (select count(*) from public.contact_requests r
+       where lower(r.correo) = lower(btrim(p_correo))
+         and r.creado_en > now() - interval '1 hour') >= 5 then
+    raise exception 'Demasiadas solicitudes seguidas. Intente de nuevo más tarde';
+  end if;
 
   if p_area_slug is not null and btrim(p_area_slug) <> '' then
     select pa.* into v_area
@@ -740,26 +755,10 @@ begin
 end;
 $$;
 
--- Resuelve el correo de un nombre de usuario (el sitio entra con usuario).
--- Ojo: revela si un usuario existe. Si prefieres evitarlo, haz que el sitio
--- pida el correo directamente y usa signInWithPassword({ email, password }).
-create or replace function public.email_for_username(p_usuario text)
-returns text
-language sql
-stable
-security definer
-set search_path = public
-as $$
-  select p.correo
-  from public.profiles p
-  where lower(p.usuario) = lower(btrim(p_usuario))
-    and p.activo
-  limit 1;
-$$;
+-- El login es por correo: ya no se usa email_for_username (revelaba qué usuarios existen).
+drop function if exists public.email_for_username(text);
 
 grant execute on function public.enviar_solicitud(text, text, text, text, text, text, boolean, text, boolean, public.tipo_solicitud)
-  to anon, authenticated;
-grant execute on function public.email_for_username(text)
   to anon, authenticated;
 
 -- ============================================================================
@@ -927,10 +926,6 @@ create policy "data_policy_versions_staff"
 -- 7.3 SOLICITUDES -----------------------------------------------------------
 -- Cualquiera puede crear una; nadie puede leer las de otros.
 drop policy if exists "solicitudes_insert_publico" on public.contact_requests;
-create policy "solicitudes_insert_publico"
-  on public.contact_requests for insert
-  to anon, authenticated
-  with check (cliente_id is null or cliente_id = auth.uid());
 
 drop policy if exists "solicitudes_propias_select" on public.contact_requests;
 create policy "solicitudes_propias_select"
@@ -965,13 +960,6 @@ create policy "solicitudes_admin_delete"
 
 -- 7.4 PRUEBAS DE AUTORIZACIÓN (solo se insertan y solo las lee el personal) --
 drop policy if exists "consentimientos_insert_publico" on public.consent_records;
-create policy "consentimientos_insert_publico"
-  on public.consent_records for insert
-  to anon, authenticated
-  with check (
-    casilla_obligatoria = true
-    and (cliente_id is null or cliente_id = auth.uid())
-  );
 
 drop policy if exists "consentimientos_staff_select" on public.consent_records;
 create policy "consentimientos_staff_select"
@@ -981,10 +969,6 @@ create policy "consentimientos_staff_select"
 
 -- 7.5 BOLETÍN ---------------------------------------------------------------
 drop policy if exists "boletin_insert_publico" on public.newsletter_subscribers;
-create policy "boletin_insert_publico"
-  on public.newsletter_subscribers for insert
-  to anon, authenticated
-  with check (true);
 
 drop policy if exists "boletin_staff_select" on public.newsletter_subscribers;
 create policy "boletin_staff_select"
@@ -1050,8 +1034,10 @@ grant select, insert, update, delete on
   public.request_status_history
 to authenticated;
 
-grant insert on public.contact_requests, public.consent_records, public.newsletter_subscribers
-to anon, authenticated;
+-- Solicitudes, consentimientos y boletín entran SOLO por las funciones
+-- enviar_solicitud() y suscribir_boletin() (validan y son atómicas).
+revoke insert on public.contact_requests, public.consent_records, public.newsletter_subscribers
+  from anon, authenticated;
 
 grant select on public.contact_requests, public.consent_records
 to authenticated;
@@ -1072,11 +1058,14 @@ values
    array['application/pdf'])
 on conflict (id) do nothing;
 
+-- Los buckets son públicos: las URLs funcionan sin política. Listar el
+-- contenido de los buckets queda solo para el personal.
 drop policy if exists "media_lectura_publica" on storage.objects;
-create policy "media_lectura_publica"
+drop policy if exists "media_lectura_staff" on storage.objects;
+create policy "media_lectura_staff"
   on storage.objects for select
-  to anon, authenticated
-  using (bucket_id in ('media', 'documentos'));
+  to authenticated
+  using (bucket_id in ('media', 'documentos') and public.is_staff());
 
 drop policy if exists "media_escritura_staff" on storage.objects;
 create policy "media_escritura_staff"
@@ -1360,10 +1349,161 @@ values (
 )
 on conflict (version) do nothing;
 
+
+-- ============================================================================
+-- 11b. BOLETÍN (función pública, ignora duplicados sin revelar si existían)
+-- ============================================================================
+create or replace function public.suscribir_boletin(
+  p_correo text,
+  p_nombre text default null
+)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if p_correo is null or p_correo !~* '^[^\s@]+@[^\s@]+\.[^\s@]+$' then
+    raise exception 'El correo no es válido';
+  end if;
+  insert into public.newsletter_subscribers (correo, nombre)
+  values (lower(btrim(p_correo)), nullif(btrim(p_nombre), ''))
+  on conflict (lower(correo)) do update set activo = true;
+end;
+$$;
+
+grant execute on function public.suscribir_boletin(text, text) to anon, authenticated;
+
+-- ============================================================================
+-- 11c. TRADUCCIONES AL INGLÉS
+--  El panel traduce solo y hoy guarda el resultado en datos.traducciones
+--  ("servicios.0.titulo" -> {es, en}). Esta tabla lo reemplaza con la misma forma.
+-- ============================================================================
+create table if not exists public.site_translations (
+  clave           text primary key,
+  es              text not null,
+  en              text not null default '',
+  actualizado_en  timestamptz not null default now()
+);
+
+alter table public.site_translations enable row level security;
+
+drop policy if exists "traducciones_lectura" on public.site_translations;
+create policy "traducciones_lectura"
+  on public.site_translations for select
+  to anon, authenticated
+  using (true);
+
+drop policy if exists "traducciones_staff" on public.site_translations;
+create policy "traducciones_staff"
+  on public.site_translations for all
+  to authenticated
+  using (public.is_staff())
+  with check (public.is_staff());
+
+grant select on public.site_translations to anon, authenticated;
+grant insert, update, delete on public.site_translations to authenticated;
+
+drop trigger if exists trg_site_translations_updated on public.site_translations;
+create trigger trg_site_translations_updated
+  before update on public.site_translations
+  for each row execute function public.set_updated_at();
+
+-- ============================================================================
+-- 11d. AGENTE DE IA (conversaciones, propuestas, ideas, videos)
+--  Solo editor/admin autenticados. El público solo ve propuestas aprobadas.
+-- ============================================================================
+
+create table if not exists public.conversaciones (
+  id uuid primary key default gen_random_uuid(),
+  titulo text not null default 'Nueva conversacion',
+  pestana text not null default 'chat',
+  creada_en timestamptz not null default now(),
+  actualizada_en timestamptz not null default now()
+);
+
+create table if not exists public.mensajes (
+  id uuid primary key default gen_random_uuid(),
+  conversacion_id uuid not null references public.conversaciones(id) on delete cascade,
+  rol text not null check (rol in ('usuario','asistente')),
+  texto text not null,
+  creado_en timestamptz not null default now()
+);
+create index if not exists mensajes_conversacion_idx on public.mensajes (conversacion_id, creado_en);
+
+create table if not exists public.propuestas (
+  id uuid primary key default gen_random_uuid(),
+  conversacion_id uuid references public.conversaciones(id) on delete set null,
+  tipo text not null default 'post',
+  texto text not null,
+  estado text not null default 'pendiente' check (estado in ('pendiente','aprobada','rechazada')),
+  destino text,
+  url_publicacion text,
+  creado_en timestamptz not null default now(),
+  decidida_en timestamptz
+);
+create index if not exists propuestas_estado_idx on public.propuestas (estado, creado_en);
+
+create table if not exists public.aprendizaje (
+  id uuid primary key default gen_random_uuid(),
+  tipo text not null check (tipo in ('idea','prompt')),
+  texto text not null,
+  util boolean not null default false,
+  veces_usado int not null default 0,
+  creado_en timestamptz not null default now()
+);
+
+create table if not exists public.videos (
+  id uuid primary key default gen_random_uuid(),
+  propuesta_id uuid references public.propuestas(id) on delete set null,
+  guion text not null,
+  estado text not null default 'pendiente' check (estado in ('pendiente','generando','listo','error')),
+  url_video text,
+  creado_en timestamptz not null default now()
+);
+
+alter table public.conversaciones enable row level security;
+alter table public.mensajes       enable row level security;
+alter table public.propuestas     enable row level security;
+alter table public.aprendizaje    enable row level security;
+alter table public.videos         enable row level security;
+
+drop policy if exists "propuestas_publico_aprobadas" on public.propuestas;
+create policy "propuestas_publico_aprobadas" on public.propuestas
+  for select to anon, authenticated using (estado = 'aprobada');
+
+drop policy if exists "propuestas_staff" on public.propuestas;
+create policy "propuestas_staff" on public.propuestas
+  for all to authenticated using (public.is_staff()) with check (public.is_staff());
+
+drop policy if exists "conversaciones_staff" on public.conversaciones;
+create policy "conversaciones_staff" on public.conversaciones
+  for all to authenticated using (public.is_staff()) with check (public.is_staff());
+
+drop policy if exists "mensajes_staff" on public.mensajes;
+create policy "mensajes_staff" on public.mensajes
+  for all to authenticated using (public.is_staff()) with check (public.is_staff());
+
+drop policy if exists "aprendizaje_staff" on public.aprendizaje;
+create policy "aprendizaje_staff" on public.aprendizaje
+  for all to authenticated using (public.is_staff()) with check (public.is_staff());
+
+drop policy if exists "videos_staff" on public.videos;
+create policy "videos_staff" on public.videos
+  for all to authenticated using (public.is_staff()) with check (public.is_staff());
+
+-- Permisos explícitos (Supabase ya no los concede solo en proyectos nuevos)
+grant select on public.propuestas to anon;
+grant select, insert, update, delete on
+  public.conversaciones, public.mensajes, public.propuestas,
+  public.aprendizaje, public.videos
+to authenticated;
+
 -- ============================================================================
 -- 12. VERIFICACIÓN RÁPIDA (ejecutar a mano si se quiere)
 -- ============================================================================
--- select count(*) as areas from public.practice_areas;
+-- select count(*) as areas from public.practice_areas;   -- 7
+-- select count(*) as categorias from public.publication_categories; -- 4
 -- select count(*) as equipo from public.team_members;
 -- select count(*) as publicaciones from public.publications;
 -- select tablename, rowsecurity from pg_tables
