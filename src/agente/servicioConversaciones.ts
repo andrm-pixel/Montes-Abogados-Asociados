@@ -10,6 +10,7 @@
 
 import type { Conversacion, Idea, Propuesta } from "./tipos";
 import { nuevoId } from "./tipos";
+import { supabase } from "../lib/supabase";
 
 const CLAVE_LOCAL = "maa.agente.conversaciones";
 const CLAVE_IDEAS = "maa.agente.ideas";
@@ -42,13 +43,27 @@ function escribirLocal(clave: string, valor: unknown): void {
   }
 }
 
-/** Cabeceras para Supabase REST con la clave pública. */
-function cabeceras(): Record<string, string> {
+/** Cabeceras para Supabase REST.
+    Se usa el token de la sesión abierta (no solo la clave pública):
+    las reglas del agente exigen que quien guarda sea editor o admin.
+    Sin ese token, Supabase rechaza todo en silencio. */
+async function cabeceras(): Promise<Record<string, string>> {
+  let token = SUPABASE_ANON;
+  if (supabase) {
+    try {
+      const { data } = await supabase.auth.getSession();
+      const sesion = data && data.session;
+      if (sesion && sesion.access_token) token = sesion.access_token;
+    } catch {
+      /* sin sesión se intenta con la clave pública */
+    }
+  }
   return {
     "Content-Type": "application/json",
     apikey: SUPABASE_ANON,
-    Authorization: "Bearer " + SUPABASE_ANON,
-    Prefer: "return=minimal",
+    Authorization: "Bearer " + token,
+    // merge-duplicates: si la fila ya existe, la actualiza en vez de fallar.
+    Prefer: "return=minimal,resolution=merge-duplicates",
   };
 }
 
@@ -86,7 +101,7 @@ async function subirAEstadoPendiente(lista: Conversacion[]): Promise<void> {
   const conMensajes = lista.filter((c) => c.mensajes.length > 0);
   await fetch(SUPABASE_URL + "/rest/v1/conversaciones?on_conflict=id", {
     method: "POST",
-    headers: cabeceras(),
+    headers: await cabeceras(),
     body: JSON.stringify(
       conMensajes.map((c) => ({
         id: c.id,
@@ -109,7 +124,7 @@ async function subirAEstadoPendiente(lista: Conversacion[]): Promise<void> {
   if (filas.length) {
     await fetch(SUPABASE_URL + "/rest/v1/mensajes?on_conflict=id", {
       method: "POST",
-      headers: cabeceras(),
+      headers: await cabeceras(),
       body: JSON.stringify(filas),
     });
   }
@@ -119,7 +134,7 @@ async function sincronizarDesdeSupabase(): Promise<void> {
   const respuesta = await fetch(
     SUPABASE_URL +
       "/rest/v1/conversaciones?select=*,mensajes(*)&order=actualizada_en.desc&limit=50",
-    { headers: cabeceras() }
+    { headers: await cabeceras() }
   );
   if (!respuesta.ok) return;
   const filas = (await respuesta.json()) as Array<Record<string, unknown>>;
@@ -156,19 +171,26 @@ export function cargarIdeas(): Idea[] {
 export function guardarIdeas(lista: Idea[]): void {
   escribirLocal(CLAVE_IDEAS, lista);
   if (!haySupabase()) return;
-  void fetch(SUPABASE_URL + "/rest/v1/aprendizaje", {
-    method: "POST",
-    headers: cabeceras(),
-    body: JSON.stringify(
-      lista.map((i) => ({
-        id: i.id,
-        tipo: i.tipo,
-        texto: i.texto,
-        util: i.util,
-        veces_usado: i.vecesUsado,
-      }))
-    ),
-  }).catch(() => undefined);
+  const cuerpo = JSON.stringify(
+    lista.map((i) => ({
+      id: i.id,
+      tipo: i.tipo,
+      texto: i.texto,
+      util: i.util,
+      veces_usado: i.vecesUsado,
+    }))
+  );
+  void (async () => {
+    try {
+      await fetch(SUPABASE_URL + "/rest/v1/aprendizaje?on_conflict=id", {
+        method: "POST",
+        headers: await cabeceras(),
+        body: cuerpo,
+      });
+    } catch {
+      /* sin conexión: queda guardado en el navegador */
+    }
+  })();
 }
 
 /* ---------------- Propuestas (regla 2) ---------------- */
@@ -180,18 +202,25 @@ export function cargarPropuestas(): Propuesta[] {
 export function guardarPropuestas(lista: Propuesta[]): void {
   escribirLocal(CLAVE_PROPUESTAS, lista);
   if (!haySupabase()) return;
-  void fetch(SUPABASE_URL + "/rest/v1/propuestas?on_conflict=id", {
-    method: "POST",
-    headers: cabeceras(),
-    body: JSON.stringify(
-      lista.map((p) => ({
-        id: p.id,
-        texto: p.texto,
-        tipo: p.tipo,
-        estado: p.estado,
-        destino: p.destino ?? null,
-        creado_en: new Date(p.creadoEn).toISOString(),
-      }))
-    ),
-  }).catch(() => undefined);
+  const cuerpo = JSON.stringify(
+    lista.map((p) => ({
+      id: p.id,
+      texto: p.texto,
+      tipo: p.tipo,
+      estado: p.estado,
+      destino: p.destino ?? null,
+      creado_en: new Date(p.creadoEn).toISOString(),
+    }))
+  );
+  void (async () => {
+    try {
+      await fetch(SUPABASE_URL + "/rest/v1/propuestas?on_conflict=id", {
+        method: "POST",
+        headers: await cabeceras(),
+        body: cuerpo,
+      });
+    } catch {
+      /* sin conexión: queda guardado en el navegador */
+    }
+  })();
 }
