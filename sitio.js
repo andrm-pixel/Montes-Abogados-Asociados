@@ -1,5 +1,11 @@
 /* Lógica del sitio (antes se llamaba script.js). React la monta desde PaginaSitio.jsx. */
 
+import {
+  hayBackend, perfilActual, alCambiarSesion, registrar, entrar, salir, pedirRecuperacion,
+  actualizarClave, enviarSolicitud, misSolicitudes, suscribirBoletin, ETIQUETA_ESTADO,
+  llegoPorRecuperacion,
+} from "./src/lib/cuentas.js";
+
 /* =======================================================
    SITIO.JS  -  el archivo principal de JavaScript del sitio
    -------------------------------------------------------
@@ -133,21 +139,31 @@ var TRADUCCIONES = {
   "contacto.verSolicitudes": "Already sent a request? Sign in to see it",
   "sesion.olvide": "Did you forget your password?",
   "sesion.recuperar": "Reset my password",
-  "sesion.recuperarP": "Write your username and the email you registered with to set a new password.",
+  "sesion.recuperarP": "Write the email you registered with and we will send you a link to set a new password.",
   "sesion.claveNueva": "New password",
   "sesion.guardarClave": "Save new password",
   "sesion.volver": "Back to sign in",
-  "sesion.recuperarNo": "That username and email do not match a registered account.",
-  "sesion.faltanDatos": "Please write your username and password.",
-  "sesion.usuarioNoExiste": "The username or password is not correct.",
+  "sesion.recuperarNo": "That email does not match a registered account.",
+  "sesion.faltanDatos": "Please write your email and password.",
+  "sesion.usuarioNoExiste": "The email or password is not correct.",
   "sesion.claveIncorrecta": "The password is not correct.",
   "sesion.faltaNombre": "Please write your full name.",
   "sesion.correoInvalido": "The email is not valid: it needs an @ and a dot.",
   "sesion.telefonoInvalido": "The phone is not valid: it needs between 10 and 15 digits.",
   "sesion.usuarioCorto": "The username must have at least 3 characters.",
   "sesion.usuarioExiste": "That username is already taken.",
-  "sesion.claveCorta": "The password must have at least 6 characters.",
+  "sesion.claveCorta": "The password must have at least 8 characters.",
   "sesion.clavesDistintas": "The two passwords are not the same.",
+  "sesion.revisaCorreo": "We sent you an email to confirm your account. Open it and click the link to sign in.",
+  "sesion.enlaceEnviado": "If that email is registered, we sent you a link to change the password.",
+  "sesion.claveActualizada": "Password updated. You can use it now.",
+  "sesion.correoSinConfirmar": "Your email is not confirmed yet. Check your inbox.",
+  "sesion.yaRegistrado": "That email is already registered. Please sign in.",
+  "sesion.limiteCorreos": "Too many emails were sent. Please try again in a few minutes.",
+  "sesion.errorRed": "We could not reach the server. Please try again.",
+  "sesion.claveNuevaP": "Write your new password.",
+  "sesion.enviarEnlace": "Send link",
+  "formulario.limite": "You have sent several requests in a row. Try again later or write to us on WhatsApp at {telefono}.",
   "cuenta.titulo": "My Requests",
   "cuenta.p1": "Sign in with the email and phone number you used to write to us and you will see all your submitted requests.",
   "cuenta.entrar": "Sign in",
@@ -438,23 +454,33 @@ var TRADUCCIONES = {
 var MENSAJES = {
   es: {
     "contacto.verSolicitudes": "¿Ya enviaste una solicitud? Inicia sesión para verla",
-    "sesion.faltanDatos": "Escriba su usuario y su contraseña.",
+    "sesion.faltanDatos": "Escriba su correo y su contraseña.",
     "sesion.olvide": "¿Olvidó su contraseña?",
     "sesion.recuperar": "Restablecer mi contraseña",
-    "sesion.recuperarP": "Escriba su usuario y el correo con el que se registró para poner una contraseña nueva.",
+    "sesion.recuperarP": "Escriba el correo con el que se registró y le enviaremos un enlace para poner una contraseña nueva.",
     "sesion.claveNueva": "Contraseña nueva",
     "sesion.guardarClave": "Guardar contraseña nueva",
     "sesion.volver": "Volver a iniciar sesión",
-    "sesion.recuperarNo": "Ese usuario y ese correo no coinciden con una cuenta registrada.",
-    "sesion.usuarioNoExiste": "El usuario o la contraseña no son correctos.",
+    "sesion.recuperarNo": "Ese correo no coincide con una cuenta registrada.",
+    "sesion.usuarioNoExiste": "El correo o la contraseña no son correctos.",
     "sesion.claveIncorrecta": "La contraseña no es correcta.",
     "sesion.faltaNombre": "Escriba su nombre completo.",
     "sesion.correoInvalido": "El correo no es válido: debe tener un @ y un punto.",
     "sesion.telefonoInvalido": "El teléfono no es válido: debe tener entre 10 y 15 dígitos.",
     "sesion.usuarioCorto": "El usuario debe tener al menos 3 caracteres.",
     "sesion.usuarioExiste": "Ese usuario ya está registrado.",
-    "sesion.claveCorta": "La contraseña debe tener al menos 6 caracteres.",
+    "sesion.claveCorta": "La contraseña debe tener al menos 8 caracteres.",
     "sesion.clavesDistintas": "Las dos contraseñas no son iguales.",
+  "sesion.revisaCorreo": "Le enviamos un correo para confirmar su cuenta. Ábralo y haga clic en el enlace para entrar.",
+  "sesion.enlaceEnviado": "Si ese correo está registrado, le enviamos un enlace para cambiar la contraseña.",
+  "sesion.claveActualizada": "Contraseña actualizada. Ya puede usarla.",
+  "sesion.correoSinConfirmar": "Falta confirmar su correo. Revise su bandeja de entrada.",
+  "sesion.yaRegistrado": "Ese correo ya está registrado. Inicie sesión.",
+  "sesion.limiteCorreos": "Se enviaron demasiados correos. Intente de nuevo en unos minutos.",
+  "sesion.errorRed": "No pudimos conectar con el servidor. Intente de nuevo.",
+  "sesion.claveNuevaP": "Escriba su contraseña nueva.",
+  "sesion.enviarEnlace": "Enviar enlace",
+  "formulario.limite": "Ya enviaste varias solicitudes seguidas. Intenta de nuevo en un rato o escríbenos por WhatsApp al {telefono}.",
     "formulario.enviando": "Enviando...",
     "formulario.enviar": "Enviar mensaje",
     "formulario.gracias": "Gracias {nombre}. Recibimos tu consulta y te responderemos a la brevedad posible.",
@@ -471,23 +497,33 @@ var MENSAJES = {
   },
   en: {
     "contacto.verSolicitudes": "Already sent a request? Sign in to see it",
-    "sesion.faltanDatos": "Please write your username and password.",
+    "sesion.faltanDatos": "Please write your email and password.",
     "sesion.olvide": "Did you forget your password?",
     "sesion.recuperar": "Reset my password",
-    "sesion.recuperarP": "Write your username and the email you registered with to set a new password.",
+    "sesion.recuperarP": "Write the email you registered with and we will send you a link to set a new password.",
     "sesion.claveNueva": "New password",
     "sesion.guardarClave": "Save new password",
     "sesion.volver": "Back to sign in",
-    "sesion.recuperarNo": "That username and email do not match a registered account.",
-    "sesion.usuarioNoExiste": "The username or password is not correct.",
+    "sesion.recuperarNo": "That email does not match a registered account.",
+    "sesion.usuarioNoExiste": "The email or password is not correct.",
     "sesion.claveIncorrecta": "The password is not correct.",
     "sesion.faltaNombre": "Please write your full name.",
     "sesion.correoInvalido": "The email is not valid: it needs an @ and a dot.",
     "sesion.telefonoInvalido": "The phone is not valid: it needs between 10 and 15 digits.",
     "sesion.usuarioCorto": "The username must have at least 3 characters.",
     "sesion.usuarioExiste": "That username is already taken.",
-    "sesion.claveCorta": "The password must have at least 6 characters.",
+    "sesion.claveCorta": "The password must have at least 8 characters.",
     "sesion.clavesDistintas": "The two passwords are not the same.",
+  "sesion.revisaCorreo": "We sent you an email to confirm your account. Open it and click the link to sign in.",
+  "sesion.enlaceEnviado": "If that email is registered, we sent you a link to change the password.",
+  "sesion.claveActualizada": "Password updated. You can use it now.",
+  "sesion.correoSinConfirmar": "Your email is not confirmed yet. Check your inbox.",
+  "sesion.yaRegistrado": "That email is already registered. Please sign in.",
+  "sesion.limiteCorreos": "Too many emails were sent. Please try again in a few minutes.",
+  "sesion.errorRed": "We could not reach the server. Please try again.",
+  "sesion.claveNuevaP": "Write your new password.",
+  "sesion.enviarEnlace": "Send link",
+  "formulario.limite": "You have sent several requests in a row. Try again later or write to us on WhatsApp at {telefono}.",
     "formulario.enviando": "Sending...",
     "formulario.enviar": "Send message",
     "formulario.gracias": "Thank you {nombre}. We received your consultation and will get back to you shortly.",
@@ -2294,8 +2330,8 @@ function crearPanelSesion() {
 
         <form id="formularioIngreso" novalidate>
           <div class="campo">
-            <label for="usuarioIngreso" data-i18n="sesion.usuario">Usuario</label>
-            <input type="text" id="usuarioIngreso" autocomplete="username" placeholder="Su usuario">
+            <label for="usuarioIngreso" data-i18n="sesion.correo">Correo electrónico</label>
+            <input type="email" id="usuarioIngreso" autocomplete="email" placeholder="ejemplo@correo.com">
           </div>
           <div class="campo">
             <label for="claveIngreso" data-i18n="sesion.clave">Contraseña</label>
@@ -2342,13 +2378,9 @@ function crearPanelSesion() {
             <input type="tel" id="regTelefono" placeholder="+57 300 000 0000">
           </div>
           <div class="campo">
-            <label for="regUsuario" data-i18n="sesion.usuario">Usuario</label>
-            <input type="text" id="regUsuario" placeholder="El nombre con el que entra">
-          </div>
-          <div class="campo">
             <label for="regClave" data-i18n="sesion.clave">Contraseña</label>
                         <div class="campo-clave">
-                          <input type="password" id="regClave" placeholder="Mínimo 6 caracteres">
+                          <input type="password" id="regClave" placeholder="Mínimo 8 caracteres">
                           <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('regClave', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña" data-i18n-aria="nav.clave.ver" data-i18n-title="nav.clave.ver"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
                         </div>
           </div>
@@ -2373,21 +2405,19 @@ function crearPanelSesion() {
         <!-- Vista 3: restablecer la contrasena -->
       <div id="vistaRecuperar" class="oculto">
         <h3 data-i18n="sesion.recuperar">Restablecer mi contraseña</h3>
-        <p class="pista" data-i18n="sesion.recuperarP">Escriba su usuario y el correo con el que se registró para poner una contraseña nueva.</p>
+        <p class="pista oculto" id="pistaRecNueva" data-i18n="sesion.claveNuevaP">Escriba su contraseña nueva.</p>
+        <p class="pista" id="pistaRecPedir" data-i18n="sesion.recuperarP">Escriba el correo con el que se registró y le enviaremos un enlace para poner una contraseña nueva.</p>
 
         <form id="formularioRecuperar" novalidate>
-          <div class="campo">
-            <label for="recUsuario" data-i18n="sesion.usuario">Usuario</label>
-            <input type="text" id="recUsuario" placeholder="Su usuario">
-          </div>
-          <div class="campo">
+          <div class="campo" id="grupoRecCorreo">
             <label for="recCorreo" data-i18n="sesion.correo">Correo electrónico</label>
             <input type="email" id="recCorreo" placeholder="ejemplo@correo.com">
           </div>
+          <div id="grupoRecClaves" class="oculto">
           <div class="campo">
             <label for="recClave" data-i18n="sesion.claveNueva">Contraseña nueva</label>
                         <div class="campo-clave">
-                          <input type="password" id="recClave" placeholder="Mínimo 6 caracteres">
+                          <input type="password" id="recClave" placeholder="Mínimo 8 caracteres">
                           <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('recClave', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña" data-i18n-aria="nav.clave.ver" data-i18n-title="nav.clave.ver"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
                         </div>
           </div>
@@ -2398,7 +2428,9 @@ function crearPanelSesion() {
                           <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('recClave2', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña" data-i18n-aria="nav.clave.ver" data-i18n-title="nav.clave.ver"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
                         </div>
           </div>
-          <button type="submit" class="btn-enviar" data-i18n="sesion.guardarClave">Guardar contraseña nueva</button>
+          </div>
+          <button type="submit" class="btn-enviar" id="btnRecEnlace" data-i18n="sesion.enviarEnlace">Enviar enlace</button>
+          <button type="submit" class="btn-enviar oculto" id="btnRecGuardar" data-i18n="sesion.guardarClave">Guardar contraseña nueva</button>
           <p class="ayuda" id="avisoRecuperar"></p>
         </form>
 
@@ -2629,6 +2661,101 @@ function escaparTexto(texto) {
     .replace(/"/g, "&quot;");
 }
 
+/* =======================================================
+   CUENTA CON SERVIDOR (Supabase)
+   -------------------------------------------------------
+   Si el sitio tiene las claves de Supabase (hayBackend), las
+   cuentas, el ingreso y las solicitudes viven en la base de
+   datos. Si no las tiene, todo sigue funcionando como antes,
+   guardado en el navegador.
+   ======================================================= */
+
+/* "pedir": se escribe el correo y llega un enlace.
+   "nueva": se llegó desde el enlace y se escribe la clave nueva.
+   "local": sin servidor (la forma antigua). */
+var MODO_RECUPERAR = "pedir";
+
+/* Convierte el código de error de Supabase en un mensaje. */
+function textoDeErrorCuenta(codigo) {
+  switch (codigo) {
+    case "invalid_credentials": return mensaje("sesion.usuarioNoExiste");
+    case "email_not_confirmed": return mensaje("sesion.correoSinConfirmar");
+    case "user_already_exists": return mensaje("sesion.yaRegistrado");
+    case "weak_password": return mensaje("sesion.claveCorta");
+    case "over_email_send_rate_limit":
+    case "over_request_rate_limit": return mensaje("sesion.limiteCorreos");
+    default: return mensaje("sesion.errorRed");
+  }
+}
+
+/* Copia los datos de la sesión de Supabase en el navegador, para que el
+   resto del código (que los lee de golpe con leerSesion) siga igual.
+   Si nadie tiene sesión, borra la copia. */
+function sincronizarSesion() {
+  return perfilActual().then(function (perfil) {
+    if (!perfil) {
+      try {
+        localStorage.removeItem(CLAVE_SESION);
+      } catch (error) {
+        console.log("No se pudo limpiar la sesion:", error.message);
+      }
+    } else {
+      guardarSesion({
+        usuario: perfil.usuario,
+        nombre: perfil.nombre,
+        correo: perfil.correo,
+        telefono: perfil.telefono,
+        iniciales: perfil.iniciales
+      });
+    }
+    actualizarBotonUsuario();
+    return perfil;
+  }).catch(function (error) {
+    console.log("No se pudo leer la sesion:", error.message);
+    return null;
+  });
+}
+
+/* Muestra u oculta los campos de la vista "Restablecer contraseña"
+   según el modo (ver MODO_RECUPERAR). */
+function mostrarModoRecuperar(modo) {
+  MODO_RECUPERAR = modo;
+  function poner(id, visible) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.classList[visible ? "remove" : "add"]("oculto");
+    }
+  }
+  poner("grupoRecCorreo", modo !== "nueva");
+  poner("grupoRecClaves", modo !== "pedir");
+  poner("pistaRecPedir", modo === "pedir");
+  poner("pistaRecNueva", modo === "nueva");
+  poner("btnRecEnlace", modo === "pedir");
+  poner("btnRecGuardar", modo !== "pedir");
+}
+
+/* Dibuja "Mis solicitudes" con las filas que devuelve la base. */
+function pintarSolicitudesDeCuenta(lista, filas) {
+  if (!filas.length) {
+    lista.innerHTML = '<p class="subtitulo-gris" data-i18n="cuenta.vacia">Todavía no has enviado solicitudes con estos datos.</p>';
+    return;
+  }
+  var idioma = IDIOMA === "en" ? "en" : "es";
+  var etiquetas = ETIQUETA_ESTADO[idioma];
+  var html = "";
+  for (var i = 0; i < filas.length; i++) {
+    var f = filas[i];
+    var fecha = new Date(f.creado_en).toLocaleDateString(idioma === "en" ? "en-US" : "es-CO");
+    html += '<div class="solicitud">' +
+      '<div class="solicitud-cabecera"><strong>' + escaparTexto(f.area_nombre || "") + "</strong>" +
+      '<span class="solicitud-fecha">' + escaparTexto(fecha) + "</span></div>" +
+      "<p>" + escaparTexto(f.mensaje) + "</p>" +
+      '<span class="solicitud-estado">' + escaparTexto((etiquetas[f.estado] || f.estado) + " · " + f.codigo) + "</span>" +
+      "</div>";
+  }
+  lista.innerHTML = html;
+}
+
 /* Conecta todo lo de la cuenta del visitante:
    el botón de persona de la barra, el formulario de ingreso, el de
    registro y el de restablecer la clave.
@@ -2695,6 +2822,7 @@ function iniciarSesionUsuario() {
   var irRecuperar = document.getElementById("irRecuperar");
   if (irRecuperar) {
     irRecuperar.addEventListener("click", function () {
+      mostrarModoRecuperar(hayBackend() ? "pedir" : "local");
       mostrarPanelSesion("recuperar");
     });
   }
@@ -2719,10 +2847,26 @@ function iniciarSesionUsuario() {
         return;
       }
 
+      /* Con servidor: Supabase comprueba el correo y la clave. */
+      if (hayBackend()) {
+        entrar(usuario.toLowerCase(), clave).then(function (r) {
+          if (!r.ok) {
+            aviso.textContent = textoDeErrorCuenta(r.codigo);
+            return;
+          }
+          aviso.textContent = "";
+          sincronizarSesion().then(function () {
+            mostrarPanelSesion("sesion");
+            mostrarSolicitudes();
+          });
+        });
+        return;
+      }
+
       var cuentas = leerCuentas();
       var encontrada = null;
       for (var i = 0; i < cuentas.length; i++) {
-        if (cuentas[i].usuario === usuario) {
+        if (cuentas[i].usuario === usuario || cuentas[i].correo === usuario.toLowerCase()) {
           encontrada = cuentas[i];
           break;
         }
@@ -2741,9 +2885,9 @@ function iniciarSesionUsuario() {
         aviso.textContent = "";
         guardarSesion({
           usuario: encontrada.usuario,
-          nombre: encontrada.nombre,  /* el nombre de la firma */
-          correo: encontrada.correo,  /* el correo de la Oficial de protección de datos */
-          telefono: encontrada.telefono,  /* el teléfono de WhatsApp, como lo ve el visitante */
+          nombre: encontrada.nombre,
+          correo: encontrada.correo,
+          telefono: encontrada.telefono,
           iniciales: encontrada.iniciales
         });
         mostrarPanelSesion("sesion");
@@ -2761,7 +2905,6 @@ function iniciarSesionUsuario() {
       var nombre = document.getElementById("regNombre").value.trim();
       var correo = document.getElementById("regCorreo").value.trim().toLowerCase();
       var telefono = document.getElementById("regTelefono").value.trim();
-      var usuario = document.getElementById("regUsuario").value.trim();
       var clave = document.getElementById("regClave").value;
       var repetir = document.getElementById("regClave2").value;
       var aviso = document.getElementById("avisoRegistro");
@@ -2778,26 +2921,44 @@ function iniciarSesionUsuario() {
         aviso.textContent = mensaje("sesion.telefonoInvalido");
         return;
       }
-      if (usuario.length < 3) {
-        aviso.textContent = mensaje("sesion.usuarioCorto");
-        return;
-      }
-
-      var cuentas = leerCuentas();
-      for (var i = 0; i < cuentas.length; i++) {
-        if (cuentas[i].usuario === usuario) {
-          aviso.textContent = mensaje("sesion.usuarioExiste");
-          return;
-        }
-      }
-
       if (clave !== repetir) {
         aviso.textContent = mensaje("sesion.clavesDistintas");
         return;
       }
-      if (clave.length < 6) {
+      if (clave.length < 8) {
         aviso.textContent = mensaje("sesion.claveCorta");
         return;
+      }
+
+      /* Con servidor: se crea la cuenta en Supabase (y llega un correo
+         de confirmación si esa opción está activa). */
+      if (hayBackend()) {
+        registrar({ nombre: nombre, correo: correo, telefono: telefono, clave: clave }).then(function (r) {
+          if (!r.ok) {
+            aviso.textContent = textoDeErrorCuenta(r.codigo);
+            return;
+          }
+          if (r.necesitaConfirmar) {
+            aviso.textContent = mensaje("sesion.revisaCorreo");
+            return;
+          }
+          aviso.textContent = "";
+          sincronizarSesion().then(function () {
+            mostrarPanelSesion("sesion");
+            mostrarSolicitudes();
+          });
+        });
+        return;
+      }
+
+      /* Sin servidor (forma antigua): el correo hace de nombre de usuario. */
+      var usuario = correo;
+      var cuentas = leerCuentas();
+      for (var i = 0; i < cuentas.length; i++) {
+        if (cuentas[i].usuario === usuario || cuentas[i].correo === correo) {
+          aviso.textContent = mensaje("sesion.usuarioExiste");
+          return;
+        }
       }
 
       cifrarClave(clave).then(function (hash) {
@@ -2807,10 +2968,10 @@ function iniciarSesionUsuario() {
 
         cuentas.push({
           usuario: usuario,
-          nombre: nombre,  /* el nombre de la firma */
-          correo: correo,  /* el correo de la Oficial de protección de datos */
-          telefono: telefono,  /* el teléfono de WhatsApp, como lo ve el visitante */
-          iniciales: iniciales,  /* las dos letras del monograma */
+          nombre: nombre,
+          correo: correo,
+          telefono: telefono,
+          iniciales: iniciales,
           clave: hash
         });
         guardarCuentas(cuentas);
@@ -2829,13 +2990,51 @@ function iniciarSesionUsuario() {
     formularioRecuperar.addEventListener("submit", function (evento) {
       evento.preventDefault();
 
-      var usuario = document.getElementById("recUsuario").value.trim();
       var correo = document.getElementById("recCorreo").value.trim().toLowerCase();
       var nueva = document.getElementById("recClave").value;
       var repetir = document.getElementById("recClave2").value;
       var aviso = document.getElementById("avisoRecuperar");
 
-      if (usuario === "" || correo === "") {
+      /* Con servidor, paso 1: se pide el enlace y llega por correo. */
+      if (hayBackend() && MODO_RECUPERAR === "pedir") {
+        if (!correoValido(correo)) {
+          aviso.textContent = mensaje("sesion.correoInvalido");
+          return;
+        }
+        pedirRecuperacion(correo).then(function (r) {
+          aviso.textContent = r.ok ? mensaje("sesion.enlaceEnviado") : textoDeErrorCuenta(r.codigo);
+        });
+        return;
+      }
+
+      /* Con servidor, paso 2: se llegó desde el enlace y se guarda la clave nueva. */
+      if (hayBackend() && MODO_RECUPERAR === "nueva") {
+        if (nueva.length < 8) {
+          aviso.textContent = mensaje("sesion.claveCorta");
+          return;
+        }
+        if (nueva !== repetir) {
+          aviso.textContent = mensaje("sesion.clavesDistintas");
+          return;
+        }
+        actualizarClave(nueva).then(function (r) {
+          if (!r.ok) {
+            aviso.textContent = textoDeErrorCuenta(r.codigo);
+            return;
+          }
+          aviso.textContent = "";
+          document.getElementById("recClave").value = "";
+          document.getElementById("recClave2").value = "";
+          sincronizarSesion().then(function () {
+            mostrarPanelSesion("sesion");
+            mostrarSolicitudes();
+          });
+        });
+        return;
+      }
+
+      /* Sin servidor (forma antigua). */
+      if (correo === "") {
         aviso.textContent = mensaje("sesion.faltanDatos");
         return;
       }
@@ -2843,7 +3042,7 @@ function iniciarSesionUsuario() {
         aviso.textContent = mensaje("sesion.correoInvalido");
         return;
       }
-      if (nueva.length < 6) {
+      if (nueva.length < 8) {
         aviso.textContent = mensaje("sesion.claveCorta");
         return;
       }
@@ -2855,7 +3054,7 @@ function iniciarSesionUsuario() {
       var cuentas = leerCuentas();
       var encontrada = null;
       for (var i = 0; i < cuentas.length; i++) {
-        if (cuentas[i].usuario === usuario && cuentas[i].correo === correo) {
+        if (cuentas[i].correo === correo) {
           encontrada = cuentas[i];
           break;
         }
@@ -2872,9 +3071,9 @@ function iniciarSesionUsuario() {
         aviso.textContent = "";
         guardarSesion({
           usuario: encontrada.usuario,
-          nombre: encontrada.nombre,  /* el nombre de la firma */
-          correo: encontrada.correo,  /* el correo de la Oficial de protección de datos */
-          telefono: encontrada.telefono,  /* el teléfono de WhatsApp, como lo ve el visitante */
+          nombre: encontrada.nombre,
+          correo: encontrada.correo,
+          telefono: encontrada.telefono,
           iniciales: encontrada.iniciales
         });
         mostrarPanelSesion("sesion");
@@ -2887,12 +3086,35 @@ function iniciarSesionUsuario() {
   var btnCerrar = document.getElementById("btnCerrarSesion");
   if (btnCerrar) {
     btnCerrar.addEventListener("click", function () {
-      cerrarSesion();
+      if (hayBackend()) {
+        salir().then(function () {
+          cerrarSesion();
+        });
+      } else {
+        cerrarSesion();
+      }
       capa.classList.add("oculto");
     });
   }
 
+  mostrarModoRecuperar(hayBackend() ? "pedir" : "local");
   actualizarBotonUsuario();
+
+  if (hayBackend()) {
+    /* Cada vez que alguien entra o sale (también desde el enlace del correo),
+       se actualiza la copia de la sesión. Se difiere con setTimeout porque
+       Supabase no permite llamarlo de nuevo desde dentro de este aviso. */
+    alCambiarSesion(function () {
+      setTimeout(sincronizarSesion, 0);
+    });
+
+    /* Llegó desde el enlace "restablecer contraseña" del correo. */
+    if (llegoPorRecuperacion()) {
+      mostrarModoRecuperar("nueva");
+      mostrarPanelSesion("recuperar");
+      capa.classList.remove("oculto");
+    }
+  }
 }
 
 function crearActualidad() {
@@ -3084,6 +3306,18 @@ function mostrarSolicitudes() {
   var lista = document.getElementById("listaSolicitudes");
 
   if (!cliente) {
+    return;
+  }
+
+  /* Con servidor: la base ya devuelve solo las solicitudes de esta cuenta. */
+  if (hayBackend()) {
+    misSolicitudes().then(function (r) {
+      if (!r.ok) {
+        lista.innerHTML = '<p class="subtitulo-gris">' + escaparTexto(mensaje("sesion.errorRed")) + "</p>";
+        return;
+      }
+      pintarSolicitudesDeCuenta(lista, r.solicitudes);
+    });
     return;
   }
 
@@ -4406,6 +4640,46 @@ function abiertoComoArchivo() {
   return window.location.protocol === "file:";
 }
 
+/* Guarda la solicitud en la base de datos (con la prueba de autorización)
+   y, como aviso extra, manda el correo a la firma. */
+function enviarPorServidor(formulario, datos) {
+  var boton = formulario.querySelector(".btn-enviar");
+  var casillaBoletin = document.getElementById("boletin");
+  var quiereBoletin = casillaBoletin ? casillaBoletin.checked : false;
+
+  boton.disabled = true;
+  boton.textContent = mensaje("formulario.enviando");
+
+  enviarSolicitud({
+    nombre: datos.nombre,
+    apellido: datos.apellido,
+    correo: datos.correo,
+    telefono: datos.telefono,
+    area: datos.area,
+    mensaje: datos.mensaje,
+    boletin: quiereBoletin,
+    version: SITIO.versionPolitica
+  }).then(function (r) {
+    if (r.ok) {
+      /* La solicitud ya quedó guardada: el correo y el boletín son extras. */
+      enviarFormulario(formulario).catch(function (error) {
+        console.log("El correo de aviso no salió:", error.message);
+      });
+      if (quiereBoletin) {
+        suscribirBoletin(datos.correo, datos.nombre);
+      }
+      mostrarAviso(mensaje("formulario.gracias", { nombre: datos.nombre }), "ok");
+      formulario.reset();
+    } else if (r.codigo === "limite") {
+      mostrarAviso(mensaje("formulario.limite", { telefono: SITIO.telefono }), "error");
+    } else {
+      mostrarAviso(mensaje("formulario.error", { telefono: SITIO.telefono }), "error");
+    }
+    boton.disabled = false;
+    boton.textContent = mensaje("formulario.enviar");
+  });
+}
+
 /* Valida el formulario y lo manda al correo.
    Usa try / catch / throw para manejar los errores. */
 
@@ -4466,6 +4740,20 @@ function iniciarFormulario() {
           mensaje("formulario.errorArchivo", { telefono: SITIO.telefono }),
           "error"
         );
+        return;
+      }
+
+      /* Con servidor: la solicitud y la prueba de autorización quedan en la
+         base de datos; el correo a la firma se manda aparte, sin bloquear. */
+      if (hayBackend()) {
+        enviarPorServidor(formulario, {
+          nombre: nombre,
+          apellido: apellido,
+          correo: correo,
+          telefono: telefono,
+          area: area,
+          mensaje: textoMensaje
+        });
         return;
       }
 

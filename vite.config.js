@@ -33,6 +33,9 @@ export default defineConfig({
     rollupOptions: { input: paginas },
   },
   test: {
+    // Las pruebas corren siempre "sin servidor": aunque exista un .env real
+    // con claves de Supabase, aquí quedan vacías para no tocar tu base.
+    env: { VITE_SUPABASE_URL: "", VITE_SUPABASE_ANON_KEY: "" },
     environment: "jsdom",
     setupFiles: ["./setup.js"],
     include: ["*.test.{js,jsx,ts,tsx}"],

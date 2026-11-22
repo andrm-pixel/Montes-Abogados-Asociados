@@ -1,11 +1,18 @@
 /* Panel de administración (migrado). React monta el marcado y llama a iniciarAdmin(). */
 
+import {
+  hayBackend, perfilActual, esPersonal, entrarPersonal, salir, cambiarClave, pedirRecuperacion,
+  listarSolicitudes, cambiarEstadoSolicitud, ESTADOS, ETIQUETA_ESTADO,
+} from "./src/lib/cuentas.js";
+
 
 /* =======================================================
    1. CONFIGURACIÓN
    ======================================================= */
 
-// Contraseña inicial de acceso al panel.
+// Contraseña inicial de acceso al panel. SOLO se usa cuando el sitio NO
+// está conectado a Supabase (modo sin servidor). Con Supabase conectado,
+// el acceso es con correo y contraseña reales y esta clave no sirve.
 // Si el administrador la cambia, queda guardada en este computador.
 // La clave con la que se entra al panel. Es la de fabrica: conviene
 // cambiarla desde la sección 7 (Seguridad) antes de publicar el sitio.
@@ -1188,8 +1195,60 @@ function leerSolicitudes() {
   return [];
 }
 
+/* Las solicitudes que bajaron de la base de datos (solo con Supabase). */
+var SOLICITUDES_SERVIDOR = [];
+
+/* Con Supabase: baja las solicitudes y las dibuja, cada una con un
+   desplegable para cambiar su estado. */
+function mostrarSolicitudesServidor() {
+  var lista = $("listaSolicitudes");
+  lista.innerHTML = '<p class="pista">Cargando solicitudes…</p>';
+
+  listarSolicitudes().then(function (r) {
+    if (!r.ok) {
+      lista.innerHTML = '<p class="pista">No se pudieron cargar las solicitudes. Revise la conexión e intente de nuevo.</p>';
+      return;
+    }
+    SOLICITUDES_SERVIDOR = r.solicitudes;
+    if (r.solicitudes.length === 0) {
+      lista.innerHTML = '<p class="pista">Todavía no hay solicitudes registradas.</p>';
+      return;
+    }
+
+    var html = "";
+    for (var i = 0; i < r.solicitudes.length; i++) {
+      var s = r.solicitudes[i];
+      var fecha = new Date(s.creado_en).toLocaleString("es-CO");
+      var opciones = "";
+      for (var e = 0; e < ESTADOS.length; e++) {
+        opciones += '<option value="' + ESTADOS[e] + '"' + (ESTADOS[e] === s.estado ? " selected" : "") + ">" +
+          ETIQUETA_ESTADO.es[ESTADOS[e]] + "</option>";
+      }
+      html += `
+      <div class="item">
+        <h3>${escapar(s.area_nombre || "Sin área")} - ${escapar(fecha)}</h3>
+        <p style="font-size:13px; color:#566573; margin-bottom:6px">
+          <strong>Código:</strong> ${escapar(s.codigo)} &nbsp;·&nbsp;
+          <strong>Correo:</strong> ${escapar(s.correo)} &nbsp;·&nbsp;
+          <strong>Tel:</strong> ${escapar(s.telefono || "")} &nbsp;·&nbsp;
+          <strong>Nombre:</strong> ${escapar(s.nombre_completo || "")}
+        </p>
+        <p style="font-size:14px">${escapar(s.mensaje)}</p>
+        <span class="pista">Estado:
+          <select data-solicitud="${escapar(s.id)}">${opciones}</select>
+          &nbsp;·&nbsp; Origen: ${escapar(s.tipo || "contacto")}</span>
+      </div>`;
+    }
+    lista.innerHTML = html;
+  });
+}
+
 /* Dibuja la lista de solicitudes con los datos de cada una. */
 function mostrarSolicitudes() {
+  if (hayBackend()) {
+    mostrarSolicitudesServidor();
+    return;
+  }
   var solicitudes = leerSolicitudes();
   var lista = $("listaSolicitudes");
 
@@ -1218,7 +1277,19 @@ function mostrarSolicitudes() {
 /* Baja las solicitudes en un archivo de texto separado por punto y
    coma, que se puede abrir con Excel. */
 function exportarSolicitudes() {
-  var solicitudes = leerSolicitudes();
+  var solicitudes = hayBackend()
+    ? SOLICITUDES_SERVIDOR.map(function (s) {
+        return {
+          fecha: new Date(s.creado_en).toLocaleString("es-CO"),
+          area: s.area_nombre,
+          correo: s.correo,
+          telefono: s.telefono,
+          nombre: s.nombre_completo,
+          mensaje: s.mensaje,
+          estado: ETIQUETA_ESTADO.es[s.estado] || s.estado,
+        };
+      })
+    : leerSolicitudes();
   if (solicitudes.length === 0) {
     mostrarAviso("No hay solicitudes para descargar.", "error");
     return;
@@ -1279,6 +1350,32 @@ function cambiarClaveAdmin() {
   var nueva = $("claveNueva").value;
   var repetir = $("claveNueva2").value;
 
+  /* Con Supabase: se confirma la clave actual y se cambia en la cuenta real. */
+  if (hayBackend()) {
+    if (nueva.length < 8) {
+      aviso.textContent = "La contraseña nueva debe tener al menos 8 caracteres.";
+      return;
+    }
+    if (nueva !== repetir) {
+      aviso.textContent = "Las dos contraseñas nuevas no son iguales.";
+      return;
+    }
+    aviso.textContent = "Guardando…";
+    cambiarClave(actual, nueva).then(function (r) {
+      if (r.ok) {
+        aviso.textContent = "Contraseña cambiada. Use la nueva la próxima vez que entre.";
+        $("claveActual").value = "";
+        $("claveNueva").value = "";
+        $("claveNueva2").value = "";
+      } else if (r.codigo === "invalid_credentials") {
+        aviso.textContent = "La contraseña actual no es correcta.";
+      } else {
+        aviso.textContent = "No se pudo cambiar la contraseña. Intente de nuevo.";
+      }
+    });
+    return;
+  }
+
   if (actual !== leerClaveAdmin()) {
     aviso.textContent = "La contraseña actual no es correcta.";
     return;
@@ -1306,6 +1403,21 @@ function cambiarClaveAdmin() {
 // Vuelve a la contraseña inicial, por si se olvidó la nueva.
 /* Vuelve a poner la clave de fabrica, por si se olvidó la del panel. */
 function restablecerClaveAdmin() {
+  /* Con Supabase: se envía un enlace al correo de la cuenta. */
+  if (hayBackend()) {
+    perfilActual().then(function (perfil) {
+      if (!perfil) {
+        $("avisoClave").textContent = "Vuelva a entrar al panel e intente de nuevo.";
+        return;
+      }
+      pedirRecuperacion(perfil.correo).then(function (r) {
+        $("avisoClave").textContent = r.ok
+          ? "Le enviamos un enlace a " + perfil.correo + " para poner una contraseña nueva."
+          : "No se pudo enviar el enlace. Intente de nuevo en unos minutos.";
+      });
+    });
+    return;
+  }
   if (!window.confirm("Se volverá a la contraseña inicial. ¿Continuar?")) {
     return;
   }
@@ -1347,10 +1459,42 @@ function verClave(campo, boton) {
 
 /* Entra al panel: revisa el usuario y la clave, y si están bien
    muestra el panel y carga los datos. */
+function abrirPanel() {
+  $("login").classList.add("oculto");
+  $("panel").classList.remove("oculto");
+  cargar();
+}
+
 function entrar() {
   var usuario = $("usuario").value.trim();
   var clave = $("clave").value;
   var aviso = $("loginAviso");
+
+  /* Con Supabase: correo y contraseña reales; solo pasan admin y editor. */
+  if (hayBackend()) {
+    if (usuario === "" || clave === "") {
+      aviso.textContent = "Escriba su correo y su contraseña.";
+      aviso.className = "aviso error";
+      return;
+    }
+    aviso.textContent = "Entrando…";
+    aviso.className = "aviso";
+    entrarPersonal(usuario.toLowerCase(), clave).then(function (r) {
+      if (!r.ok) {
+        var texto = "No se pudo conectar con el servidor. Intente de nuevo.";
+        if (r.codigo === "invalid_credentials") texto = "Ese correo o esa contraseña no son correctos.";
+        if (r.codigo === "sin_permiso") texto = "Esta cuenta no tiene acceso al panel de administración.";
+        if (r.codigo === "email_not_confirmed") texto = "Falta confirmar el correo de esta cuenta.";
+        aviso.textContent = texto;
+        aviso.className = "aviso error";
+        return;
+      }
+      aviso.textContent = "";
+      $("clave").value = "";
+      abrirPanel();
+    });
+    return;
+  }
 
   if (usuario !== USUARIO || clave !== leerClaveAdmin()) {
     aviso.textContent = "Ese usuario o esa contraseña no son correctos.";
@@ -1358,13 +1502,27 @@ function entrar() {
     return;
   }
 
-  $("login").classList.add("oculto");
-  $("panel").classList.remove("oculto");
-  cargar();
+  abrirPanel();
 }
 
 /* ---------- Botones y formularios ---------- */
 export function iniciarAdmin() {
+  /* Con Supabase: si ya había una sesión de personal abierta, se entra directo. */
+  if (hayBackend()) {
+    perfilActual().then(function (perfil) {
+      if (esPersonal(perfil)) abrirPanel();
+    });
+    /* Las solicitudes no se borran desde aquí: se marcan Cerrada o Spam. */
+    $("btnBorrarSolicitudes").style.display = "none";
+    $("listaSolicitudes").addEventListener("change", function (evento) {
+      var lista = evento.target;
+      if (!lista || !lista.getAttribute || !lista.getAttribute("data-solicitud")) return;
+      cambiarEstadoSolicitud(Number(lista.getAttribute("data-solicitud")), lista.value).then(function (r) {
+        mostrarAviso(r.ok ? "Estado actualizado." : "No se pudo cambiar el estado.", r.ok ? "ok" : "error");
+      });
+    });
+  }
+
   $("btnEntrar").addEventListener("click", entrar);
   $("clave").addEventListener("keydown", function (e) {
     if (e.key === "Enter") entrar();
@@ -1401,6 +1559,7 @@ export function iniciarAdmin() {
   $("btnBorrarSolicitudes").addEventListener("click", borrarSolicitudes);
 
   $("btnSalir").addEventListener("click", function () {
+    if (hayBackend()) salir();
     $("panel").classList.add("oculto");
     $("login").classList.remove("oculto");
     $("clave").value = "";

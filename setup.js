@@ -1,5 +1,9 @@
-import { cleanup } from "@testing-library/react";
+import { cleanup, configure } from "@testing-library/react";
 import { afterEach } from "vitest";
+
+// La primera página de cada archivo de pruebas tarda en arrancar (el sitio
+// pesa 250 KB). Con el límite por defecto (1 s) fallaba a veces sin motivo.
+configure({ asyncUtilTimeout: 5000 });
 
 // jsdom no implementa matchMedia; el sitio lo usa para "reducir movimiento".
 window.matchMedia = window.matchMedia || (() => ({
