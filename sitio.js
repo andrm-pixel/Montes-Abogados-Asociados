@@ -2651,6 +2651,10 @@ function verClave(campo, boton) {
   }
 }
 
+/* Los botones del ojo llaman a esta función desde el HTML (onclick),
+   así que debe estar disponible en la ventana. */
+window.verClave = verClave;
+
 /* Escapa los caracteres especiales de un texto (&, <, >, ").
    Sirve para que un nombre que escriba el visitante no rompa el
    HTML al ponerlo dentro de la página. */

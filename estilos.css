@@ -1729,7 +1729,7 @@ textarea:not(:focus):not(:placeholder-shown):valid {
 .btn-whatsapp {
   position: fixed;  /* como se ubica la caja (normal, relativa, absoluta o fija) */
   right: 20px;  /* la distancia desde la derecha, cuando la caja esta pegada */
-  bottom: 92px;  /* sube sobre el botón del agente y la insignia de Netlify */
+  bottom: 20px;  /* abajo a la derecha, ya no hay insignia de Netlify que lo tape */
   width: 56px;  /* el ancho de la caja */
   height: 56px;  /* el alto de la caja */
   border-radius: 50%;  /* las esquinas redondeadas */

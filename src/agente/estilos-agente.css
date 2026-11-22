@@ -21,7 +21,7 @@
   right: 22px;
   /* Subido para que no lo tape la insignia de Netlify, la barra del
      navegador en el celular ni el botón de WhatsApp. */
-  bottom: 96px;
+  bottom: 88px;  /* justo encima del botón de WhatsApp */
   z-index: 210;
   display: flex;
   align-items: center;
