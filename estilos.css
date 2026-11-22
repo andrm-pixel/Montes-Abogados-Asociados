@@ -747,34 +747,90 @@ nav {
   margin-top: 30px;  /* el espacio por encima de la caja */
 }
 
-/* Uno de los tres bloques de la cultura. */
+/* Uno de los tres bloques de la cultura.
+   Ahora son tarjetas blancas sobre el azul: resaltan de inmediato y el
+   texto se lee sin esfuerzo. El número y la franja de color de arriba
+   les dan movimiento y aire de marca. */
 .cultura-bloque {
-  background-color: rgba(255, 255, 255, 0.11);  /* el color de fondo de la caja */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.24);  /* el borde que rodea la caja (grosor, estilo y color) */
-  padding: 22px 20px;  /* el espacio por dentro de la caja */
-  border-radius: 8px;  /* las esquinas redondeadas */
-  transition: transform 0.32s var(--curva-suave), background-color 0.32s ease, border-color 0.32s ease, box-shadow 0.32s ease;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(165deg, #ffffff 0%, #edf7ff 100%);
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  border-radius: 16px;
+  padding: 26px 22px 24px;
+  box-shadow:
+    0 14px 34px rgba(4, 24, 56, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  transition:
+    transform 0.35s var(--curva-suave),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+/* Franja de color arriba: se estira cuando el visitante pasa el mouse. */
+.cultura-bloque::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--marca-oscura), var(--marca), var(--marca-celeste));
+  transform: scaleX(0.55);
+  transform-origin: left;
+  transition: transform 0.45s var(--curva-suave);
+}
+
+/* Brillo que cruza la tarjeta: el detalle que la hace sentir viva. */
+.cultura-bloque::after {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: -75%;
+  width: 55%;
+  height: 220%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+  transform: rotate(18deg);
+  transition: left 0.7s ease;
+  pointer-events: none;
 }
 
 .cultura-bloque:hover {
-  transform: translateY(-5px);
-  background-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-8px);
   border-color: var(--marca-celeste);
-  box-shadow: 0 12px 28px rgba(11, 31, 66, 0.25);
+  box-shadow: 0 26px 50px rgba(4, 24, 56, 0.38);
+}
+
+.cultura-bloque:hover::before { transform: scaleX(1); }
+.cultura-bloque:hover::after { left: 135%; }
+
+/* El número 01, 02, 03 de cada tarjeta. */
+.cultura-bloque-numero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--marca), var(--marca-oscura));
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 7px 16px rgba(0, 108, 183, 0.35);
 }
 
 .cultura-bloque strong {
   display: block;  /* como se acomoda el elemento (en linea, en bloque, en rejilla...) */
-  color: #ffffff;  /* el color del texto */
-  font-size: 16.8px;  /* el tamano de la letra */
+  color: var(--marca-oscura);  /* azul de la marca sobre blanco */
+  font-size: 18px;  /* el tamano de la letra */
   margin-bottom: 8px;  /* el espacio por debajo de la caja */
 }
 
 .cultura-bloque p {
   font-size: 15.6px;  /* el tamano de la letra */
-  color: rgba(255, 255, 255, 0.82);  /* el color del texto */
+  color: #35506b;  /* gris azulado, suave para leer */
   margin: 0;  /* el espacio por fuera de la caja */
 }
 

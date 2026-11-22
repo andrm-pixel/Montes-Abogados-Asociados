@@ -1367,8 +1367,10 @@ function crearCulturaBloques() {
   var html = "";
   for (var i = 0; i < CULTURA_BLOQUES.length; i++) {
     var bloque = CULTURA_BLOQUES[i];
+    var numero = i + 1 < 10 ? "0" + (i + 1) : String(i + 1);
     html = html + `
           <div class="cultura-bloque">
+            <span class="cultura-bloque-numero" aria-hidden="true">${numero}</span>
             <strong data-i18n="${bloque.clave}.titulo">${bloque.titulo}</strong>
             <p data-i18n="${bloque.clave}.texto">${bloque.texto}</p>
           </div>`;
