@@ -7,6 +7,11 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  # Supabase (la clave sb_publishable_ es pública por diseño).
+  # Así el build conecta con la base aunque no se tenga acceso al panel.
+  VITE_SUPABASE_URL = "https://rhqtldpiuasrwcwaqrtl.supabase.co"
+  VITE_SUPABASE_ANON_KEY = "sb_publishable_HJf2hDmWFQ1mFjUv3cv7jQ_XM8i2ND_"
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_URL,VITE_SUPABASE_ANON_KEY"
 
 # Si alguien entra a la raíz, sirve la portada.
 [[redirects]]

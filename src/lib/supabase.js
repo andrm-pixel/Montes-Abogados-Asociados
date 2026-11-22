@@ -14,8 +14,29 @@
 import { createClient } from "@supabase/supabase-js";
 
 const env = (import.meta && import.meta.env) || {};
-const URL_SUPABASE = String(env.VITE_SUPABASE_URL || "").trim();
-const CLAVE_PUBLICA = String(env.VITE_SUPABASE_ANON_KEY || "").trim();
+
+/* Las pruebas corren sin conexión: vite.config.js deja las VITE_* vacías.
+   En el sitio real, si falta el .env, se usan estos valores públicos para
+   que Netlify funcione aunque no se hayan creado las variables en el panel. */
+const EN_PRUEBAS = env.MODE === "test" || Boolean(env.VITEST);
+const URL_POR_DEFECTO = "https://rhqtldpiuasrwcwaqrtl.supabase.co";
+const CLAVE_POR_DEFECTO = "sb_publishable_HJf2hDmWFQ1mFjUv3cv7jQ_XM8i2ND_";
+
+/* Acepta la URL con o sin "/rest/v1/" al final. */
+function normalizarUrl(valor) {
+  return String(valor || "")
+    .trim()
+    .replace(/\/+$/, "")
+    .replace(/\/rest\/v1$/, "")
+    .replace(/\/+$/, "");
+}
+
+const URL_SUPABASE = normalizarUrl(
+  env.VITE_SUPABASE_URL || (EN_PRUEBAS ? "" : URL_POR_DEFECTO)
+);
+const CLAVE_PUBLICA = String(
+  env.VITE_SUPABASE_ANON_KEY || (EN_PRUEBAS ? "" : CLAVE_POR_DEFECTO)
+).trim();
 
 /* Se anota ANTES de crear el cliente (que limpia la URL): ¿se llegó desde
    el enlace de "restablecer contraseña"? */
