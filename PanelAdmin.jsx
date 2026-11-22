@@ -8,7 +8,9 @@ import { ChatAgente } from "./src/agente";
    propuestas pendientes de aprobación). */
 export default function PanelAdmin() {
   useEffect(() => {
+    document.body.classList.add("modo-admin");
     iniciarAdmin();
+    return () => document.body.classList.remove("modo-admin");
   }, []);
   return (
     <>

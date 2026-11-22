@@ -2,7 +2,7 @@
 
 import {
   hayBackend, perfilActual, esPersonal, entrarPersonal, salir, cambiarClave, pedirRecuperacion,
-  listarSolicitudes, cambiarEstadoSolicitud, ESTADOS, ETIQUETA_ESTADO,
+  listarSolicitudes, cambiarEstadoSolicitud, borrarSolicitud, ESTADOS, ETIQUETA_ESTADO,
 } from "./src/lib/cuentas.js";
 
 
@@ -1237,6 +1237,9 @@ function mostrarSolicitudesServidor() {
         <span class="pista">Estado:
           <select data-solicitud="${escapar(s.id)}">${opciones}</select>
           &nbsp;·&nbsp; Origen: ${escapar(s.tipo || "contacto")}</span>
+        <div class="barra" style="margin-top:10px">
+          <button class="peligro" type="button" data-borrar="${escapar(s.id)}">Borrar solicitud</button>
+        </div>
       </div>`;
     }
     lista.innerHTML = html;
@@ -1514,6 +1517,24 @@ export function iniciarAdmin() {
     });
     /* Las solicitudes no se borran desde aquí: se marcan Cerrada o Spam. */
     $("btnBorrarSolicitudes").style.display = "none";
+    /* Borrado individual con doble confirmación. */
+    $("listaSolicitudes").addEventListener("click", function (evento) {
+      var boton = evento.target.closest ? evento.target.closest("[data-borrar]") : null;
+      if (!boton) return;
+      var id = Number(boton.getAttribute("data-borrar"));
+      if (!window.confirm("¿Borrar esta solicitud? Esta acción no se puede deshacer.")) return;
+      if (!window.confirm("Segunda confirmación: la solicitud se eliminará de la base de datos de forma permanente. ¿Continuar?")) return;
+      boton.disabled = true;
+      borrarSolicitud(id).then(function (r) {
+        if (r.ok) {
+          mostrarAviso("Solicitud borrada.", "ok");
+          mostrarSolicitudesServidor();
+        } else {
+          boton.disabled = false;
+          mostrarAviso("No se pudo borrar la solicitud.", "error");
+        }
+      });
+    });
     $("listaSolicitudes").addEventListener("change", function (evento) {
       var lista = evento.target;
       if (!lista || !lista.getAttribute || !lista.getAttribute("data-solicitud")) return;

@@ -834,6 +834,17 @@ nav {
   margin: 0;  /* el espacio por fuera de la caja */
 }
 
+/* Ajuste: el número y el título van en la misma línea; el texto debajo. */
+.cultura-bloque {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 14px;
+}
+.cultura-bloque-numero { margin-bottom: 0; flex-shrink: 0; }
+.cultura-bloque strong { margin-bottom: 0; line-height: 1.25; }
+.cultura-bloque p { grid-column: 1 / -1; margin-top: 14px; }
+
 /* Equipo */
 
 .equipo-grid {

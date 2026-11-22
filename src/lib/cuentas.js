@@ -275,6 +275,18 @@ export async function listarSolicitudes() {
   }
 }
 
+/* Borra una solicitud de la base. Solo el administrador puede hacerlo (RLS). */
+export async function borrarSolicitud(id) {
+  if (!supabase) return sinConexion();
+  try {
+    const { error } = await supabase.from("contact_requests").delete().eq("id", id);
+    if (error) return { ok: false, codigo: codigoDeError(error) };
+    return { ok: true };
+  } catch (error) {
+    return { ok: false, codigo: codigoDeError(error) };
+  }
+}
+
 export async function cambiarEstadoSolicitud(id, estado) {
   if (!supabase) return sinConexion();
   if (!ESTADOS.includes(estado)) return { ok: false, codigo: "estado_invalido" };

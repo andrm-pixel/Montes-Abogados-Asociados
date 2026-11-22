@@ -60,6 +60,11 @@
   text-align: center;
 }
 
+/* En el panel de administración se sube para que no quede tapado. */
+body.modo-admin .agente-fab {
+  bottom: 150px;
+}
+
 /* ---------- Cajón lateral ---------- */
 .agente-cajon {
   position: fixed;

@@ -35,67 +35,67 @@
 [[redirects]]
   from = "/nosotros"
   to = "/nosotros.html"
-  status = 301
+  status = 200
 
 [[redirects]]
   from = "/areas"
   to = "/areas.html"
-  status = 301
+  status = 200
 
 [[redirects]]
   from = "/actualidad"
   to = "/actualidad.html"
-  status = 301
+  status = 200
 
 [[redirects]]
   from = "/contacto"
   to = "/contacto.html"
-  status = 301
+  status = 200
 
 [[redirects]]
   from = "/politica-datos"
   to = "/politica-datos.html"
-  status = 301
+  status = 200
 
 [[redirects]]
   from = "/panel-administracion"
   to = "/panel-administracion.html"
-  status = 301
+  status = 200
 
 [[redirects]]
   from = "/area-comercial"
   to = "/area-comercial.html"
-  status = 301
+  status = 200
 
 [[redirects]]
   from = "/area-laboral"
   to = "/area-laboral.html"
-  status = 301
+  status = 200
 
 [[redirects]]
   from = "/area-administrativo"
   to = "/area-administrativo.html"
-  status = 301
+  status = 200
 
 [[redirects]]
   from = "/area-migratorio"
   to = "/area-migratorio.html"
-  status = 301
+  status = 200
 
 [[redirects]]
   from = "/area-litigio"
   to = "/area-litigio.html"
-  status = 301
+  status = 200
 
 [[redirects]]
   from = "/area-recaudo"
   to = "/area-recaudo.html"
-  status = 301
+  status = 200
 
 [[redirects]]
   from = "/area-insolvencia"
   to = "/area-insolvencia.html"
-  status = 301
+  status = 200
 
 # Los assets con hash se pueden cachear para siempre.
 [[headers]]
