@@ -2,6 +2,13 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, waitFor, fireEvent } from "@testing-library/react";
 import PaginaSitio from "./PaginaSitio.jsx";
 
+/* El resultado del envío aparece en una ventana emergente (en body). */
+function ventanaEnvioTexto(container) {
+  const v = document.querySelector("#ventanaEnvio .ventana-envio-texto");
+  if (v) return v.textContent;
+  return container.querySelector("#mensajeEnviado")?.textContent || "";
+}
+
 const PNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
 
 beforeEach(() => {
@@ -126,7 +133,7 @@ describe("formulario de contacto", () => {
     fireEvent.submit(container.querySelector("#formulario"));
     await waitFor(() => expect(window.fetch).toHaveBeenCalled());
     await new Promise((r) => setTimeout(r, 50));
-    expect(container.querySelector("#mensajeEnviado")?.textContent || "").not.toMatch(/Gracias/);
+    expect(ventanaEnvioTexto(container)).not.toMatch(/Gracias/);
   });
 
   it("si el servicio responde success:\"false\" (como texto) no agradece el envío", async () => {
@@ -146,7 +153,7 @@ describe("formulario de contacto", () => {
     fireEvent.submit(container.querySelector("#formulario"));
     await waitFor(() => expect(window.fetch).toHaveBeenCalled());
     await new Promise((r) => setTimeout(r, 50));
-    const aviso = container.querySelector("#mensajeEnviado")?.textContent || "";
+    const aviso = ventanaEnvioTexto(container);
     expect(aviso).not.toMatch(/Gracias/);
     expect(aviso).toMatch(/No pudimos enviar/);
   });

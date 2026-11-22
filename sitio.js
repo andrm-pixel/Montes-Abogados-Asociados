@@ -391,7 +391,7 @@ var TRADUCCIONES = {
   "actualidad.titulo": "Legal Updates",
   "actualidad.subtitulo": "Legal analysis, case law, regulatory news and press notes published by the MAA team.",
   "actualidad.nota": "This content is informative and does not constitute legal advice for a specific case.",
-  "formulario.boletin": "I wish to receive the legal updates newsletter and information about the services of MAA by email.",
+  "formulario.boletin": "I wish to receive the Legal Updates (Actualidad Jurídica) newsletter by email.",
   "sesion.soyAdmin": "I am the administrator",
 
 
@@ -1434,6 +1434,31 @@ function crearOpcionesArea() {
 /* Crea los campos de texto del formulario.
    Los que tienen "mitad: true" van de a dos en una fila: por eso se
    acumulan en una variable aparte y se sueltan de dos en dos. */
+/* Indicativos de país para el teléfono del formulario. */
+var INDICATIVOS = [
+  { nombre: "Colombia", codigo: "+57" }, { nombre: "Argentina", codigo: "+54" },
+  { nombre: "Bolivia", codigo: "+591" }, { nombre: "Brasil", codigo: "+55" },
+  { nombre: "Chile", codigo: "+56" }, { nombre: "Costa Rica", codigo: "+506" },
+  { nombre: "Cuba", codigo: "+53" }, { nombre: "Ecuador", codigo: "+593" },
+  { nombre: "El Salvador", codigo: "+503" }, { nombre: "España", codigo: "+34" },
+  { nombre: "Estados Unidos", codigo: "+1" }, { nombre: "Guatemala", codigo: "+502" },
+  { nombre: "Honduras", codigo: "+504" }, { nombre: "México", codigo: "+52" },
+  { nombre: "Nicaragua", codigo: "+505" }, { nombre: "Panamá", codigo: "+507" },
+  { nombre: "Paraguay", codigo: "+595" }, { nombre: "Perú", codigo: "+51" },
+  { nombre: "Puerto Rico", codigo: "+1" }, { nombre: "República Dominicana", codigo: "+1" },
+  { nombre: "Uruguay", codigo: "+598" }, { nombre: "Venezuela", codigo: "+58" }
+];
+
+function opcionesIndicativos() {
+  var opciones = "";
+  for (var p = 0; p < INDICATIVOS.length; p++) {
+    var pais = INDICATIVOS[p];
+    opciones += '<option value="' + pais.codigo + '"' + (pais.codigo === "+57" ? " selected" : "") + ">" +
+      pais.nombre + " " + pais.codigo + "</option>";
+  }
+  return opciones;
+}
+
 function crearCamposFormulario() {
   var html = "";
   var pares = "";
@@ -1441,6 +1466,25 @@ function crearCamposFormulario() {
   for (var i = 0; i < CAMPOS.length; i++) {
     var campo = CAMPOS[i];
     var bloque = "";
+
+    if (campo.id === "telefono") {
+      var opciones = "";
+      for (var p = 0; p < INDICATIVOS.length; p++) {
+        var pais = INDICATIVOS[p];
+        opciones += '<option value="' + pais.codigo + '"' + (pais.codigo === "+57" ? " selected" : "") + ">" +
+          pais.nombre + " " + pais.codigo + "</option>";
+      }
+      html = html + `
+              <div class="campo">
+                <label for="telefono" data-i18n="${campo.clave}">${campo.etiqueta} ${asterisco(campo.requerido)}</label>
+                <div class="telefono-fila">
+                  <select id="indicativo" name="indicativo" class="indicativo" aria-label="Indicativo del país">${opciones}</select>
+                  <input type="tel" id="telefono" name="telefono" placeholder="300 000 0000">
+                </div>
+                <span class="ayuda" data-i18n="${campo.clave}.ayuda">${campo.ayuda || ""}</span>
+              </div>`;
+      continue;
+    }
 
     if (campo.mitad) {
       bloque = `
@@ -1855,8 +1899,7 @@ function crearContacto(completo) {
               <div class="check-privacidad">
                 <input type="checkbox" id="boletin" name="boletin">
                 <label for="boletin" data-i18n="formulario.boletin">
-                  Deseo recibir el boletín de actualidad jurídica e información sobre los
-                  servicios de MAA por correo electrónico.
+                  Deseo recibir por correo las novedades de Actualidad Jurídica.
                 </label>
               </div>
 
@@ -2330,7 +2373,7 @@ function crearPanelSesion() {
         <h3 id="tituloSesion" data-i18n="sesion.titulo">Iniciar sesión</h3>
         <p class="pista" data-i18n="sesion.p1">Accede para ver las solicitudes que has enviado.</p>
 
-        <form id="formularioIngreso" novalidate>
+        <form id="formularioIngreso" class="formulario" novalidate>
           <div class="campo">
             <label for="usuarioIngreso" data-i18n="sesion.correo">Correo electrónico</label>
             <input type="email" id="usuarioIngreso" autocomplete="email" placeholder="ejemplo@correo.com">
@@ -2338,7 +2381,7 @@ function crearPanelSesion() {
           <div class="campo">
             <label for="claveIngreso" data-i18n="sesion.clave">Contraseña</label>
                         <div class="campo-clave">
-                          <input type="password" id="claveIngreso" autocomplete="current-password" placeholder="Su clave">
+                          <input type="password" id="claveIngreso" autocomplete="current-password" placeholder="Su clave" required>
                           <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('claveIngreso', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña" data-i18n-aria="nav.clave.ver" data-i18n-title="nav.clave.ver"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
                         </div>
           </div>
@@ -2366,30 +2409,33 @@ function crearPanelSesion() {
         <h3 data-i18n="sesion.tituloRegistro">Crear una cuenta</h3>
         <p class="pista" data-i18n="sesion.p2">Complete los datos para registrar su cuenta y ver sus solicitudes.</p>
 
-        <form id="formularioRegistro" novalidate>
+        <form id="formularioRegistro" class="formulario" novalidate>
           <div class="campo">
             <label for="regNombre" data-i18n="sesion.nombre">Nombre completo</label>
-            <input type="text" id="regNombre" placeholder="Su nombre">
+            <input type="text" id="regNombre" placeholder="Su nombre" required>
           </div>
           <div class="campo">
             <label for="regCorreo" data-i18n="sesion.correo">Correo electrónico</label>
-            <input type="email" id="regCorreo" placeholder="ejemplo@correo.com">
+            <input type="email" id="regCorreo" placeholder="ejemplo@correo.com" required>
           </div>
           <div class="campo">
             <label for="regTelefono" data-i18n="sesion.telefono">Teléfono</label>
-            <input type="tel" id="regTelefono" placeholder="+57 300 000 0000">
+            <div class="telefono-fila">
+              <select id="regIndicativo" class="indicativo" aria-label="Indicativo del país">${opcionesIndicativos()}</select>
+              <input type="tel" id="regTelefono" placeholder="300 000 0000" required>
+            </div>
           </div>
           <div class="campo">
             <label for="regClave" data-i18n="sesion.clave">Contraseña</label>
                         <div class="campo-clave">
-                          <input type="password" id="regClave" placeholder="Mínimo 8 caracteres">
+                          <input type="password" id="regClave" placeholder="Mínimo 8 caracteres" minlength="8" required>
                           <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('regClave', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña" data-i18n-aria="nav.clave.ver" data-i18n-title="nav.clave.ver"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
                         </div>
           </div>
           <div class="campo">
             <label for="regClave2" data-i18n="sesion.repetir">Repetir la contraseña</label>
                         <div class="campo-clave">
-                          <input type="password" id="regClave2" placeholder="Repita la contraseña">
+                          <input type="password" id="regClave2" required placeholder="Repita la contraseña">
                           <div class="boton-ver-clave"><button type="button" class="btn-ver-clave" onclick="verClave('regClave2', this)" aria-label="Mostrar la contraseña" title="Mostrar la contraseña" data-i18n-aria="nav.clave.ver" data-i18n-title="nav.clave.ver"><svg class="ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ojo-tachado" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
                         </div>
           </div>
@@ -2843,6 +2889,7 @@ function iniciarSesionUsuario() {
   if (formularioIngreso) {
     formularioIngreso.addEventListener("submit", function (evento) {
       evento.preventDefault();
+      formularioIngreso.classList.add("intentado");
 
       var usuario = document.getElementById("usuarioIngreso").value.trim();
       var clave = document.getElementById("claveIngreso").value;
@@ -2907,10 +2954,14 @@ function iniciarSesionUsuario() {
   if (formularioRegistro) {
     formularioRegistro.addEventListener("submit", function (evento) {
       evento.preventDefault();
+      /* Desde este primer intento, los campos muestran rojo o verde. */
+      formularioRegistro.classList.add("intentado");
 
       var nombre = document.getElementById("regNombre").value.trim();
       var correo = document.getElementById("regCorreo").value.trim().toLowerCase();
-      var telefono = document.getElementById("regTelefono").value.trim();
+      var telefonoLocal = document.getElementById("regTelefono").value.trim();
+      var indicativoReg = document.getElementById("regIndicativo").value;
+      var telefono = telefonoLocal !== "" ? (indicativoReg + " " + telefonoLocal) : "";
       var clave = document.getElementById("regClave").value;
       var repetir = document.getElementById("regClave2").value;
       var aviso = document.getElementById("avisoRegistro");
@@ -4602,6 +4653,32 @@ function marcarError(idCampo, mensaje) {
 /* Muestra un aviso dentro del formulario.
    "tipo" puede ser "ok" (verde) o "error" (rojo). */
 
+/* Ventana emergente que se cierra sola a los 5 segundos.
+   tipo: "ok" (verde) o "error" (rojo). Se puede cerrar antes con el botón. */
+function mostrarVentanaEnvio(texto, tipo) {
+  var anterior = document.getElementById("ventanaEnvio");
+  if (anterior) {
+    anterior.remove();
+  }
+  var ventana = document.createElement("div");
+  ventana.id = "ventanaEnvio";
+  ventana.className = "ventana-envio " + tipo;
+  ventana.setAttribute("role", "alert");
+  ventana.innerHTML = '<div class="ventana-envio-caja">' +
+    '<p class="ventana-envio-texto"></p>' +
+    '<button type="button" class="ventana-envio-cerrar" aria-label="Cerrar">&times;</button>' +
+    '</div>';
+  ventana.querySelector(".ventana-envio-texto").textContent = texto;
+  document.body.appendChild(ventana);
+  var cerrar = function () {
+    if (ventana.parentNode) {
+      ventana.remove();
+    }
+  };
+  ventana.querySelector(".ventana-envio-cerrar").addEventListener("click", cerrar);
+  setTimeout(cerrar, 5000);
+}
+
 function mostrarAviso(texto, tipo) {
   var aviso = document.getElementById("mensajeEnviado");
   aviso.textContent = texto;
@@ -4674,12 +4751,12 @@ function enviarPorServidor(formulario, datos) {
       if (quiereBoletin) {
         suscribirBoletin(datos.correo, datos.nombre);
       }
-      mostrarAviso(mensaje("formulario.gracias", { nombre: datos.nombre }), "ok");
+      mostrarVentanaEnvio(mensaje("formulario.gracias", { nombre: datos.nombre }), "ok");
       formulario.reset();
     } else if (r.codigo === "limite") {
-      mostrarAviso(mensaje("formulario.limite", { telefono: SITIO.telefono }), "error");
+      mostrarVentanaEnvio(mensaje("formulario.limite", { telefono: SITIO.telefono }), "error");
     } else {
-      mostrarAviso(mensaje("formulario.error", { telefono: SITIO.telefono }), "error");
+      mostrarVentanaEnvio(mensaje("formulario.error", { telefono: SITIO.telefono }), "error");
     }
     boton.disabled = false;
     boton.textContent = mensaje("formulario.enviar");
@@ -4703,12 +4780,20 @@ function iniciarFormulario() {
 
     limpiarErrores();
     aviso.style.display = "none";
+    /* Desde este primer intento, los campos muestran rojo o verde. */
+    formulario.classList.add("intentado");
 
     try {
       var nombre = document.getElementById("nombre").value.trim();
       var apellido = document.getElementById("apellido").value.trim();
       var correo = document.getElementById("correo").value.trim();
-      var telefono = document.getElementById("telefono").value.trim();
+      var telefonoLocal = document.getElementById("telefono").value.trim();
+      var indicativo = document.getElementById("indicativo") ? document.getElementById("indicativo").value : "";
+      var digitosTel = telefonoLocal.replace(/[^0-9]/g, "");
+      if (telefonoLocal !== "" && (digitosTel.length < 7 || digitosTel.length > 12)) {
+        throw new Error("telefono");
+      }
+      var telefono = telefonoLocal !== "" ? (indicativo + " " + telefonoLocal) : "";
       var area = document.getElementById("area").value;
       var textoMensaje = document.getElementById("mensaje").value.trim();
       var privacidad = document.getElementById("privacidad").checked;
@@ -4742,7 +4827,7 @@ function iniciarFormulario() {
       });
 
       if (abiertoComoArchivo()) {
-        mostrarAviso(
+        mostrarVentanaEnvio(
           mensaje("formulario.errorArchivo", { telefono: SITIO.telefono }),
           "error"
         );
@@ -4801,14 +4886,14 @@ function iniciarFormulario() {
           }
 
           if (exito) {
-            mostrarAviso(
+            mostrarVentanaEnvio(
               mensaje("formulario.gracias", { nombre: nombre }),
               "ok"
             );
             registro.estado = "Enviada";
             formulario.reset();
           } else {
-            mostrarAviso(
+            mostrarVentanaEnvio(
               mensaje("formulario.error", { telefono: SITIO.telefono }),
               "error"
             );
@@ -4819,7 +4904,7 @@ function iniciarFormulario() {
         .catch(function (error) {
           console.log("Error al enviar el formulario:", error.message);
           registro.estado = "Guardada";
-          mostrarAviso(
+          mostrarVentanaEnvio(
             mensaje("formulario.error", { telefono: SITIO.telefono }),
             "error"
           );

@@ -26,6 +26,13 @@ vi.mock("./src/lib/cuentas.js", () => ({
 
 import PaginaSitio from "./PaginaSitio.jsx";
 
+/* El resultado del envío aparece en una ventana emergente (en body). */
+function ventanaEnvioTexto(container) {
+  const v = document.querySelector("#ventanaEnvio .ventana-envio-texto");
+  if (v) return v.textContent;
+  return container.querySelector("#mensajeEnviado")?.textContent || "";
+}
+
 beforeEach(() => {
   localStorage.clear();
   document.body.innerHTML = "";
@@ -53,7 +60,7 @@ describe("formulario de contacto con servidor", () => {
       nombre: "Ana", apellido: "Pérez", correo: "ana@ejemplo.com", area: "cartera",
       version: "22 de octubre de 2026",
     }));
-    await waitFor(() => expect(container.querySelector("#mensajeEnviado").textContent).toMatch(/Gracias Ana/));
+    await waitFor(() => expect(ventanaEnvioTexto(container)).toMatch(/Gracias Ana/));
     expect(localStorage.getItem("solicitudesMontes")).toBeNull();
     expect(localStorage.getItem("pruebasAutorizacionMontes")).toBeNull();
   });
@@ -65,7 +72,7 @@ describe("formulario de contacto con servidor", () => {
     await llenarFormulario(container, "laboral");
     fireEvent.submit(container.querySelector("#formulario"));
 
-    await waitFor(() => expect(container.querySelector("#mensajeEnviado").textContent).toMatch(/Gracias Ana/));
+    await waitFor(() => expect(ventanaEnvioTexto(container)).toMatch(/Gracias Ana/));
     expect(window.fetch.mock.calls.some(([u]) => /formsubmit/.test(String(u)))).toBe(true);
   });
 
@@ -75,8 +82,8 @@ describe("formulario de contacto con servidor", () => {
     await llenarFormulario(container);
     fireEvent.submit(container.querySelector("#formulario"));
 
-    await waitFor(() => expect(container.querySelector("#mensajeEnviado").textContent).toMatch(/No pudimos enviar/));
-    expect(container.querySelector("#mensajeEnviado").textContent).not.toMatch(/Gracias/);
+    await waitFor(() => expect(ventanaEnvioTexto(container)).toMatch(/No pudimos enviar/));
+    expect(ventanaEnvioTexto(container)).not.toMatch(/Gracias/);
   });
 
   it("avisa cuando se superó el límite de solicitudes por hora", async () => {
@@ -85,6 +92,6 @@ describe("formulario de contacto con servidor", () => {
     await llenarFormulario(container);
     fireEvent.submit(container.querySelector("#formulario"));
 
-    await waitFor(() => expect(container.querySelector("#mensajeEnviado").textContent).toMatch(/varias solicitudes seguidas/));
+    await waitFor(() => expect(ventanaEnvioTexto(container)).toMatch(/varias solicitudes seguidas/));
   });
 });

@@ -1687,38 +1687,89 @@ footer {
   text-align: center;  /* como se alinea el texto (izquierda, centro o derecha) */
 }
 
-/* Campos del formulario — validación con CSS */
-
-/* Rojo: solo cuando el campo ya fue tocado (focus) y sigue inválido */
-input:focus:invalid,
-select:focus:invalid,
-textarea:focus:invalid {
-  border-color: #cc0000;  /* el color del borde */
-  background-color: #fff5f5;  /* el color de fondo de la caja */
-  outline: none;  /* el contorno al enfocar con el teclado */
+/* Campos del formulario: rojo o verde solo DESPUÉS del primer intento de envío.
+   Antes de enviar, los campos se ven normales. */
+.formulario.intentado input:invalid,
+.formulario.intentado select:invalid,
+.formulario.intentado textarea:invalid {
+  border-color: #cc0000;
+  background-color: #fff5f5;
+}
+.formulario.intentado input:valid:not(:placeholder-shown),
+.formulario.intentado select:valid,
+.formulario.intentado textarea:valid:not(:placeholder-shown) {
+  border-color: #2e7d32;
+  background-color: #f5fff5;
 }
 
-/* Verde: cuando el campo está bien llenado */
-input:focus:valid,
-select:focus:valid,
-textarea:focus:valid {
-  border-color: #2e7d32;  /* el color del borde */
-  background-color: #f5fff5;  /* el color de fondo de la caja */
-  outline: none;  /* el contorno al enfocar con el teclado */
+/* Teléfono: indicativo del país y número lado a lado. */
+.telefono-fila {
+  display: flex;
+  gap: 8px;
+}
+.telefono-fila .indicativo {
+  flex: 0 0 40%;
+  min-width: 0;
+}
+.telefono-fila input {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
-/* Rojo más visible: cuando el usuario salió del campo y quedó inválido */
-input:not(:focus):not(:placeholder-shown):invalid,
-textarea:not(:focus):not(:placeholder-shown):invalid {
-  border-color: #cc0000;  /* el color del borde */
-  background-color: #fff5f5;  /* el color de fondo de la caja */
+/* Ventana emergente de envío (se cierra sola a los 5 segundos). */
+.ventana-envio {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(10, 25, 50, 0.45);
+  animation: ventanaEntrar 0.25s ease both;
 }
-
-/* Verde: cuando el usuario salió del campo y quedó válido */
-input:not(:focus):not(:placeholder-shown):valid,
-textarea:not(:focus):not(:placeholder-shown):valid {
-  border-color: #2e7d32;  /* el color del borde */
-  background-color: #f5fff5;  /* el color de fondo de la caja */
+.ventana-envio-caja {
+  position: relative;
+  max-width: 440px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 26px 26px 22px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  border-top: 6px solid #2e7d32;
+}
+.ventana-envio.error .ventana-envio-caja {
+  border-top-color: #cc0000;
+}
+.ventana-envio-texto {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.5;
+  color: #24303f;
+  text-align: center;
+}
+.ventana-envio.ok .ventana-envio-texto {
+  color: #2e7d32;
+  font-weight: 600;
+}
+.ventana-envio.error .ventana-envio-texto {
+  color: #cc0000;
+  font-weight: 600;
+}
+.ventana-envio-cerrar {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 26px;
+  line-height: 1;
+  color: #697276;
+  cursor: pointer;
+}
+@keyframes ventanaEntrar {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* =========================================
