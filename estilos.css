@@ -1647,7 +1647,7 @@ footer {
   }
 
   .aviso-privacidad h4 {
-    font-size: 19.5px;
+    font-size: 26px;
   }
 
   .formulario-cabecera {
@@ -2897,8 +2897,9 @@ label.btn-bandera:focus-visible {
 }
 
 .modal-sesion h3 {
-  font-size: 22.3px;  /* el tamano de la letra */
-  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  font-family: var(--fuente-titulos);  /* la misma letra de los títulos */
+  font-size: 30px;  /* el tamano de la letra (grande, para que resalte) */
+  font-weight: 700;  /* el grosor de la letra: negrita */
   color: #006cb7;  /* el color del texto */
   margin-bottom: 6px;  /* el espacio por debajo de la caja */
 }
@@ -3476,8 +3477,8 @@ button.secundario.pequeno {
 }
 
 .aviso-privacidad h4 {
-  font-size: 21.5px;  /* el tamano de la letra */
-  font-weight: bold;  /* el grosor de la letra (normal, negrita...) */
+  font-size: 30px;  /* el tamano de la letra (grande, para que resalte) */
+  font-weight: 700;  /* el grosor de la letra: negrita */
   color: var(--azul-titulo);  /* el color del texto */
   margin-bottom: 8px;  /* el espacio por debajo de la caja */
 }
