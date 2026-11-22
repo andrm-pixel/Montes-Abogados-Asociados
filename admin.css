@@ -221,3 +221,13 @@ details.plegable[open] > summary::after { transform: rotate(180deg); }
 details.plegable > summary:hover { background: #eef6fd; }
 details.plegable > *:not(summary) { margin-left: 22px; margin-right: 22px; }
 details.plegable > *:last-child { margin-bottom: 22px; }
+
+/* Títulos de sección: tipo serif en mayúsculas, como el logotipo */
+.panel h2,
+details.plegable > summary h2 {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-weight: bold;
+  font-size: 24px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
