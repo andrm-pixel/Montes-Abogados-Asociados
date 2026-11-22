@@ -35,9 +35,54 @@
   <main>
     <div class="aviso" id="aviso"></div>
 
+    <!-- ---------- SOLICITUDES RECIBIDAS ---------- -->
+    <details class="panel plegable">
+      <summary><h2>6. Solicitudes recibidas</h2></summary>
+      <p class="pista" style="margin-bottom:14px">
+        Aquí aparecen las solicitudes que enviaron los clientes, ya sea por el formulario
+        de contacto o desde el área "Mi cuenta" del sitio.
+      </p>
+      <div id="listaSolicitudes"></div>
+      <div class="barra" style="margin-top:12px">
+        <button class="secundario" id="btnExportarSolicitudes">Descargar las solicitudes</button>
+        <button class="peligro" id="btnBorrarSolicitudes">Borrar las solicitudes</button>
+      </div>
+    </details>
+
+    <!-- ---------- PUBLICACIONES ---------- -->
+    <details class="panel plegable">
+      <summary><h2>5. Publicaciones (Actualidad Jurídica)</h2></summary>
+      <p class="pista" style="margin-bottom:12px">
+        Aquí se escriben los artículos, las sentencias y las novedades de la firma.
+        Para cada publicación puede poner una imagen y adjuntar un archivo en PDF.
+        La imagen queda guardada con la publicación; el archivo en PDF se sube
+        después a la carpeta "documentos" del alojamiento y el panel anota el
+        nombre del archivo.
+      </p>
+      <div id="listaPublicaciones"></div>
+      <button class="secundario" id="btnAgregarPublicacion">Agregar publicación</button>
+    </details>
+
+    <!-- ---------- CARRUSEL DE IMAGENES ---------- -->
+    <details class="panel plegable">
+      <summary><h2>Carrusel de imágenes (página de inicio)</h2></summary>
+      <p class="pista" style="margin-bottom:12px">
+        Cada imagen puede llevar un título y un subtítulo, en español y en inglés.
+        Todos esos campos son opcionales: si los deja vacíos, la imagen sola
+        aparece en el carrusel, sin texto. Al escribir en español, la versión
+        en inglés se completa automáticamente (también puede escribirla a mano).
+        Las imágenes deben pesar menos de 900 KB (JPG o PNG). El enlace es
+        opcional (por ejemplo contacto.html). Si no hay imágenes, el carrusel
+        no aparece. Para que lo vean los visitantes, después de guardar pulse
+        "Descargar datos.json" y suba ese archivo a la carpeta del sitio.
+      </p>
+      <div id="listaCarrusel"></div>
+      <button class="secundario" id="btnAgregarDiapositiva">Agregar imagen nueva</button>
+    </details>
+
     <!-- ---------- EMPRESA ---------- -->
-    <div class="panel">
-      <h2>1. Datos de la empresa</h2>
+    <details class="panel plegable">
+      <summary><h2>1. Datos de la empresa</h2></summary>
       <div class="fila">
         <div class="campo">
           <label for="nombre">Nombre</label>
@@ -64,11 +109,11 @@
         <p class="pista">Se acepta SVG, PNG o JPG. El logotipo queda guardado en este computador.</p>
         <div id="vistaLogo" style="margin-top:10px"></div>
       </div>
-    </div>
+    </details>
 
     <!-- ---------- CONTACTO ---------- -->
-    <div class="panel">
-      <h2>2. Datos de contacto</h2>
+    <details class="panel plegable">
+      <summary><h2>2. Datos de contacto</h2></summary>
       <div class="fila">
         <div class="campo">
           <label for="telefono">Teléfono principal</label>
@@ -115,72 +160,27 @@
         <label for="whatsappNumero">Número de WhatsApp (con código de país, sin +)</label>
         <input type="text" id="whatsappNumero" placeholder="573007257266">
       </div>
-    </div>
+    </details>
 
     <!-- ---------- SERVICIOS ---------- -->
-    <div class="panel">
-      <h2>3. Áreas de servicio</h2>
+    <details class="panel plegable">
+      <summary><h2>3. Áreas de servicio</h2></summary>
       <p class="pista" style="margin-bottom:12px">Puede editar el título y la descripción, o quitar un área.</p>
       <div id="listaServicios"></div>
       <button class="secundario" id="btnAgregarServicio">Agregar área</button>
-    </div>
+    </details>
 
     <!-- ---------- EQUIPO ---------- -->
-    <div class="panel">
-      <h2>4. Equipo</h2>
+    <details class="panel plegable">
+      <summary><h2>4. Equipo</h2></summary>
       <p class="pista" style="margin-bottom:12px">Nombre, cargo, iniciales y la sinopsis. Puede agregar o quitar integrantes.</p>
       <div id="listaEquipo"></div>
       <button class="secundario" id="btnAgregarIntegrante">Agregar integrante</button>
-    </div>
-
-    <!-- ---------- PUBLICACIONES ---------- -->
-    <div class="panel">
-      <h2>5. Publicaciones (Actualidad Jurídica)</h2>
-      <p class="pista" style="margin-bottom:12px">
-        Aquí se escriben los artículos, las sentencias y las novedades de la firma.
-        Para cada publicación puede poner una imagen y adjuntar un archivo en PDF.
-        La imagen queda guardada con la publicación; el archivo en PDF se sube
-        después a la carpeta "documentos" del alojamiento y el panel anota el
-        nombre del archivo.
-      </p>
-      <div id="listaPublicaciones"></div>
-      <button class="secundario" id="btnAgregarPublicacion">Agregar publicación</button>
-    </div>
-
-    <!-- ---------- CARRUSEL DE IMAGENES ---------- -->
-    <div class="panel">
-      <h2>Carrusel de imágenes (página de inicio)</h2>
-      <p class="pista" style="margin-bottom:12px">
-        Cada imagen puede llevar un título y un subtítulo, en español y en inglés.
-        Todos esos campos son opcionales: si los deja vacíos, la imagen sola
-        aparece en el carrusel, sin texto. Al escribir en español, la versión
-        en inglés se completa automáticamente (también puede escribirla a mano).
-        Las imágenes deben pesar menos de 900 KB (JPG o PNG). El enlace es
-        opcional (por ejemplo contacto.html). Si no hay imágenes, el carrusel
-        no aparece. Para que lo vean los visitantes, después de guardar pulse
-        "Descargar datos.json" y suba ese archivo a la carpeta del sitio.
-      </p>
-      <div id="listaCarrusel"></div>
-      <button class="secundario" id="btnAgregarDiapositiva">Agregar imagen nueva</button>
-    </div>
-
-    <!-- ---------- SOLICITUDES RECIBIDAS ---------- -->
-    <div class="panel">
-      <h2>6. Solicitudes recibidas</h2>
-      <p class="pista" style="margin-bottom:14px">
-        Aquí aparecen las solicitudes que enviaron los clientes, ya sea por el formulario
-        de contacto o desde el área "Mi cuenta" del sitio.
-      </p>
-      <div id="listaSolicitudes"></div>
-      <div class="barra" style="margin-top:12px">
-        <button class="secundario" id="btnExportarSolicitudes">Descargar las solicitudes</button>
-        <button class="peligro" id="btnBorrarSolicitudes">Borrar las solicitudes</button>
-      </div>
-    </div>
+    </details>
 
     <!-- ---------- SEGURIDAD ---------- -->
-    <div class="panel">
-      <h2>7. Seguridad</h2>
+    <details class="panel plegable">
+      <summary><h2>7. Seguridad</h2></summary>
       <p class="pista" style="margin-bottom:14px">
         Puede cambiar la contraseña con la que entra a este panel. Si se le olvida, use
         "Restablecer contraseña": con la base de datos conectada le llega un enlace al correo
@@ -215,11 +215,11 @@
         </div>
         <p class="ayuda" id="avisoClave"></p>
       </form>
-    </div>
+    </details>
 
     <!-- ---------- GUARDAR ---------- -->
-    <div class="panel">
-      <h2>8. Guardar los cambios</h2>
+    <details class="panel plegable">
+      <summary><h2>8. Guardar los cambios</h2></summary>
       <p class="pista" style="margin-bottom:14px">
         Pulse <strong>Guardar cambios</strong> cuando termine de editar. La página se actualiza
         de inmediato y los cambios quedan guardados en este computador.
@@ -230,6 +230,7 @@
         <a class="secundario" href="pagina-montes.html" target="_blank" rel="noopener">Ver el sitio</a>
         <button class="peligro" id="btnRestablecer">Deshacer todos los cambios</button>
       </div>
-    </div>
+    </details>
+
   </main>
 </div>

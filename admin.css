@@ -186,3 +186,38 @@
   }
 
   /* 3. UTILIDADES */
+
+/* ---------- Secciones desplegables del panel ---------- */
+details.plegable {
+  padding: 0;
+  overflow: hidden;
+}
+details.plegable > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 22px;
+  background: #f8fbff;
+  border-bottom: 2px solid var(--borde);
+}
+details.plegable > summary::-webkit-details-marker { display: none; }
+details.plegable > summary h2 {
+  font-size: 22px;
+  color: var(--marca);
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+details.plegable > summary::after {
+  content: "▼";
+  font-size: 14px;
+  color: var(--marca);
+  transition: transform 0.2s ease;
+}
+details.plegable[open] > summary::after { transform: rotate(180deg); }
+details.plegable > summary:hover { background: #eef6fd; }
+details.plegable > *:not(summary) { margin-left: 22px; margin-right: 22px; }
+details.plegable > *:last-child { margin-bottom: 22px; }
