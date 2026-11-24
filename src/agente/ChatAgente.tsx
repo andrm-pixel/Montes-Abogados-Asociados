@@ -106,7 +106,7 @@ export default function ChatAgente() {
       <button
         type="button"
         className="agente-fab"
-        style={{ display: panelVisible || abierto ? "flex" : "none" }}
+        style={{ display: panelVisible && !abierto ? "flex" : "none" }}
         onClick={() => setAbierto((valor) => !valor)}
         aria-expanded={abierto}
         aria-label="Abrir el asistente de IA"
