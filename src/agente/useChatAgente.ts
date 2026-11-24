@@ -53,7 +53,7 @@ export interface AccionesAgente {
   usarIdea: (id: string) => void;
   valorarIdea: (id: string, util: boolean) => void;
   decidirPropuesta: (id: string, estado: "aprobada" | "rechazada") => void;
-  pedirVideo: (guion: string) => Promise<void>;
+  pedirPrompt: (tema: string) => Promise<void>;
 }
 
 /** Crea una conversación inicial con el saludo numerado. */
@@ -272,37 +272,65 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
 
   /* ------------------ video con el avatar ------------------ */
 
-  const pedirVideo = useCallback(async (guion: string) => {
-    const limpio = filtrarDatosPersonales(guion).texto;
-    if (!limpio.trim()) return;
-    if (!URL_VIDEO) {
-      setAviso(
-        "Para generar el video falta configurar N8N_WEBHOOK_URL en el .env del servidor " +
-          "(n8n + Dreamina). El guion quedó guardado en la conversación."
-      );
-      return;
-    }
-    setVideoPidiendo(true);
-    setAviso("🎬 Generando el video con el avatar… esto puede tardar unos segundos.");
-    try {
-      const respuesta = await fetch(URL_VIDEO, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          tipo: "video",
-          guion: limpio,
-          avatar: "imagenes/agente-avatar.jpg",
-          pendiente: true, // regla 2: se aprueba antes de publicar
-        }),
-      });
-      if (!respuesta.ok) throw new Error("HTTP " + respuesta.status);
-      setAviso("🎬 Video en cola. Aparecerá en las propuestas cuando esté listo.");
-    } catch (error) {
-      setAviso("No se pudo pedir el video: " + (error as Error).message);
-    } finally {
-      setVideoPidiendo(false);
-    }
-  }, []);
+  /** Pide a la función de Supabase el prompt de Dreamina (30 s) a partir del tema escrito. */
+  const pedirPrompt = useCallback(
+    async (tema: string) => {
+      const limpio = filtrarDatosPersonales(tema).texto.trim();
+      if (!limpio) return;
+      if (!URL_VIDEO) {
+        setAviso("Falta configurar VITE_N8N_WEBHOOK_URL (la función generar-prompt-video).");
+        return;
+      }
+      setVideoPidiendo(true);
+      setAviso("✨ Generando el prompt… un momento.");
+
+      const ahora = Date.now();
+      const mensajeUsuario = { id: nuevoId(), rol: "usuario" as const, texto: "🎬 Prompt para: " + limpio, creadoEn: ahora };
+      const enConversacion = (mensaje: { id: string; rol: "asistente" | "usuario"; texto: string; creadoEn: number }) =>
+        conversaciones.map((c) =>
+          c.id === activa.id ? { ...c, mensajes: [...c.mensajes, mensaje], actualizadaEn: Date.now() } : c
+        );
+      persistir(enConversacion(mensajeUsuario));
+      setTexto("");
+
+      try {
+        const respuesta = await fetch(URL_VIDEO, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tema: limpio, tono: "Cálido y profesional" }),
+        });
+        const datos = await respuesta.json().catch(() => ({}));
+
+        let textoRespuesta: string;
+        if (respuesta.ok && datos.ok) {
+          textoRespuesta =
+            "PROMPT PARA DREAMINA (30 s)\n" + datos.prompt_dreamina +
+            "\n\nGUION DE VOZ\n" + (datos.guion_voz || "—") +
+            "\n\nTEXTO PARA REDES\n" + (datos.texto_redes || "—") +
+            (datos.notas_revision ? "\n\nNOTAS DE REVISIÓN\n" + datos.notas_revision : "") +
+            "\n\nQuedó en Pendientes de aprobación. Cópialo en Dreamina para generar el video.";
+          setAviso("✅ Prompt generado. Revísalo y cópialo a Dreamina.");
+        } else {
+          textoRespuesta =
+            "No se pudo generar el prompt: " + (datos.error || "error " + respuesta.status) +
+            ". Intenta de nuevo en unos segundos.";
+          setAviso("");
+        }
+        const ahora2 = Date.now();
+        const mensajeIA = { id: nuevoId(), rol: "asistente" as const, texto: textoRespuesta, creadoEn: ahora2 };
+        persistir(
+          conversaciones.map((c) =>
+            c.id === activa.id ? { ...c, mensajes: [...c.mensajes, mensajeUsuario, mensajeIA], actualizadaEn: ahora2 } : c
+          )
+        );
+      } catch (error) {
+        setAviso("No se pudo conectar con la función: " + (error as Error).message);
+      } finally {
+        setVideoPidiendo(false);
+      }
+    },
+    [conversaciones, activa.id, persistir]
+  );
 
   return {
     conversaciones,
@@ -325,6 +353,6 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
     usarIdea,
     valorarIdea: valorar,
     decidirPropuesta,
-    pedirVideo,
+    pedirPrompt,
   };
 }

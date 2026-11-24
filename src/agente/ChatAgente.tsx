@@ -2,8 +2,7 @@
    ChatAgente — asistente de IA dentro del panel de administración
    -------------------------------------------------------------
    Interfaz tipo Fresura: barra lateral de "Historial" con nueva
-   conversación y borrado, pestañas Chat / Biblioteca / Estilo de
-   redes, saludo con menú numerado 1–6, contador 0/2000 y aviso
+   conversación y borrado, saludo con menú numerado 1–6, contador 0/2000 y aviso
    de datos personales. Además propone ideas/prompts y deja
    pendientes de aprobación las publicaciones (regla 2).
    ============================================================= */
@@ -11,14 +10,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useChatAgente } from "./useChatAgente";
 import { AVISO_PRIVACIDAD, MENU_SALUDO } from "./tipos";
-import type { Pestana } from "./tipos";
 import "./estilos-agente.css";
-
-const PESTANAS: { id: Pestana; texto: string }[] = [
-  { id: "chat", texto: "Chat" },
-  { id: "biblioteca", texto: "Biblioteca" },
-  { id: "estilo", texto: "Estilo de redes" },
-];
 
 /** URL del avatar (funciona igual en desarrollo y en "salida/"). */
 function rutaAvatar(): string {
@@ -149,22 +141,6 @@ export default function ChatAgente() {
             ×
           </button>
         </header>
-
-        {/* ---------- Pestañas ---------- */}
-        <nav className="agente-pestanas" role="tablist">
-          {PESTANAS.map((p) => (
-            <button
-              key={p.id}
-              type="button"
-              role="tab"
-              aria-selected={pestana === p.id}
-              className={"agente-pestana" + (pestana === p.id ? " activa" : "")}
-              onClick={() => agente.cambiarPestana(p.id)}
-            >
-              {p.texto}
-            </button>
-          ))}
-        </nav>
 
         <div className="agente-cuerpo">
           {/* ---------- Historial ---------- */}
@@ -331,11 +307,11 @@ export default function ChatAgente() {
                 <button
                   type="button"
                   className="agente-video"
-                  onClick={() => void agente.pedirVideo(texto)}
+                  onClick={() => void agente.pedirPrompt(texto)}
                   disabled={videoPidiendo || !texto.trim()}
-                  title="Genera un video con el avatar a partir del guion escrito"
+                  title="Genera el prompt de video (30 s) para Dreamina a partir del tema escrito"
                 >
-                  {videoPidiendo ? "Generando…" : "🎬 Video"}
+                  {videoPidiendo ? "Generando…" : "🎬 Generar prompt"}
                 </button>
                 <button
                   type="button"

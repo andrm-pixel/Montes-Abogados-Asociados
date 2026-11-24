@@ -4,7 +4,7 @@
    REGLA DE SEGURIDAD: aquí NO vive ningún secreto. El navegador
    solo conoce la URL pública del motor; las claves reales
    (Gemini, Supabase service role, Dreamina) están en el .env del
-   servidor y las usa n8n, nunca este archivo.
+   servidor (supabase/functions/agente-ia), nunca este archivo.
    ============================================================= */
 
 import type { Mensaje, Pestana } from "./tipos";

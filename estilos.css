@@ -5121,3 +5121,17 @@ a.servicio-card:focus-visible {
   .publicacion-imagen {
   border-color: #24384f;
 }
+
+/* ---------- Formularios de cuenta (ingreso y registro): sin recuadro exterior ----------
+   Dentro de la ventana de cuenta solo se ven los campos y el botón, como en el diseño limpio. */
+.modal-sesion .formulario.formulario,
+:is(html[data-theme="oscuro"], html:has(#tema-oscuro:checked)) .modal-sesion .formulario.formulario {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+.modal-sesion .formulario.formulario:hover {
+  box-shadow: none;
+}
