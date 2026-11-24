@@ -119,6 +119,25 @@ describe("interfaz del asistente", () => {
     expect(ultima.mensajes.some((m) => m.rol === "asistente")).toBe(true);
   });
 
+  it("el botón 🎬 Generar prompt inicia la entrevista guiada del video", async () => {
+    render(<ChatAgente />);
+    fireEvent.click(screen.getByText(/Generar prompt/, { selector: "button" }));
+    await waitFor(() => {
+      expect(screen.getByText(/¿De qué tema quieres el video/)).toBeTruthy();
+    });
+  });
+
+  it("las opciones rápidas desaparecen después del primer mensaje del usuario", async () => {
+    render(<ChatAgente />);
+    expect(screen.getByText(/Crear una publicación para redes/, { selector: "button" })).toBeTruthy();
+    const caja = screen.getByLabelText("Mensaje para el asistente") as HTMLTextAreaElement;
+    fireEvent.change(caja, { target: { value: "Hola" } });
+    fireEvent.click(screen.getByText("Enviar", { selector: "button" }));
+    await waitFor(() => {
+      expect(screen.queryByText(/Crear una publicación para redes/, { selector: "button" })).toBeNull();
+    });
+  });
+
   it("filtra datos personales antes de enviar (regla 3)", async () => {
     render(<ChatAgente />);
     const caja = screen.getByLabelText("Mensaje para el asistente") as HTMLTextAreaElement;
@@ -140,6 +159,7 @@ describe("interfaz del asistente", () => {
   });
 
   it("crea y borra conversaciones del historial", () => {
+    window.confirm = () => true; // el borrado pide confirmación
     render(<ChatAgente />);
     const total = screen.getAllByTitle("Borrar conversación").length;
     fireEvent.click(screen.getByText("+ Nueva conversación"));

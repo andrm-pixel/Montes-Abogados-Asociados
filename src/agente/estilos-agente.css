@@ -426,3 +426,34 @@ body.modo-admin .agente-fab {
   .agente-cajon { width: 100vw; }
   .agente-fab-texto { display: none; }
 }
+
+/* Historial: cabecera con botón "Borrar todo" */
+.agente-historial-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.agente-borrar-todo {
+  border: 1px solid #fca5a5;
+  background: #fff;
+  color: #b91c1c;
+  border-radius: 8px;
+  padding: 3px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.agente-borrar-todo:hover { background: #fef2f2; }
+
+/* Texto de ayuda sobre los botones de la caja */
+.agente-ayuda {
+  margin: 6px 4px 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #475569;
+}
+/* Cada conversación: el botón de borrar siempre visible */
+.agente-item { display: flex; align-items: center; gap: 4px; }
+.agente-item-botones { flex: 1; min-width: 0; }
+.agente-item-borrar { flex: 0 0 auto; }

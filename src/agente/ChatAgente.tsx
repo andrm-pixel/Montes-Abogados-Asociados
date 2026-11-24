@@ -96,7 +96,14 @@ export default function ChatAgente() {
     }
   };
 
+  /** Las opciones rápidas y las ideas solo se ven antes del primer mensaje del usuario. */
+  const yaEscribio = activa.mensajes.some((m) => m.rol === "usuario");
+
   const elegirOpcion = (indice: number) => {
+    if (indice === 2) {
+      void agente.pedirPrompt("");
+      return;
+    }
     agente.cambiarTexto(MENU_SALUDO[indice]);
     refCaja.current?.focus();
   };
@@ -148,7 +155,20 @@ export default function ChatAgente() {
             <button type="button" className="agente-nueva" onClick={agente.nuevaConversacion}>
               + Nueva conversación
             </button>
-            <p className="agente-historial-titulo">Historial</p>
+            <div className="agente-historial-cabecera">
+              <p className="agente-historial-titulo">Historial</p>
+              <button
+                type="button"
+                className="agente-borrar-todo"
+                onClick={() => {
+                  if (window.confirm("¿Borrar todo el historial de conversaciones? No se puede deshacer.")) {
+                    agente.borrarTodo();
+                  }
+                }}
+              >
+                Borrar todo
+              </button>
+            </div>
             <ul className="agente-lista">
               {agente.conversaciones.map((c) => (
                 <li
@@ -167,7 +187,11 @@ export default function ChatAgente() {
                   <button
                     type="button"
                     className="agente-item-borrar"
-                    onClick={() => agente.borrar(c.id)}
+                    onClick={() => {
+                      if (window.confirm("¿Borrar esta conversación? No se puede deshacer.")) {
+                        agente.borrar(c.id);
+                      }
+                    }}
                     aria-label={"Borrar " + c.titulo}
                     title="Borrar conversación"
                   >
@@ -204,7 +228,7 @@ export default function ChatAgente() {
               )}
 
               {/* Ideas y prompts aprendidos */}
-              {ideas.length > 0 && (
+              {ideas.length > 0 && !yaEscribio && (
                 <section className="agente-ideas">
                   <h4>Ideas y prompts propuestos</h4>
                   <ul>
@@ -271,6 +295,7 @@ export default function ChatAgente() {
             </div>
 
             {/* Menú numerado */}
+            {!yaEscribio && (
             <div className="agente-menu">
               {MENU_SALUDO.map((opcion, i) => (
                 <button
@@ -285,6 +310,8 @@ export default function ChatAgente() {
               ))}
             </div>
 
+            )}
+
             {aviso && <p className="agente-aviso">{aviso}</p>}
 
             {/* Caja de texto */}
@@ -294,11 +321,23 @@ export default function ChatAgente() {
                 value={texto}
                 maxLength={limite}
                 rows={3}
-                placeholder="Escribe qué necesitas publicar, redactar o explicar…"
+                placeholder={
+                  agente.entrevistaActiva
+                    ? "Escribe tu respuesta…"
+                    : agente.borradorActivo
+                    ? "Escribe el ajuste que quieres hacer al prompt…"
+                    : "Escribe qué necesitas publicar, redactar o explicar…"
+                }
                 onChange={(evento) => agente.cambiarTexto(evento.target.value)}
                 onKeyDown={alPulsarEnter}
                 aria-label="Mensaje para el asistente"
               />
+              <p className="agente-ayuda">
+                <b>Botón Enviar</b>: conversa con el asistente
+                {agente.borradorActivo ? ", o aplica el ajuste que escribas al prompt actual" : ""}.{" "}
+                <b>Botón 🎬 Generar prompt</b>: empieza un video con preguntas guiadas (tema, mensaje,
+                tono y llamada a la acción) y devuelve el prompt de 30 s para Dreamina.
+              </p>
               <div className="agente-caja-pie">
                 <span className="agente-contador">
                   {caracteres}/{limite}
@@ -308,8 +347,8 @@ export default function ChatAgente() {
                   type="button"
                   className="agente-video"
                   onClick={() => void agente.pedirPrompt(texto)}
-                  disabled={videoPidiendo || !texto.trim()}
-                  title="Genera el prompt de video (30 s) para Dreamina a partir del tema escrito"
+                  disabled={videoPidiendo || enviando}
+                  title="Inicia las preguntas para crear un video de 30 segundos. Si escribes un tema, lo usa como primera respuesta."
                 >
                   {videoPidiendo ? "Generando…" : "🎬 Generar prompt"}
                 </button>
