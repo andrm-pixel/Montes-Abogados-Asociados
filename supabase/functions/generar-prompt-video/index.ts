@@ -44,7 +44,13 @@ Deno.serve(async (req: Request) => {
         temperature: 0.7,
         messages: [
           { role: "system", content: INSTRUCCIONES },
-          { role: "user", content: "Datos del formulario (JSON):\n" + JSON.stringify(datos) },
+          { role: "user", content: entrada.correccion
+              ? "Borrador anterior:\n" + String(entrada.borrador || "").slice(0, 4000) +
+                "\n\nTema original: " + datos.tema +
+                "\n\nAplica SOLO esta corrección del administrador y devuelve el JSON completo corregido: " +
+                String(entrada.correccion).slice(0, 1000) +
+                "\nMantén todas las reglas obligatorias (30 segundos, 3 escenas, dirección, teléfono y www.montes-a.com)."
+              : "Datos del formulario (JSON):\n" + JSON.stringify(datos) },
         ],
       }),
     });

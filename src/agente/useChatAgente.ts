@@ -54,6 +54,8 @@ export interface AccionesAgente {
   valorarIdea: (id: string, util: boolean) => void;
   decidirPropuesta: (id: string, estado: "aprobada" | "rechazada") => void;
   pedirPrompt: (tema: string) => Promise<void>;
+  pedirCorreccion: (instruccion: string) => Promise<void>;
+  borradorActivo: boolean;
 }
 
 /** Crea una conversación inicial con el saludo numerado. */
@@ -95,6 +97,8 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
   const [ideas, setIdeas] = useState<Idea[]>(() => cargarIdeas());
   const [propuestas, setPropuestas] = useState<Propuesta[]>(() => cargarPropuestas());
   const [videoPidiendo, setVideoPidiendo] = useState(false);
+  /** Último prompt generado; mientras exista, lo que se escriba es una corrección. */
+  const [borrador, setBorrador] = useState<{ tema: string; texto: string } | null>(null);
   const refCaja = useRef<HTMLTextAreaElement | null>(null);
 
   // Asegura una conversación activa aunque el historial esté vacío.
@@ -163,6 +167,10 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
   const enviar = useCallback(async () => {
     const bruto = texto.trim();
     if (!bruto || enviando) return;
+    if (borrador) {
+      void pedirCorreccion(bruto);
+      return;
+    }
 
     if (bruto.length > LIMITE_CARACTERES) {
       setAviso("El mensaje supera los " + LIMITE_CARACTERES + " caracteres.");
@@ -272,55 +280,61 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
 
   /* ------------------ video con el avatar ------------------ */
 
-  /** Pide a la función de Supabase el prompt de Dreamina (30 s) a partir del tema escrito. */
-  const pedirPrompt = useCallback(
-    async (tema: string) => {
-      const limpio = filtrarDatosPersonales(tema).texto.trim();
-      if (!limpio) return;
+  /** Llama a la función de video y muestra el resultado en el chat. */
+  const generarVideo = useCallback(
+    async (payload: Record<string, string>, etiqueta: string) => {
       if (!URL_VIDEO) {
         setAviso("Falta configurar VITE_N8N_WEBHOOK_URL (la función generar-prompt-video).");
         return;
       }
       setVideoPidiendo(true);
-      setAviso("✨ Generando el prompt… un momento.");
+      setAviso("✨ Trabajando en el prompt… un momento.");
 
-      const ahora = Date.now();
-      const mensajeUsuario = { id: nuevoId(), rol: "usuario" as const, texto: "🎬 Prompt para: " + limpio, creadoEn: ahora };
-      const enConversacion = (mensaje: { id: string; rol: "asistente" | "usuario"; texto: string; creadoEn: number }) =>
+      const mensajeUsuario = { id: nuevoId(), rol: "usuario" as const, texto: etiqueta, creadoEn: Date.now() };
+      persistir(
         conversaciones.map((c) =>
-          c.id === activa.id ? { ...c, mensajes: [...c.mensajes, mensaje], actualizadaEn: Date.now() } : c
-        );
-      persistir(enConversacion(mensajeUsuario));
+          c.id === activa.id ? { ...c, mensajes: [...c.mensajes, mensajeUsuario], actualizadaEn: Date.now() } : c
+        )
+      );
       setTexto("");
 
       try {
         const respuesta = await fetch(URL_VIDEO, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ tema: limpio, tono: "Cálido y profesional" }),
+          body: JSON.stringify(payload),
         });
         const datos = await respuesta.json().catch(() => ({}));
 
         let textoRespuesta: string;
         if (respuesta.ok && datos.ok) {
+          const cuerpoBorrador =
+            datos.prompt_dreamina +
+            "\n\nGUION: " + (datos.guion_voz || "") +
+            "\n\nREDES: " + (datos.texto_redes || "");
+          setBorrador({ tema: payload.tema, texto: cuerpoBorrador });
           textoRespuesta =
             "PROMPT PARA DREAMINA (30 s)\n" + datos.prompt_dreamina +
             "\n\nGUION DE VOZ\n" + (datos.guion_voz || "—") +
             "\n\nTEXTO PARA REDES\n" + (datos.texto_redes || "—") +
             (datos.notas_revision ? "\n\nNOTAS DE REVISIÓN\n" + datos.notas_revision : "") +
-            "\n\nQuedó en Pendientes de aprobación. Cópialo en Dreamina para generar el video.";
-          setAviso("✅ Prompt generado. Revísalo y cópialo a Dreamina.");
+            "\n\nQuedó en Pendientes de aprobación.\n\n" +
+            "¿Qué quieres corregir o adaptar? (por ejemplo: cambiar el tono, la escena 2 o el cierre). " +
+            "Escríbelo y pulsa Enviar. Para un tema nuevo usa 🎬 Generar prompt.";
+          setAviso("✅ Listo. Revisa el prompt o pide un ajuste.");
         } else {
           textoRespuesta =
             "No se pudo generar el prompt: " + (datos.error || "error " + respuesta.status) +
             ". Intenta de nuevo en unos segundos.";
           setAviso("");
         }
-        const ahora2 = Date.now();
-        const mensajeIA = { id: nuevoId(), rol: "asistente" as const, texto: textoRespuesta, creadoEn: ahora2 };
+        const ahora = Date.now();
+        const mensajeIA = { id: nuevoId(), rol: "asistente" as const, texto: textoRespuesta, creadoEn: ahora };
         persistir(
           conversaciones.map((c) =>
-            c.id === activa.id ? { ...c, mensajes: [...c.mensajes, mensajeUsuario, mensajeIA], actualizadaEn: ahora2 } : c
+            c.id === activa.id
+              ? { ...c, mensajes: [...c.mensajes, mensajeUsuario, mensajeIA], actualizadaEn: ahora }
+              : c
           )
         );
       } catch (error) {
@@ -330,6 +344,30 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
       }
     },
     [conversaciones, activa.id, persistir]
+  );
+
+  /** Un tema nuevo: genera un prompt desde cero. */
+  const pedirPrompt = useCallback(
+    async (tema: string) => {
+      const limpio = filtrarDatosPersonales(tema).texto.trim();
+      if (!limpio) return;
+      setBorrador(null);
+      await generarVideo({ tema: limpio, tono: "Cálido y profesional" }, "🎬 Prompt para: " + limpio);
+    },
+    [generarVideo]
+  );
+
+  /** Una corrección del prompt anterior (el texto escrito es la instrucción). */
+  const pedirCorreccion = useCallback(
+    async (instruccion: string) => {
+      const limpio = filtrarDatosPersonales(instruccion).texto.trim();
+      if (!limpio || !borrador) return;
+      await generarVideo(
+        { tema: borrador.tema, correccion: limpio, borrador: borrador.texto },
+        "✏️ Ajuste: " + limpio
+      );
+    },
+    [borrador, generarVideo]
   );
 
   return {
@@ -354,5 +392,7 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
     valorarIdea: valorar,
     decidirPropuesta,
     pedirPrompt,
+    pedirCorreccion,
+    borradorActivo: borrador !== null,
   };
 }

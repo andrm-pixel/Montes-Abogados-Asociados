@@ -39,3 +39,25 @@ Supabase (Deno) que llaman a OpenRouter con una sola petición y devuelven el re
 - 404 o "model not found": cambia OPENROUTER_MODEL por otro modelo de openrouter.ai/models.
 - "Faltan secretos del servidor": falta el paso 2.
 - "La IA no devolvió JSON válido": pulsa de nuevo; los modelos gratuitos a veces fallan.
+
+## Flujo interactivo del prompt de video
+
+1. Escribe un tema y pulsa **🎬 Generar prompt**. Aparecen el prompt de Dreamina (30 s, 3 escenas),
+   el guion de voz y el texto para redes. Queda guardado en Pendientes de aprobación.
+2. El chat pregunta qué quieres corregir o adaptar. Escribe el ajuste (por ejemplo "cambia el tono
+   a más formal" o "la escena 2 que hable de liquidación") y pulsa **Enviar**.
+3. La función recibe el borrador anterior y tu corrección, y devuelve la versión corregida.
+   Las reglas (30 s, 3 escenas, dirección, teléfono y www.montes-a.com) se mantienen.
+4. Para un tema nuevo, usa de nuevo **🎬 Generar prompt**.
+
+## Por qué no se usa un framework de agentes
+
+Los manuales de referencia (agentes con CrewAI, LangChain o ciclos de herramientas) se atascaban con
+modelos gratuitos. Lo que funcionó fue una sola llamada con una plantilla fija. Por eso el flujo es
+lineal: una petición por cada prompt o corrección, sin herramientas ni bucles.
+
+## Si el chat muestra "HTTP 404"
+
+- Vuelve a publicar `agente-ia` con el comando del paso 3. La versión anterior seguía mandando el
+  nombre de modelo de Pollinations (`openai`), que OpenRouter no reconoce.
+- Revisa que `OPENROUTER_MODEL` sea `openrouter/free`.

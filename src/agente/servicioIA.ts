@@ -14,9 +14,6 @@ const URL_IA =
   (import.meta as unknown as { env?: Record<string, string> }).env?.VITE_IA_URL ||
   "https://text.pollinations.ai/openai";
 
-const MODELO =
-  (import.meta as unknown as { env?: Record<string, string> }).env?.VITE_IA_MODELO ||
-  "openai";
 
 /** Contexto de marca: colores, teléfono, correo y las 3 reglas. */
 const CONTEXTO_MARCA = [
@@ -70,7 +67,7 @@ export async function preguntarIA(
     const respuesta = await fetch(URL_IA, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ model: MODELO, messages: mensajes }),
+      body: JSON.stringify({ messages: mensajes }), // el modelo lo fija el servidor
       signal,
     });
     if (!respuesta.ok) throw new Error("HTTP " + respuesta.status);
