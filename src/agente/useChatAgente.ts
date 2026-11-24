@@ -37,8 +37,14 @@ const PREGUNTAS_VIDEO: { clave: string; pregunta: string }[] = [
       "🎬 ¡Vamos! ¿De qué tema quieres el video? Por ejemplo: liquidación de prestaciones, despido sin justa causa o recaudo de cartera.",
   },
   {
-    clave: "mensaje_clave",
-    pregunta: "¿Cuál es el mensaje principal que debe entender la persona que lo vea?",
+    clave: "puntos_clave",
+    pregunta:
+      "¿Qué quieres explicar sobre ese tema? Escribe 2 o 3 puntos, por ejemplo: qué es, a quién aplica y un consejo práctico. El video los desarrollará.",
+  },
+  {
+    clave: "quien_habla",
+    pregunta:
+      "¿Quién aparece hablando? Puede ser un presentador genérico (sin identificar a personas reales) o solo voz en off con imágenes de la oficina.",
   },
   { clave: "tono", pregunta: "¿Qué tono prefieres: cálido, profesional o formal?" },
   {
@@ -330,7 +336,8 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
       await generarVideo(
         {
           tema: datos.tema,
-          mensaje_clave: datos.mensaje_clave || "",
+          puntos_clave: datos.puntos_clave || "",
+          quien_habla: datos.quien_habla || "",
           tono: datos.tono || "",
           llamada_accion: datos.llamada_accion || "",
         },

@@ -70,10 +70,18 @@ export default function ChatAgente() {
     [propuestas]
   );
 
-  // Baja siempre al último mensaje.
+  // Baja al último mensaje. Si es una respuesta de la IA, muestra su inicio (no la cola).
   useEffect(() => {
     const caja = refMensajes.current;
-    if (caja) caja.scrollTop = caja.scrollHeight;
+    if (!caja) return;
+    const nodos = caja.querySelectorAll<HTMLElement>(".agente-mensaje");
+    const ultimo = nodos[nodos.length - 1];
+    if (ultimo && ultimo.classList.contains("asistente")) {
+      const arriba = ultimo.getBoundingClientRect().top - caja.getBoundingClientRect().top + caja.scrollTop;
+      caja.scrollTop = Math.max(0, arriba - 8);
+    } else {
+      caja.scrollTop = caja.scrollHeight;
+    }
   }, [activa.mensajes.length, abierto]);
 
   // Escape cierra el asistente.
@@ -346,7 +354,7 @@ export default function ChatAgente() {
                 <button
                   type="button"
                   className="agente-video"
-                  onClick={() => void agente.pedirPrompt(texto)}
+                  onClick={() => void agente.pedirPrompt(MENU_SALUDO.includes(texto.trim()) ? "" : texto)}
                   disabled={videoPidiendo || enviando}
                   title="Inicia las preguntas para crear un video de 30 segundos. Si escribes un tema, lo usa como primera respuesta."
                 >
