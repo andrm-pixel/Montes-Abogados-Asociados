@@ -87,18 +87,27 @@ Deno.serve(async (req: Request) => {
   } catch {
     return respuesta({ ok: false, error: "La IA no devolvió JSON válido", texto }, 502);
   }
+  // Normaliza el texto: enlaces en formato markdown y dominio de montes-a.com (el correo no se toca).
+  const SITIO_HOST = SITIO.replace(/^https?:\/\//, "").replace(/\/$/, "");
+  const normaliza = (t: string) =>
+    t
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+      .replace(/https?:\/\/(www\.)?montes-a\.com\/?/gi, SITIO)
+      .replace(/(?<![@\w.-])(www\.)?montes-a\.com(?![\w.-])/gi, SITIO_HOST);
+
+  const prompt = normaliza(String(d.prompt_dreamina || ""));
+  // Si el modelo no escribió el guion completo, se usa la voz en off como guion.
+  const guion = normaliza(String(d.guion || "").trim() || String(d.guion_voz || "").trim());
   const errores: string[] = [];
-  const prompt = String(d.prompt_dreamina || "");
-  const guion = String(d.guion || "");
-  if (prompt.length < 200) errores.push("prompt_dreamina vacío o muy corto");
-  if (guion.length < 200) errores.push("el guion está vacío o muy corto");
+  if (prompt.length < 120) errores.push("prompt_dreamina vacío o muy corto");
+  if (guion.length < 40) errores.push("el guion está vacío");
   if (Number(d.duracion_seg) !== duracion) errores.push("la duración debe ser " + duracion + " segundos");
   if (!prompt.includes("pages.dev") && !prompt.includes(SITIO)) errores.push("falta el sitio web");
   if (!prompt.includes("300 725 7266")) errores.push("falta el WhatsApp");
   if (errores.length) return respuesta({ ok: false, error: errores.join("; "), datos: d }, 422);
 
-  const guionVoz = String(d.guion_voz || "");
-  const redes = String(d.texto_redes || "");
+  const guionVoz = normaliza(String(d.guion_voz || ""));
+  const redes = normaliza(String(d.texto_redes || ""));
   const notasRevision = String(d.notas_revision || "");
 
   // 3) Guardar como propuesta PENDIENTE para aprobación

@@ -262,7 +262,7 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
             "\n\nTEXTO PARA REDES\n" + (datos.texto_redes || "");
           setBorrador({ tema: payload.tema, texto: cuerpoBorrador });
           textoRespuesta =
-            (datos.guion || "(sin guion)") +
+            (datos.guion || datos.guion_voz || "(no se recibió el guion; pide el video de nuevo)") +
             "\n\nPROMPT PARA LA HERRAMIENTA DE VIDEO\n" + (datos.prompt_dreamina || "—") +
             "\n\nTEXTO PARA REDES\n" + (datos.texto_redes || "—") +
             (datos.notas_revision ? "\n\nNOTAS DE REVISIÓN\n" + datos.notas_revision : "") +
