@@ -34,30 +34,18 @@ const PREGUNTAS_VIDEO: { clave: string; pregunta: string }[] = [
   {
     clave: "tema",
     pregunta:
-      "🎬 ¡Vamos! ¿De qué tema quieres el video? Por ejemplo: liquidación de prestaciones, despido sin justa causa o recaudo de cartera.",
-  },
-  {
-    clave: "duracion",
-    pregunta:
-      "⏱️ ¿De cuántos segundos quieres el video? Escribe 15, 30 o 60. Si no escribes nada, será de 15 segundos.",
-  },
-  {
-    clave: "puntos_clave",
-    pregunta:
-      "¿Qué quieres explicar sobre ese tema? Escribe 2 o 3 puntos, por ejemplo: qué es, a quién aplica y un consejo práctico.",
-  },
-  {
-    clave: "quien_habla",
-    pregunta:
-      "¿Quién aparece hablando? Puede ser un presentador genérico (sin identificar a personas reales) o solo voz en off con imágenes de la oficina.",
-  },
-  { clave: "tono", pregunta: "¿Qué tono prefieres: cálido, profesional o formal?" },
-  {
-    clave: "llamada_accion",
-    pregunta:
-      "¿Qué quieres que haga el espectador al final? Por ejemplo: escribirnos por WhatsApp o visitar montes-abogados-asociados.pages.dev.",
+      "🎬 ¡Vamos! ¿De qué tema quieres el video? Escríbelo y yo armo el guion completo de 60 segundos por escenas, con voz en off, prompt para la herramienta de video y texto para redes. Por ejemplo: liquidación de prestaciones, despido sin justa causa o recaudo de cartera.",
   },
 ];
+
+/** Valores por defecto: el administrador solo da el tema. */
+const DEFECTOS_VIDEO = {
+  duracion: "60",
+  puntos_clave: "",
+  quien_habla: "",
+  tono: "",
+  llamada_accion: "",
+};
 
 const URL_VIDEO =
   (import.meta as unknown as { env?: Record<string, string> }).env?.VITE_N8N_WEBHOOK_URL || "";
@@ -298,21 +286,22 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
   const iniciarVideo = useCallback(
     (temaInicial: string) => {
       setBorrador(null);
-      const ahora = Date.now();
-      const nuevos: MensajeNuevo[] = [];
-      let datos: Record<string, string> = {};
-      let paso = 0;
       if (temaInicial) {
-        datos = { tema: temaInicial };
-        paso = 1;
-        nuevos.push({ id: nuevoId(), rol: "usuario", texto: "🎬 Video sobre: " + temaInicial, creadoEn: ahora });
+        setEntrevista(null);
+        void generarVideo(
+          { tema: temaInicial, ...DEFECTOS_VIDEO },
+          "🎬 Video de " + DEFECTOS_VIDEO.duracion + " s sobre: " + temaInicial
+        );
+        return;
       }
-      nuevos.push({ id: nuevoId(), rol: "asistente", texto: PREGUNTAS_VIDEO[paso].pregunta, creadoEn: ahora + 1 });
-      setEntrevista({ paso, datos });
+      const ahora = Date.now();
+      setEntrevista({ paso: 0, datos: {} });
       setTexto("");
-      agregarMensajes(nuevos);
+      agregarMensajes([
+        { id: nuevoId(), rol: "asistente", texto: PREGUNTAS_VIDEO[0].pregunta, creadoEn: ahora },
+      ]);
     },
-    [agregarMensajes]
+    [agregarMensajes, generarVideo]
   );
 
   /** Recibe la respuesta de la entrevista; cuando están todas, genera el video. */
@@ -350,13 +339,9 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
       await generarVideo(
         {
           tema: datos.tema,
-          duracion: datos.duracion || "15",
-          puntos_clave: datos.puntos_clave || "",
-          quien_habla: datos.quien_habla || "",
-          tono: datos.tono || "",
-          llamada_accion: datos.llamada_accion || "",
+          ...DEFECTOS_VIDEO,
         },
-        "🎬 Video de " + (datos.duracion || "15") + " s sobre: " + datos.tema,
+        "🎬 Video de " + DEFECTOS_VIDEO.duracion + " s sobre: " + datos.tema,
         [usuario]
       );
     },

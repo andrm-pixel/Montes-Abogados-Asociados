@@ -26,6 +26,10 @@ function normaliza(t: string) {
     .replace(/(?<![@\w.-])(www\.)?montes-a\.com(?![\w.-])/gi, SITIO_HOST);
 }
 
+// Número mínimo de escenas según la duración.
+const minEscenas = (d: number) => (d >= 60 ? 5 : d >= 30 ? 3 : 2);
+const contarEscenas = (g: string) => (g.match(/ESCENA\s*\d+/gi) || []).length;
+
 // Separa las cuatro secciones por sus marcadores.
 function secciones(texto: string) {
   const partes: Record<string, string> = {};
@@ -46,7 +50,7 @@ async function pedirAlModelo(clave: string, mensajes: { role: string; content: s
   const r = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: "Bearer " + clave, "X-Title": "Montes Abogados" },
-    body: JSON.stringify({ model: MODELO, temperature: 0.7, max_tokens: 3500, messages: mensajes }),
+    body: JSON.stringify({ model: MODELO, temperature: 0.7, max_tokens: 6000, messages: mensajes }),
   });
   if (!r.ok) throw new Error("La IA respondió " + r.status + ": " + (await r.text()).slice(0, 300));
   const cuerpo = await r.json();
@@ -67,9 +71,9 @@ Deno.serve(async (req: Request) => {
   let entrada: Record<string, string>;
   try { entrada = await req.json(); } catch { return respuesta({ ok: false, error: "JSON inválido" }, 400); }
 
-  // Duración válida: 15, 30 o 60 segundos. Por defecto 15.
+  // Duración válida: 15, 30 o 60 segundos. Por defecto 60.
   const numDuracion = Number(entrada.duracion);
-  const duracion = [15, 30, 60].includes(numDuracion) ? numDuracion : 15;
+  const duracion = [15, 30, 60].includes(numDuracion) ? numDuracion : 60;
 
   const tema = entrada.tema || "";
   if (!tema && !entrada.correccion) return respuesta({ ok: false, error: "Falta el tema del video" }, 400);
@@ -102,7 +106,7 @@ Deno.serve(async (req: Request) => {
     for (let intento = 1; intento <= 2; intento++) {
       texto = await pedirAlModelo(clave, mensajes);
       s = secciones(texto);
-      if ((s.GUION || "").length >= 120 && (s.PROMPT || "").length >= 120) break;
+      if ((s.GUION || "").length >= 120 && (s.PROMPT || "").length >= 120 && contarEscenas(s.GUION || "") >= minEscenas(duracion)) break;
       mensajes.push({ role: "assistant", content: texto });
       mensajes.push({
         role: "user",
@@ -121,7 +125,7 @@ Deno.serve(async (req: Request) => {
   // 2) Validar
   const errores: string[] = [];
   if (guion.length < 120) errores.push("el guion está incompleto");
-  if (!/ESCENA\s*1/i.test(guion)) errores.push("el guion no tiene escenas");
+  if (contarEscenas(guion) < minEscenas(duracion)) errores.push("el guion no tiene suficientes escenas");
   if (prompt.length < 120) errores.push("el prompt está incompleto");
   if (!prompt.includes(SITIO_HOST)) errores.push("falta el sitio web en el prompt");
   if (!prompt.includes("300 725 7266")) errores.push("falta el WhatsApp en el prompt");

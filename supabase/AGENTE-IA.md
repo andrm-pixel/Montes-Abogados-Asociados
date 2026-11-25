@@ -43,8 +43,7 @@ Supabase (Deno) que llaman a OpenRouter con una sola petición y devuelven el re
 
 ## Flujo interactivo del prompt de video
 
-1. Pulsa **🎬 Generar prompt** y responde las preguntas: tema, duración (15 por defecto), puntos clave, quién habla, tono y llamada a la acción. Aparecen el prompt de Dreamina (30 s, 3 escenas),
-   el guion de voz y el texto para redes. Queda guardado en Pendientes de aprobación.
+1. Escribe el tema (o pulsa **🎬 Generar prompt** y respóndelo). Solo se pide el tema: el video sale de 60 s por defecto, por escenas con tiempos, visual, voz en off y texto en pantalla, más el prompt para la herramienta de video y el texto para redes. Queda guardado en Pendientes de aprobación.
 2. El chat pregunta qué quieres corregir o adaptar. Escribe el ajuste (por ejemplo "cambia el tono
    a más formal" o "la escena 2 que hable de liquidación") y pulsa **Enviar**.
 3. La función recibe el borrador anterior y tu corrección, y devuelve la versión corregida.
