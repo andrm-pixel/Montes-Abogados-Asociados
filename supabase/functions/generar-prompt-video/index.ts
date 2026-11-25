@@ -1,8 +1,8 @@
 // supabase/functions/generar-prompt-video/index.ts
-// Genera un video completo por escenas (guion + prompt para herramienta de video con IA).
-// Recibe la entrevista del panel: tema, puntos_clave, quien_habla, tono, llamada_accion, duracion.
-// Con "correccion" + "borrador" aplica solo el ajuste pedido. Guarda el resultado como
-// PENDIENTE de aprobación en la tabla propuestas.
+// Genera un video completo por escenas para Instagram Reels: guion, prompt para la
+// herramienta de video con IA y texto para redes. Recibe la entrevista del panel.
+// Respuesta en secciones con marcadores (más fiable que JSON con modelos gratuitos).
+// Guarda el resultado como PENDIENTE de aprobación en la tabla propuestas.
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -11,10 +11,46 @@ const CORS = {
 };
 const MODELO = Deno.env.get("OPENROUTER_MODEL") || "openrouter/free";
 const SITIO = Deno.env.get("SITIO_WEB") || "https://montes-abogados-asociados.pages.dev";
-const INSTRUCCIONES = "Eres el guionista y director creativo de Montes Abogados Asociados S.A.S., firma boutique de abogados en Bogotá D.C., Colombia. Escribes un video completo, escena por escena, para redes sociales, que el administrador copiará en una herramienta de video con IA.\n\nDATOS FIJOS (úsalos siempre, sin cambiarlos):\n- Sitio web: __SITIO__\n- WhatsApp: +57 300 725 7266\n- Correo: claudia@montes-a.com\n- Áreas reales: derecho comercial, laboral, litigio e insolvencia empresarial, administrativo, migratorio y recaudo de cartera.\n\nCONTENIDO:\n1. El video debe tratar el TEMA que dio el administrador y desarrollar sus PUNTOS CLAVE. Cada escena debe ser coherente con ese tema. No cambies de tema.\n2. Si no hay puntos clave, propone 2 o 3 puntos generales y coherentes, y anótalo en notas_revision.\n3. Enfoque: prevención jurídica, lenguaje claro, tono firme y cercano. Sin promesas de resultados, sin testimonios, sin cifras de casos ganados (Ley 1123 de 2007 limita la publicidad del abogado).\n4. No inventes cifras, porcentajes, plazos, artículos de ley ni montos. Si una explicación exige un dato exacto, dilo de forma general y anótalo en notas_revision para verificación por un abogado.\n5. Si quien habla es un presentador, descríbelo de forma genérica (sin rasgos identificables). Si es solo voz en off, usa imágenes de la oficina y de la reunión.\n\nESTRUCTURA:\n- Duración total: la indicada en el dato \"duracion_seg\" (30 o 60 segundos).\n- Divide el video en escenas con tiempos continuos (por ejemplo 0:00–0:07, 0:07–0:15 ...), sin huecos ni solapamientos, que sumen la duración total.\n- Cada escena tiene: Visual (qué se ve, encuadre, cámara, movimiento), VOZ EN OFF (texto exacto que se dice) y, si aplica, Texto en pantalla.\n- La última escena es el cierre: marca de la firma, eslogan breve, sitio web, WhatsApp y correo.\n- La voz en off es firme y pausada, en español natural para hablarse.\n\nResponde SOLO con JSON válido, sin texto antes ni después, con estas claves:\n- duracion_seg: número (15, 30 o 60).\n- prompt_dreamina: prompt completo, listo para pegar en una herramienta de video con IA. Describe CADA escena con su tiempo, su visual, lo que dice la voz en off y el texto en pantalla; además el formato vertical 9:16, la iluminación, la paleta sobria (azul, gris, blanco), la música sugerida y el cierre con __SITIO__, el WhatsApp +57 300 725 7266 y el correo claudia@montes-a.com. Sin logos de terceros.\n- guion: guion completo para el administrador, con este formato: \"# Guión: <título corto>\", luego \"**Duración aproximada: N segundos**\", luego cada escena como \"**ESCENA 1: <nombre> (0:00–0:07)**\", \"*Visual:* ...\", \"**VOZ EN OFF:** \\\"...\\\"\". Al final, \"**Recomendaciones de producción**\" con 3 o 4 viñetas breves (voz, música, versión corta para redes).\n- guion_voz: solo las frases de voz en off, en orden, separadas por saltos de línea.\n- texto_redes: caption para Instagram de máximo 3 líneas sobre el tema, seguido de 3 a 5 hashtags en la última línea.\n- notas_revision: cadena vacía, o las advertencias necesarias (datos a verificar, puntos propuestos, o algo que no se pudo cumplir).".split("__SITIO__").join(SITIO);
+const SITIO_HOST = SITIO.replace(/^https?:\/\//, "").replace(/\/$/, "");
+const SISTEMA = "Eres el guionista y director creativo de Montes Abogados Asociados S.A.S., firma boutique de abogados en Bogotá D.C., Colombia. Escribes un video vertical para Instagram Reels, escena por escena, que el administrador copiará en una herramienta de video con IA.\n\nDATOS FIJOS (úsalos siempre):\n- Sitio web: __SITIO__\n- WhatsApp: +57 300 725 7266\n- Correo: claudia@montes-a.com\n\nREGLAS:\n1. El video trata el TEMA que dio el administrador y desarrolla sus PUNTOS CLAVE. No cambies de tema.\n2. Duración total: la indicada en DURACION. Ajusta los tiempos de las escenas para que sumen exactamente esa duración. Para 15 segundos usa 2 o 3 escenas cortas.\n3. Sin promesas de resultados, sin testimonios, sin cifras de casos ganados, sin inventar cifras, plazos, artículos de ley ni montos. Si algo necesita un dato exacto, dilo de forma general y anótalo en NOTAS.\n4. Si no hay puntos clave, propone 2 o 3 puntos generales y coherentes, y anótalo en NOTAS.\n5. Presentador genérico, sin rasgos identificables. Si es voz en off, usa imágenes de la oficina y de reuniones.\n6. Cierre: marca, eslogan, sitio web, WhatsApp y correo.\n\nESTRUCTURA Y ESTILO DE REFERENCIA (ejemplo de 60 segundos; para otra duración adapta escenas y tiempos):\n# Guión: Montes Abogados Asociados\n**Duración aproximada: 60 segundos**\n\n**ESCENA 1: Apertura (0:00–0:07)**\n*Visual:* Toma cenital de un escritorio con una carpeta cerrada y una taza de café. Una mano abre la carpeta.\n**VOZ EN OFF:** \"Los mejores litigios son los que nunca llegan a existir.\"\n\n**ESCENA 2: El problema (0:07–0:15)**\n*Visual:* Un empresario revisa documentos con preocupación. Se ven un contrato, una notificación y un calendario.\n**VOZ EN OFF:** \"Cada decisión de su empresa trae riesgos jurídicos. Muchos no se ven hasta que ya cuestan tiempo, dinero y tranquilidad.\"\n\n**ESCENA 3: Presentación (0:15–0:23)**\n*Visual:* Logo de Montes Abogados Asociados. Luego, el equipo entra a una sala de reuniones luminosa.\n**VOZ EN OFF:** \"En Montes Abogados Asociados somos una firma boutique. Trabajamos con pocos clientes para conocer a fondo a cada uno.\"\n\n**ESCENA 4: Cercanía (0:23–0:32)**\n*Visual:* Una abogada conversa con un cliente, toma notas y le da la mano. Tono cálido y natural.\n**VOZ EN OFF:** \"Aquí no es un número de expediente. Lo escuchamos, entendemos su negocio y estamos cuando nos necesita.\"\n\n**ESCENA 5: Enfoque preventivo (0:32–0:42)**\n*Visual:* Primeros planos de contratos revisados, anotaciones al margen, una reunión de planeación.\n**VOZ EN OFF:** \"Nuestro enfoque es preventivo. Anticipamos riesgos, blindamos sus decisiones y evitamos que las contingencias de hoy se vuelvan los litigios de mañana.\"\n\n**ESCENA 6: Su área jurídica (0:42–0:52)**\n*Visual:* El cliente, ya tranquilo, trabaja en su oficina mientras recibe un mensaje del equipo de la firma.\n**VOZ EN OFF:** \"Somos su ayuda especializada. Nos convertimos en su área jurídica para que usted se concentre en lo que mejor sabe hacer: hacer crecer su empresa.\"\n\n**ESCENA 7: Cierre (0:52–1:00)**\n*Visual:* Logo centrado, eslogan en pantalla, datos de contacto (web, WhatsApp, correo).\n**VOZ EN OFF:** \"Montes Abogados Asociados. Su aliado jurídico estratégico.\"\n*Texto en pantalla:* **Prevenir es nuestra estrategia.**\n\n**Recomendaciones de producción**\n- **Voz:** firme y pausada, que transmita autoridad sin sonar distante.\n- **Música:** piano o cuerdas suaves que vayan subiendo en la escena 5.\n- **Versión corta para redes (15 s):** usa las escenas 1, 5 y 7.\n- **Ética profesional:** sin promesas de resultados; compatible con la Ley 1123 de 2007.\n\nFORMATO DE RESPUESTA OBLIGATORIO: escribe exactamente estas cuatro secciones, con estos marcadores y en este orden. No escribas nada antes ni después.\n\n### GUION\n(el guion completo, con escenas, tiempos, visual, VOZ EN OFF y recomendaciones de producción, igual que el ejemplo)\n\n### PROMPT\n(prompt completo para la herramienta de video con IA, en español: describe CADA escena con su tiempo, lo que se ve, lo que dice la voz en off y el texto en pantalla; formato vertical 9:16; iluminación; paleta sobria azul, gris y blanco; música sugerida; y el cierre con __SITIO__, WhatsApp +57 300 725 7266 y correo claudia@montes-a.com)\n\n### REDES\n(caption para Instagram de máximo 3 líneas sobre el tema, y en la última línea de 3 a 5 hashtags)\n\n### NOTAS\n(datos que deben verificarse, puntos propuestos, o \"Ninguna\")".split("__SITIO__").join(SITIO);
 
 function respuesta(obj: unknown, status = 200) {
   return new Response(JSON.stringify(obj), { status, headers: { ...CORS, "Content-Type": "application/json" } });
+}
+
+// Enlaces markdown y dominio viejo: se corrigen aquí (el correo no se toca).
+function normaliza(t: string) {
+  return t
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/https?:\/\/(www\.)?montes-a\.com\/?/gi, SITIO)
+    .replace(/(?<![@\w.-])(www\.)?montes-a\.com(?![\w.-])/gi, SITIO_HOST);
+}
+
+// Separa las cuatro secciones por sus marcadores.
+function secciones(texto: string) {
+  const partes: Record<string, string> = {};
+  const regex = /###\s*(GUION|PROMPT|REDES|NOTAS)\s*\n?/gi;
+  const marcas: { clave: string; inicio: number; fin: number }[] = [];
+  let m: RegExpExecArray | null;
+  while ((m = regex.exec(texto)) !== null) {
+    marcas.push({ clave: m[1].toUpperCase(), inicio: m.index, fin: regex.lastIndex });
+  }
+  for (let i = 0; i < marcas.length; i++) {
+    const fin = i + 1 < marcas.length ? marcas[i + 1].inicio : texto.length;
+    partes[marcas[i].clave] = texto.slice(marcas[i].fin, fin).trim();
+  }
+  return partes;
+}
+
+async function pedirAlModelo(clave: string, mensajes: { role: string; content: string }[]) {
+  const r = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: "Bearer " + clave, "X-Title": "Montes Abogados" },
+    body: JSON.stringify({ model: MODELO, temperature: 0.7, max_tokens: 3500, messages: mensajes }),
+  });
+  if (!r.ok) throw new Error("La IA respondió " + r.status + ": " + (await r.text()).slice(0, 300));
+  const cuerpo = await r.json();
+  return String(cuerpo?.choices?.[0]?.message?.content || "");
 }
 
 Deno.serve(async (req: Request) => {
@@ -34,88 +70,70 @@ Deno.serve(async (req: Request) => {
   // Duración válida: 15, 30 o 60 segundos. Por defecto 15.
   const numDuracion = Number(entrada.duracion);
   const duracion = [15, 30, 60].includes(numDuracion) ? numDuracion : 15;
-  const datos = {
-    tema: entrada.tema || "",
-    puntos_clave: entrada.puntos_clave || "",
-    quien_habla: entrada.quien_habla || "",
-    tono: entrada.tono || "",
-    llamada_accion: entrada.llamada_accion || "",
-    duracion_seg: duracion,
-    notas: entrada.notas || "",
-  };
-  if (!datos.tema && !entrada.correccion) {
-    return respuesta({ ok: false, error: "Falta el tema del video" }, 400);
-  }
 
-  const contenidoUsuario = entrada.correccion
-    ? "Borrador anterior:\n" + String(entrada.borrador || "").slice(0, 6000) +
-      "\n\nTema original: " + datos.tema +
-      "\n\nAplica SOLO esta corrección del administrador y devuelve el JSON completo corregido: " +
+  const tema = entrada.tema || "";
+  if (!tema && !entrada.correccion) return respuesta({ ok: false, error: "Falta el tema del video" }, 400);
+
+  const datos = [
+    "TEMA: " + tema,
+    "DURACION: " + duracion + " segundos",
+    "PUNTOS CLAVE: " + (entrada.puntos_clave || "(no indicados: propón 2 o 3 puntos coherentes con el tema)"),
+    "QUIEN HABLA: " + (entrada.quien_habla || "presentador genérico"),
+    "TONO: " + (entrada.tono || "cálido y profesional"),
+    "LLAMADA A LA ACCIÓN: " + (entrada.llamada_accion || "escribirnos por WhatsApp o visitar la página"),
+  ].join("\n");
+
+  const usuario = entrada.correccion
+    ? "Este es el video anterior:\n\n" + String(entrada.borrador || "").slice(0, 6000) +
+      "\n\nAplica SOLO este ajuste del administrador y vuelve a escribir las cuatro secciones completas: " +
       String(entrada.correccion).slice(0, 1000) +
-      "\nMantén las reglas obligatorias (duración " + duracion + " s, escenas con tiempos, sitio web, WhatsApp y correo)."
-    : "Datos de la entrevista (JSON):\n" + JSON.stringify(datos);
+      "\nMantén la duración de " + duracion + " segundos y todas las reglas."
+    : "Datos de la entrevista:\n" + datos + "\n\nEscribe el video completo con las cuatro secciones.";
 
-  // 1) Pedir el video completo al modelo
+  const mensajes = [
+    { role: "system", content: SISTEMA.replace("DURACION", "DURACION (" + duracion + " segundos)") },
+    { role: "user", content: usuario },
+  ];
+
+  // 1) Pedir el video; si falta alguna sección, reintenta una vez.
+  let s: Record<string, string> = {};
   let texto = "";
   try {
-    const r = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: "Bearer " + clave, "X-Title": "Montes Abogados" },
-      body: JSON.stringify({
-        model: MODELO,
-        temperature: 0.7,
-        max_tokens: 3000,
-        messages: [
-          { role: "system", content: INSTRUCCIONES },
-          { role: "user", content: contenidoUsuario },
-        ],
-      }),
-    });
-    if (!r.ok) return respuesta({ ok: false, error: "La IA respondió " + r.status, detalle: await r.text() }, 502);
-    const cuerpo = await r.json();
-    texto = cuerpo?.choices?.[0]?.message?.content || "";
+    for (let intento = 1; intento <= 2; intento++) {
+      texto = await pedirAlModelo(clave, mensajes);
+      s = secciones(texto);
+      if ((s.GUION || "").length >= 120 && (s.PROMPT || "").length >= 120) break;
+      mensajes.push({ role: "assistant", content: texto });
+      mensajes.push({
+        role: "user",
+        content: "Tu respuesta llegó incompleta. Escribe de nuevo las cuatro secciones completas (### GUION, ### PROMPT, ### REDES, ### NOTAS), con el guion de escenas completo.",
+      });
+    }
   } catch (e) {
     return respuesta({ ok: false, error: "No se pudo conectar con la IA: " + (e as Error).message }, 502);
   }
 
-  // 2) Extraer y validar el JSON
-  let d: Record<string, unknown>;
-  const ini = texto.indexOf("{");
-  const fin = texto.lastIndexOf("}");
-  try {
-    d = JSON.parse(ini >= 0 && fin > ini ? texto.slice(ini, fin + 1) : texto);
-  } catch {
-    return respuesta({ ok: false, error: "La IA no devolvió JSON válido", texto }, 502);
-  }
-  // Normaliza el texto: enlaces en formato markdown y dominio de montes-a.com (el correo no se toca).
-  const SITIO_HOST = SITIO.replace(/^https?:\/\//, "").replace(/\/$/, "");
-  const normaliza = (t: string) =>
-    t
-      .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
-      .replace(/https?:\/\/(www\.)?montes-a\.com\/?/gi, SITIO)
-      .replace(/(?<![@\w.-])(www\.)?montes-a\.com(?![\w.-])/gi, SITIO_HOST);
+  const guion = normaliza(s.GUION || "");
+  const prompt = normaliza(s.PROMPT || "");
+  const redes = normaliza(s.REDES || "");
+  const notas = normaliza(s.NOTAS || "");
 
-  const prompt = normaliza(String(d.prompt_dreamina || ""));
-  // Si el modelo no escribió el guion completo, se usa la voz en off como guion.
-  const guion = normaliza(String(d.guion || "").trim() || String(d.guion_voz || "").trim());
+  // 2) Validar
   const errores: string[] = [];
-  if (prompt.length < 120) errores.push("prompt_dreamina vacío o muy corto");
-  if (guion.length < 40) errores.push("el guion está vacío");
-  if (Number(d.duracion_seg) !== duracion) errores.push("la duración debe ser " + duracion + " segundos");
-  if (!prompt.includes("pages.dev") && !prompt.includes(SITIO)) errores.push("falta el sitio web");
-  if (!prompt.includes("300 725 7266")) errores.push("falta el WhatsApp");
-  if (errores.length) return respuesta({ ok: false, error: errores.join("; "), datos: d }, 422);
-
-  const guionVoz = normaliza(String(d.guion_voz || ""));
-  const redes = normaliza(String(d.texto_redes || ""));
-  const notasRevision = String(d.notas_revision || "");
+  if (guion.length < 120) errores.push("el guion está incompleto");
+  if (!/ESCENA\s*1/i.test(guion)) errores.push("el guion no tiene escenas");
+  if (prompt.length < 120) errores.push("el prompt está incompleto");
+  if (!prompt.includes(SITIO_HOST)) errores.push("falta el sitio web en el prompt");
+  if (!prompt.includes("300 725 7266")) errores.push("falta el WhatsApp en el prompt");
+  if (errores.length) return respuesta({ ok: false, error: errores.join("; ") + ". Pulsa de nuevo para reintentar." }, 422);
 
   // 3) Guardar como propuesta PENDIENTE para aprobación
   const textoPropuesta = [
-    "VIDEO (" + duracion + " s)", "", "GUION COMPLETO:", guion, "",
+    "VIDEO (" + duracion + " s, Instagram Reels 9:16)", "",
+    "GUION:", guion, "",
     "PROMPT PARA LA HERRAMIENTA DE VIDEO:", prompt, "",
     "TEXTO PARA REDES:", redes,
-    notasRevision ? "\nNOTAS DE REVISIÓN: " + notasRevision : "",
+    notas && notas.toLowerCase() !== "ninguna" ? "\nNOTAS DE REVISIÓN: " + notas : "",
   ].join("\n");
 
   const g = await fetch(urlBase + "/rest/v1/propuestas", {
@@ -135,8 +153,8 @@ Deno.serve(async (req: Request) => {
     duracion_seg: duracion,
     guion,
     prompt_dreamina: prompt,
-    guion_voz: guionVoz,
+    guion_voz: "",
     texto_redes: redes,
-    notas_revision: notasRevision,
+    notas_revision: notas.toLowerCase() === "ninguna" ? "" : notas,
   });
 });
