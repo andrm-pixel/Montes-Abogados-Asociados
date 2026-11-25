@@ -47,7 +47,7 @@ Supabase (Deno) que llaman a OpenRouter con una sola petición y devuelven el re
 2. El chat pregunta qué quieres corregir o adaptar. Escribe el ajuste (por ejemplo "cambia el tono
    a más formal" o "la escena 2 que hable de liquidación") y pulsa **Enviar**.
 3. La función recibe el borrador anterior y tu corrección, y devuelve la versión corregida.
-   Las reglas (30 s, 3 escenas, dirección, teléfono y www.montes-a.com) se mantienen.
+   El cierre es fijo: la voz en off dice la frase de asesoría preventiva y en pantalla se lee «Visite ABOGADOS COLOMBIA - Montes Abogados Asociados S.A.S. (sitio) o al WhatsApp +57 300 725 7266». El sitio sale de SITIO_WEB.
 4. Para un tema nuevo, usa de nuevo **🎬 Generar prompt**.
 
 ## Por qué no se usa un framework de agentes
