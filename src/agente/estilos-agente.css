@@ -457,3 +457,22 @@ body.modo-admin .agente-fab {
 .agente-item { display: flex; align-items: center; gap: 4px; }
 .agente-item-botones { flex: 1; min-width: 0; }
 .agente-item-borrar { flex: 0 0 auto; }
+
+/* Papelera visible en cada conversación */
+.agente-item-borrar {
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 6px;
+  padding: 0;
+  border: 1px solid #dbe3ec;
+  border-radius: 8px;
+  background: #fff;
+  color: #64748b;
+  opacity: 1;
+  cursor: pointer;
+}
+.agente-item-borrar:hover { color: #b91c1c; border-color: #fca5a5; background: #fef2f2; }

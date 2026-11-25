@@ -60,7 +60,6 @@ export default function ChatAgente() {
     limite,
     enviando,
     aviso,
-    ideas,
     propuestas,
     videoPidiendo,
   } = agente;
@@ -104,7 +103,7 @@ export default function ChatAgente() {
     }
   };
 
-  /** Las opciones rápidas y las ideas solo se ven antes del primer mensaje del usuario. */
+  /** Las opciones rápidas solo se ven antes del primer mensaje del usuario. */
   const yaEscribio = activa.mensajes.some((m) => m.rol === "usuario");
 
   const elegirOpcion = (indice: number) => {
@@ -203,7 +202,11 @@ export default function ChatAgente() {
                     aria-label={"Borrar " + c.titulo}
                     title="Borrar conversación"
                   >
-                    🗑
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M3 6h18" />
+                      <path d="M8 6V4h8v2" />
+                      <path d="M6 6l1 14h10l1-14" />
+                    </svg>
                   </button>
                 </li>
               ))}
@@ -236,43 +239,6 @@ export default function ChatAgente() {
               )}
 
               {/* Ideas y prompts aprendidos */}
-              {ideas.length > 0 && !yaEscribio && (
-                <section className="agente-ideas">
-                  <h4>Ideas y prompts propuestos</h4>
-                  <ul>
-                    {ideas.slice(-6).map((idea) => (
-                      <li key={idea.id} className={idea.util === false ? "descartada" : ""}>
-                        <span className="agente-idea-texto">{idea.texto}</span>
-                        <span className="agente-idea-acciones">
-                          <button
-                            type="button"
-                            onClick={() => agente.usarIdea(idea.id)}
-                            title="Usar en el mensaje"
-                          >
-                            usar
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => agente.valorarIdea(idea.id, true)}
-                            title="Me sirve"
-                            aria-pressed={idea.util === true}
-                          >
-                            👍
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => agente.valorarIdea(idea.id, false)}
-                            title="No me sirve"
-                            aria-pressed={idea.util === false}
-                          >
-                            👎
-                          </button>
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              )}
 
               {/* Propuestas esperando aprobación (regla 2) */}
               {pendientes.length > 0 && (
