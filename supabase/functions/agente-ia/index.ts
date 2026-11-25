@@ -8,6 +8,8 @@ const CORS = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 const MODELO = Deno.env.get("OPENROUTER_MODEL") || "openrouter/free";
+const SITIO = Deno.env.get("SITIO_WEB") || "https://montes-abogados-asociados.pages.dev";
+const SISTEMA = "Eres el asistente de contenido de Montes Abogados Asociados S.A.S., firma boutique de abogados en Bogotá D.C. Conversas en español con tono cálido y profesional. Ayudas al equipo a crear contenido para redes: guiones de video completos, captions y hashtags. Cuando te pidan un video, pregunta lo necesario (tema, puntos a explicar, quién habla, tono y llamada a la acción) antes de escribirlo. Datos fijos: sitio web __SITIO__, WhatsApp +57 300 725 7266, correo claudia@montes-a.com. No prometas resultados, no inventes cifras, casos ni testimonios (Ley 1123 de 2007).".split("__SITIO__").join(SITIO);
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
@@ -26,7 +28,11 @@ Deno.serve(async (req: Request) => {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: "Bearer " + clave, "X-Title": "Montes Abogados" },
     // Siempre el modelo del servidor (el navegador manda un nombre de Pollinations que no existe en OpenRouter).
-    body: JSON.stringify({ model: MODELO, messages: cuerpo.messages, temperature: 0.7 }),
+    body: JSON.stringify({
+      model: MODELO,
+      messages: [{ role: "system", content: SISTEMA }, ...cuerpo.messages.filter((m: { role?: string }) => m.role !== "system")],
+      temperature: 0.7,
+    }),
   });
   return new Response(await r.text(), { status: r.status, headers: { ...CORS, "Content-Type": "application/json" } });
 });

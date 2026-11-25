@@ -22,6 +22,7 @@ Supabase (Deno) que llaman a OpenRouter con una sola petición y devuelven el re
 3. En Cloudflare Pages → Settings → Environment variables:
 
    VITE_IA_URL          = https://rhqtldpiuasrwcwaqrtl.supabase.co/functions/v1/agente-ia
+   (Opcional) SITIO_WEB en Supabase: por defecto https://montes-abogados-asociados.pages.dev. Cámbialo cuando montes-a.com esté activo.
    VITE_N8N_WEBHOOK_URL = https://rhqtldpiuasrwcwaqrtl.supabase.co/functions/v1/generar-prompt-video
 
    (El nombre VITE_N8N_WEBHOOK_URL se conserva por compatibilidad; apunta a la función de Supabase.)
@@ -42,7 +43,7 @@ Supabase (Deno) que llaman a OpenRouter con una sola petición y devuelven el re
 
 ## Flujo interactivo del prompt de video
 
-1. Pulsa **🎬 Generar prompt** y responde las preguntas: tema, puntos clave, quién habla, tono y llamada a la acción. Aparecen el prompt de Dreamina (30 s, 3 escenas),
+1. Pulsa **🎬 Generar prompt** y responde las preguntas: tema, duración (15 por defecto), puntos clave, quién habla, tono y llamada a la acción. Aparecen el prompt de Dreamina (30 s, 3 escenas),
    el guion de voz y el texto para redes. Queda guardado en Pendientes de aprobación.
 2. El chat pregunta qué quieres corregir o adaptar. Escribe el ajuste (por ejemplo "cambia el tono
    a más formal" o "la escena 2 que hable de liquidación") y pulsa **Enviar**.
@@ -61,3 +62,10 @@ lineal: una petición por cada prompt o corrección, sin herramientas ni bucles.
 - Vuelve a publicar `agente-ia` con el comando del paso 3. La versión anterior seguía mandando el
   nombre de modelo de Pollinations (`openai`), que OpenRouter no reconoce.
 - Revisa que `OPENROUTER_MODEL` sea `openrouter/free`.
+
+
+## Video completo
+
+El video ahora sale por escenas con tiempos (15 s por defecto; también 30 o 60), con visual, voz en off
+y texto en pantalla. El prompt para la herramienta de video describe cada escena. El sitio web
+que usa el asistente sale de SITIO_WEB.

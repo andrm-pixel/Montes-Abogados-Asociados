@@ -37,9 +37,14 @@ const PREGUNTAS_VIDEO: { clave: string; pregunta: string }[] = [
       "🎬 ¡Vamos! ¿De qué tema quieres el video? Por ejemplo: liquidación de prestaciones, despido sin justa causa o recaudo de cartera.",
   },
   {
+    clave: "duracion",
+    pregunta:
+      "⏱️ ¿De cuántos segundos quieres el video? Escribe 15, 30 o 60. Si no escribes nada, será de 15 segundos.",
+  },
+  {
     clave: "puntos_clave",
     pregunta:
-      "¿Qué quieres explicar sobre ese tema? Escribe 2 o 3 puntos, por ejemplo: qué es, a quién aplica y un consejo práctico. El video los desarrollará.",
+      "¿Qué quieres explicar sobre ese tema? Escribe 2 o 3 puntos, por ejemplo: qué es, a quién aplica y un consejo práctico.",
   },
   {
     clave: "quien_habla",
@@ -50,7 +55,7 @@ const PREGUNTAS_VIDEO: { clave: string; pregunta: string }[] = [
   {
     clave: "llamada_accion",
     pregunta:
-      "¿Qué quieres que haga el espectador al final? Por ejemplo: escribirnos por WhatsApp o visitar www.montes-a.com.",
+      "¿Qué quieres que haga el espectador al final? Por ejemplo: escribirnos por WhatsApp o visitar montes-abogados-asociados.pages.dev.",
   },
 ];
 
@@ -252,19 +257,19 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
         let textoRespuesta: string;
         if (respuesta.ok && datos.ok) {
           const cuerpoBorrador =
-            datos.prompt_dreamina +
-            "\n\nGUION: " + (datos.guion_voz || "") +
-            "\n\nREDES: " + (datos.texto_redes || "");
+            (datos.guion || "") +
+            "\n\nPROMPT PARA LA HERRAMIENTA DE VIDEO\n" + (datos.prompt_dreamina || "") +
+            "\n\nTEXTO PARA REDES\n" + (datos.texto_redes || "");
           setBorrador({ tema: payload.tema, texto: cuerpoBorrador });
           textoRespuesta =
-            "PROMPT PARA DREAMINA (30 s)\n" + datos.prompt_dreamina +
-            "\n\nGUION DE VOZ\n" + (datos.guion_voz || "—") +
+            (datos.guion || "(sin guion)") +
+            "\n\nPROMPT PARA LA HERRAMIENTA DE VIDEO\n" + (datos.prompt_dreamina || "—") +
             "\n\nTEXTO PARA REDES\n" + (datos.texto_redes || "—") +
             (datos.notas_revision ? "\n\nNOTAS DE REVISIÓN\n" + datos.notas_revision : "") +
             "\n\nQuedó en Pendientes de aprobación.\n\n" +
-            "¿Quieres cambiar algo? Dime qué ajustar (por ejemplo: el tono, la escena 2 o el cierre) " +
+            "¿Quieres cambiar algo? Dime qué ajustar (por ejemplo: el tono, una escena o el cierre) " +
             "y pulsa Enviar. Para un video nuevo, pulsa 🎬 Generar prompt.";
-          setAviso("✅ Listo. Revisa el prompt o pide un ajuste.");
+          setAviso("✅ Listo. Revisa el guion o pide un ajuste.");
         } else {
           textoRespuesta =
             "No pude generar el prompt: " + (datos.error || "error " + respuesta.status) +
@@ -310,16 +315,25 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
     [agregarMensajes]
   );
 
-  /** Recibe la respuesta de la entrevista; cuando están todas, genera el prompt. */
+  /** Recibe la respuesta de la entrevista; cuando están todas, genera el video. */
   const avanzarEntrevista = useCallback(
     async (respuesta: string) => {
       if (!entrevista) return;
-      const limpio = filtrarDatosPersonales(respuesta).texto.trim();
+      const clave = PREGUNTAS_VIDEO[entrevista.paso].clave;
+      let limpio = filtrarDatosPersonales(respuesta).texto.trim();
+      if (clave === "duracion") {
+        const numero = Number(limpio);
+        // Sin respuesta o un valor no válido: 15 segundos por defecto.
+        limpio = [15, 30, 60].includes(numero) ? String(numero) : "15";
+      }
       if (!limpio) return;
       const ahora = Date.now();
-      const clave = PREGUNTAS_VIDEO[entrevista.paso].clave;
       const datos = { ...entrevista.datos, [clave]: limpio };
-      const usuario: MensajeNuevo = { id: nuevoId(), rol: "usuario", texto: limpio, creadoEn: ahora };
+      const etiqueta =
+        clave === "duracion" && limpio === "15" && !respuesta.trim()
+          ? "15 segundos (por defecto)"
+          : limpio;
+      const usuario: MensajeNuevo = { id: nuevoId(), rol: "usuario", texto: etiqueta, creadoEn: ahora };
       const siguiente = entrevista.paso + 1;
       setTexto("");
 
@@ -336,12 +350,13 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
       await generarVideo(
         {
           tema: datos.tema,
+          duracion: datos.duracion || "15",
           puntos_clave: datos.puntos_clave || "",
           quien_habla: datos.quien_habla || "",
           tono: datos.tono || "",
           llamada_accion: datos.llamada_accion || "",
         },
-        "🎬 Prompt para: " + datos.tema,
+        "🎬 Video de " + (datos.duracion || "15") + " s sobre: " + datos.tema,
         [usuario]
       );
     },
