@@ -81,7 +81,7 @@ export function interpretarPedido(texto: string): Pedido {
     duracion,
     duracionExplicita,
     cantidad,
-    incluirServicios: /\bservicios\b/.test(t),
+    incluirServicios: /\b(servicios?|(?:á|a)reas)\b/.test(t),
   };
 }
 
@@ -89,7 +89,7 @@ export function interpretarPedido(texto: string): Pedido {
 export function esPedidoNuevo(texto: string): boolean {
   const t = texto.trim().toLowerCase();
   if (/^(cambia|ajusta|corrige|pon|quita|agrega|añade|haz\s+(el|la|que|más|menos)|video\s*\d)/.test(t)) return false;
-  return /\b(\d+|un|uno|dos|tres)\s+videos?\b/.test(t) || /\bvideos?\s+(sobre|de\s+\d|para|promocionando)\b/.test(t);
+  return /\b(\d+|un|uno|dos|tres)\s+videos?\b/.test(t) || /\bvideos?\s+(sobre|de\s+\d|para|promocionando|explicando)\b/.test(t);
 }
 
 /** "video 2: hazlo más formal" → 2. Sin número, devuelve 0. */
@@ -195,7 +195,7 @@ export interface ParteVideo {
 }
 
 const ESTILO =
-  "Formato vertical 9:16, 15 segundos. Oficina luminosa y moderna, paleta sobria azul, gris y blanco, luz natural suave, presentador genérico sin rasgos identificables, sin logos externos.";
+  "Formato vertical 9:16, 15 segundos. Oficina luminosa y moderna, paleta sobria azul, gris y blanco, luz natural suave, presentador genérico sin rasgos identificables, sin logos externos. Música suave de piano o cuerdas.";
 
 /** Plan B: arma cada prompt de 15 s a partir de las escenas del guion (si el modelo no los escribió bien). */
 export function construirPartes(escenas: Escena[], total: number): string[] | null {
@@ -239,7 +239,8 @@ export function armarPartes(textos: string[], video: number, totalVideos: number
       n === 1
         ? ""
         : "Continúa sin corte la parte anterior: misma oficina, misma paleta, mismo presentador y misma voz.\n";
-    let texto = cabecera + "\n" + enlace + normaliza(cuerpo);
+    const estilo = /oficina\s+luminosa/i.test(cuerpo) && /9:16/.test(cuerpo) ? "" : ESTILO + "\n";
+    let texto = cabecera + "\n" + enlace + estilo + normaliza(cuerpo);
     if (n === total) {
       if (!texto.includes(FRASE_CIERRE) || !texto.includes(CONTACTO_CIERRE)) {
         texto += "\nCIERRE: voz en off (con pausa clara en +57, 300, 725, 7266): «" + FRASE_CIERRE + " " + CONTACTO_CIERRE + "» Texto en pantalla: «" + CONTACTO_CIERRE + "», sobre fondo blanco sobrio.";

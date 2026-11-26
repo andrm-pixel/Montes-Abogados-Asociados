@@ -14,6 +14,10 @@ describe("interpretarPedido", () => {
     expect(p.duracionExplicita).toBe(true);
     expect(p.incluirServicios).toBe(true);
   });
+  it("detecta áreas de servicio en singular", () => {
+    const p = interpretarPedido("necesito hacer un video promocionando la empresa y mencionando todas nuestras áreas de servicio");
+    expect([p.duracion, p.cantidad, p.incluirServicios]).toEqual([60, 1, true]);
+  });
   it("sin duración usa 60 s y un video", () => {
     const p = interpretarPedido("liquidación de prestaciones");
     expect([p.duracion, p.cantidad, p.incluirServicios]).toEqual([60, 1, false]);

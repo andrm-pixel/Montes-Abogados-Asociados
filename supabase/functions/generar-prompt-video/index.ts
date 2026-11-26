@@ -61,7 +61,7 @@ FORMATO DE RESPUESTA OBLIGATORIO: escribe exactamente estas cuatro secciones, co
 #### PARTE 1 de N (0:00–0:15)
 (prompt completo en español para la herramienta de video, listo para pegar: formato vertical 9:16, 15 segundos, lo que se ve, lo que dice la voz en off, texto en pantalla, iluminación, paleta azul, gris y blanco, y música suave)
 #### PARTE 2 de N (0:15–0:30)
-(igual; empieza indicando que continúa la parte anterior con el mismo presentador, oficina y estilo)
+(AUTOCONTENIDO para copiar por separado en cualquier IA: repite completo el formato vertical 9:16, 15 segundos, misma oficina luminosa y moderna, misma paleta azul, gris y blanco, luz natural suave, mismo presentador genérico, misma voz y música suave de piano o cuerdas, más lo que se ve y la voz en off de este bloque)
 (… hasta la última parte, que termina con el cierre fijo sobre fondo blanco sobrio)
 
 ### REDES

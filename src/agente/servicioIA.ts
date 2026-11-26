@@ -8,7 +8,7 @@
    ============================================================= */
 
 import type { Mensaje, Pestana } from "./tipos";
-
+import { normaliza } from "./pedidoVideo";
 /** URL del motor. En desarrollo usa Pollinations si no hay .env. */
 const URL_IA =
   (import.meta as unknown as { env?: Record<string, string> }).env?.VITE_IA_URL ||
@@ -19,7 +19,7 @@ const URL_IA =
 const CONTEXTO_MARCA = [
   "Eres el asistente de contenido de Montes Abogados Asociados S.A.S., firma jurídica colombiana con sede en Bogotá D.C. y cobertura nacional.",
   "Idioma: español (usa inglés solo si te lo piden).",
-  "Colores de marca: #006cb7, #2e3092, #00aeef. Teléfono +57 300 725 7266. Correo claudia@montes-a.com.",
+  "Colores de marca: #006cb7, #2e3092, #00aeef. Sitio web oficial: montes-abogados-asociados.pages.dev (nunca uses www.montes-a.com). WhatsApp +57, 300, 725, 7266. Correo claudia@montes-a.com.",
   "Tono: cercano, profesional, claro; sin promesas de resultados ni lenguaje aggressivo.",
   "REGLA 1: uses fotos reales del despacho; nunca inventes casos ni datos.",
   "REGLA 2: nada se publica sin aprobación en la base de datos; entrega el contenido como PROPUESTA.",
@@ -77,7 +77,7 @@ export async function preguntarIA(
         ? datos.choices[0].message.content
         : "") || "";
     if (!texto.trim()) throw new Error("respuesta vacía");
-    return texto.trim();
+    return normaliza(texto.trim());
   } catch (error) {
     if ((error as Error).name === "AbortError") throw error;
     return [
