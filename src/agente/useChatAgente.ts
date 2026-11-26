@@ -25,7 +25,7 @@ import {
   nuevaConversacion,
 } from "./servicioConversaciones";
 import { contextoAprendido, marcarUso, registrarIdeas, valorarIdea } from "./aprendizaje";
-import { esPedidoNuevo, interpretarPedido, numeroDeVideoEnAjuste } from "./pedidoVideo";
+import { esPedidoNuevo, interpretarPedido, normaliza, numeroDeVideoEnAjuste } from "./pedidoVideo";
 import type { Pedido } from "./pedidoVideo";
 import { mensajesDeVideos, textoDeVideo } from "./formatoVideo";
 import type { VideoRespuesta } from "./formatoVideo";
@@ -252,11 +252,11 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
           } else {
             // Respuesta de la versión anterior de la función (un solo texto).
             textos = [
-              (datos.guion || datos.guion_voz || "(no se recibió el guion; pide el video de nuevo)") +
-                "\n\nPROMPT PARA LA HERRAMIENTA DE VIDEO\n" + (datos.prompt_dreamina || "—") +
-                "\n\nTEXTO PARA REDES\n" + (datos.texto_redes || "—") +
-                (datos.notas_revision ? "\n\nNOTAS DE REVISIÓN\n" + datos.notas_revision : "") +
-                "\n\nQuedó en Pendientes de aprobación.",
+              normaliza(datos.guion || datos.guion_voz || "(no se recibió el guion; pide el video de nuevo)") +
+                "\n\nPROMPT PARA LA HERRAMIENTA DE VIDEO\n" + normaliza(datos.prompt_dreamina || "—") +
+                "\n\nTEXTO PARA REDES\n" + normaliza(datos.texto_redes || "—") +
+                (datos.notas_revision ? "\n\nNOTAS DE REVISIÓN\n" + normaliza(datos.notas_revision) : "") +
+                "\n\nQuedó en Pendientes de aprobación. (Nota: actualiza la función generar-prompt-video en Supabase para recibir los bloques de 15 s.)",
             ];
             setBorrador({ pedido, videos: [{ numero: 1, texto: textos[0] }] });
           }
