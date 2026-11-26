@@ -4,4 +4,4 @@ Allow: /
 # El panel de administración no debe aparecer en Google.
 Disallow: /panel-administracion.html
 
-Sitemap: https://www.montes-a.com/sitemap.xml
+Sitemap: https://montes-abogados-asociados.pages.dev/sitemap.xml

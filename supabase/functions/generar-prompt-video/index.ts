@@ -4,7 +4,7 @@
 // Respuesta del modelo en secciones con marcadores (más fiable que JSON con modelos gratuitos).
 // Cada video queda como PENDIENTE de aprobación en la tabla propuestas.
 import {
-  CONTACTO_CIERRE, ENFOQUES, FRASE_CIERRE, MAX_VIDEOS, NOMBRE_FIRMA, WHATSAPP,
+  CONTACTO_CIERRE, ENFOQUES, FRASE_CIERRE, MAX_VIDEOS, NOMBRE_FIRMA, SITIO_WEB, WHATSAPP,
   aMultiploDe15, armarPartes, construirPartes, extraerEscenas, normaliza, parsearPartes,
   partesDe, rango, repartirServicios, secciones, serviciosFaltantes,
 } from "../_shared/video.ts";
@@ -18,7 +18,7 @@ const MODELO = Deno.env.get("OPENROUTER_MODEL") || "openrouter/free";
 
 const SISTEMA = `Eres el guionista y director creativo de ${NOMBRE_FIRMA}, firma boutique de abogados en Bogotá D.C., Colombia. Escribes un video vertical para Instagram Reels, escena por escena, que el administrador copiará en una herramienta de video con IA que solo genera clips de 15 segundos.
 
-DATOS FIJOS: WhatsApp ${WHATSAPP}. Correo claudia@montes-a.com. NO escribas direcciones web: para invitar a visitarnos usa el nombre «${NOMBRE_FIRMA}».
+DATOS FIJOS: Sitio web ${SITIO_WEB}. WhatsApp ${WHATSAPP} (siempre con pausa en 300, 725, 7266 para que la voz no diga 307). Correo claudia@montes-a.com. NO escribas www.montes-a.com.
 
 REGLAS:
 1. El video trata el TEMA que dio el administrador y desarrolla sus PUNTOS CLAVE. No cambies de tema.
@@ -26,7 +26,7 @@ REGLAS:
 3. Sin promesas de resultados, sin testimonios, sin cifras de casos ganados, sin inventar cifras, plazos, artículos de ley ni montos. Si algo necesita un dato exacto, dilo de forma general y anótalo en NOTAS.
 4. Si no hay puntos clave, propón 2 o 3 puntos generales y coherentes, y anótalo en NOTAS.
 5. Presentador genérico, sin rasgos identificables. Si es voz en off, usa imágenes de la oficina y de reuniones.
-6. CIERRE (texto fijo, en la última escena y en la última parte): la voz en off dice «${FRASE_CIERRE}» y el texto en pantalla dice «${CONTACTO_CIERRE}». No escribas ninguna dirección web.
+6. CIERRE (texto fijo, en la última escena y en la última parte): la voz en off dice «${FRASE_CIERRE} ${CONTACTO_CIERRE}» (haciendo una pausa clara en +57, 300, 725, 7266) y el texto en pantalla dice «${CONTACTO_CIERRE}». Nunca uses www.montes-a.com.
 7. Si piden los SERVICIOS, la voz en off nombra los servicios que se te asignen en cada bloque, con esas palabras, y entre todos los bloques salen los siete.
 
 ESTRUCTURA DEL GUION (ejemplo de 60 s; para otra duración adapta escenas y tiempos):
@@ -109,7 +109,7 @@ async function generarUno(clave: string, numero: number, d: Datos) {
     "PUNTOS CLAVE: " + (d.puntos || "(no indicados: propón 2 o 3 puntos coherentes con el tema)"),
     "QUIEN HABLA: " + (d.quien || "voz en off con presentador genérico"),
     "TONO: " + (d.tono || "cálido y profesional"),
-    "LLAMADA A LA ACCIÓN: " + (d.llamada || "visitar " + NOMBRE_FIRMA + " o escribir por WhatsApp"),
+    "LLAMADA A LA ACCIÓN: " + (d.llamada || CONTACTO_CIERRE),
   ];
   if (d.totalVideos > 1) {
     lineas.push("VIDEO " + numero + " de " + d.totalVideos + ". ENFOQUE DE ESTE VIDEO: " + enfoque + " Que no se parezca a los otros videos.");

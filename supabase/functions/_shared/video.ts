@@ -4,11 +4,11 @@
 // (src/agente/pedidoVideo.ts la reexporta). Así se prueba una sola vez con `npm test`.
 
 export const NOMBRE_FIRMA = "ABOGADOS COLOMBIA - Montes Abogados Asociados S.A.S.";
-export const WHATSAPP = "+57 300 725 7266";
+export const WHATSAPP = "+57, 300, 725, 7266";
 export const FRASE_CIERRE =
   "Una asesoría jurídica especializada ayuda a su empresa a prevenir contingencias y litigios futuros, garantizando seguridad y tranquilidad.";
-// Ya no se escribe la dirección web: el cierre muestra el nombre de la firma y el WhatsApp.
-export const CONTACTO_CIERRE = "Visite " + NOMBRE_FIRMA + " o escríbanos al WhatsApp " + WHATSAPP;
+export const SITIO_WEB = "montes-abogados-asociados.pages.dev";
+export const CONTACTO_CIERRE = "Dirígete a " + SITIO_WEB + " o al WhatsApp " + WHATSAPP;
 
 /** Los 7 servicios, en el orden en que se mencionan. `clave` sirve para comprobar que salieron todos. */
 export const SERVICIOS: { nombre: string; clave: RegExp }[] = [
@@ -121,12 +121,12 @@ export const serviciosFaltantes = (texto: string) =>
 
 /* ----------------------------- limpieza ----------------------------- */
 
-/** Quita enlaces markdown y cambia cualquier dirección web de la firma por su nombre. El correo no se toca. */
+/** Quita enlaces markdown y reemplaza el dominio anterior por el sitio oficial. El correo no se toca. */
 export function normaliza(t: string): string {
   return t
     .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
-    .replace(/https?:\/\/[^\s)"»]*(?:montes-a\.com|pages\.dev|netlify\.app)[^\s)"»]*/gi, NOMBRE_FIRMA)
-    .replace(/(?<![@\w.-])(?:www\.)?montes-a\.com(?![\w.-])/gi, NOMBRE_FIRMA);
+    .replace(/https?:\/\/(?:www\.)?montes-a\.com[^\s)"»]*/gi, SITIO_WEB)
+    .replace(/(?<![@\w.-])(?:www\.)?montes-a\.com(?![\w.-])/gi, SITIO_WEB);
 }
 
 /** Separa las secciones ### GUION, ### PROMPT, ### REDES y ### NOTAS. */
@@ -242,7 +242,7 @@ export function armarPartes(textos: string[], video: number, totalVideos: number
     let texto = cabecera + "\n" + enlace + normaliza(cuerpo);
     if (n === total) {
       if (!texto.includes(FRASE_CIERRE) || !texto.includes(CONTACTO_CIERRE)) {
-        texto += "\nCIERRE: voz en off: «" + FRASE_CIERRE + "» Texto en pantalla: «" + CONTACTO_CIERRE + "», sobre fondo blanco sobrio.";
+        texto += "\nCIERRE: voz en off (con pausa clara en +57, 300, 725, 7266): «" + FRASE_CIERRE + " " + CONTACTO_CIERRE + "» Texto en pantalla: «" + CONTACTO_CIERRE + "», sobre fondo blanco sobrio.";
       }
     }
     return { numero: n, desde: (n - 1) * BLOQUE, hasta: n * BLOQUE, texto };

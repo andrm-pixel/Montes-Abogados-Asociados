@@ -32,7 +32,7 @@ ESTA ES LA CONTINUACIÓN DEL VIDEO 1 — PARTE 4 de 4 (0:45–1:00)
 Continúa sin corte la parte anterior: misma oficina, misma paleta, mismo presentador y misma voz.
 Formato vertical 9:16, 15 segundos. Oficina luminosa y moderna, paleta sobria azul, gris y blanco, luz natural suave, presentador genérico sin rasgos identificables, sin logos externos. Música suave de piano o cuerdas.
 Escena (0:45–0:52) Recaudo de cartera. Se ve: Facturas ordenadas sobre una mesa, una calculadora y una reunión de seguimiento. Voz en off: «Y en recaudo de cartera, gestionamos el cobro prejurídico y jurídico de sus obligaciones.»
-Escena (0:52–1:00) Cierre. Se ve: Logo centrado sobre fondo blanco sobrio y, debajo, el texto de contacto. Voz en off: «Una asesoría jurídica especializada ayuda a su empresa a prevenir contingencias y litigios futuros, garantizando seguridad y tranquilidad.» Texto en pantalla: «Visite ABOGADOS COLOMBIA - Montes Abogados Asociados S.A.S. o escríbanos al WhatsApp +57 300 725 7266».
+Escena (0:52–1:00) Cierre. Se ve: Logo centrado sobre fondo blanco sobrio y, debajo, el texto de contacto. Voz en off (con pausa clara en +57, 300, 725, 7266): «Una asesoría jurídica especializada ayuda a su empresa a prevenir contingencias y litigios futuros, garantizando seguridad y tranquilidad. Dirígete a montes-abogados-asociados.pages.dev o al WhatsApp +57, 300, 725, 7266.» Texto en pantalla: «Dirígete a montes-abogados-asociados.pages.dev o al WhatsApp +57, 300, 725, 7266».
 ```
 
 **Texto para redes (video 1):** Siete áreas jurídicas, una sola firma boutique que conoce a fondo su empresa. #MontesAbogados #AsesoríaLegal #DerechoComercial #Bogotá
@@ -65,7 +65,7 @@ ESTA ES LA CONTINUACIÓN DEL VIDEO 2 — PARTE 4 de 4 (0:45–1:00)
 Continúa sin corte la parte anterior: misma oficina, misma paleta, mismo presentador y misma voz.
 Formato vertical 9:16, 15 segundos. Oficina luminosa y moderna, paleta sobria azul, gris y blanco, luz natural suave, presentador genérico sin rasgos identificables, sin logos externos. Música suave de piano o cuerdas.
 Escena (0:45–0:52) Recaudo de cartera. Se ve: El cliente, ya tranquilo, trabaja en su oficina y recibe un mensaje del equipo de la firma. Voz en off: «Y cuando necesite cobrar, recaudo de cartera, con gestión prejurídica y jurídica.»
-Escena (0:52–1:00) Cierre. Se ve: Logo centrado sobre fondo blanco sobrio y, debajo, el texto de contacto. Voz en off: «Una asesoría jurídica especializada ayuda a su empresa a prevenir contingencias y litigios futuros, garantizando seguridad y tranquilidad.» Texto en pantalla: «Visite ABOGADOS COLOMBIA - Montes Abogados Asociados S.A.S. o escríbanos al WhatsApp +57 300 725 7266».
+Escena (0:52–1:00) Cierre. Se ve: Logo centrado sobre fondo blanco sobrio y, debajo, el texto de contacto. Voz en off (con pausa clara en +57, 300, 725, 7266): «Una asesoría jurídica especializada ayuda a su empresa a prevenir contingencias y litigios futuros, garantizando seguridad y tranquilidad. Dirígete a montes-abogados-asociados.pages.dev o al WhatsApp +57, 300, 725, 7266.» Texto en pantalla: «Dirígete a montes-abogados-asociados.pages.dev o al WhatsApp +57, 300, 725, 7266».
 ```
 
 **Texto para redes (video 2):** Prevenir hoy evita litigios mañana: conozca cómo cada área jurídica protege sus decisiones. #MontesAbogados #Prevención #DerechoLaboral #Bogotá

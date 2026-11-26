@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   interpretarPedido, esPedidoNuevo, numeroDeVideoEnAjuste, repartirServicios, serviciosFaltantes,
   normaliza, extraerEscenas, construirPartes, parsearPartes, armarPartes, rango,
-  NOMBRE_FIRMA, CONTACTO_CIERRE, FRASE_CIERRE,
+  SITIO_WEB, CONTACTO_CIERRE, FRASE_CIERRE,
 } from "./src/agente/pedidoVideo";
 import { mensajesDeVideos } from "./src/agente/formatoVideo";
 
@@ -51,10 +51,10 @@ describe("servicios", () => {
 });
 
 describe("normaliza", () => {
-  it("cambia la web por el nombre de la firma y respeta el correo", () => {
+  it("reemplaza el dominio anterior por el sitio oficial y respeta el correo", () => {
     const t = normaliza("Visite [www.montes-a.com](https://www.montes-a.com) o claudia@montes-a.com");
-    expect(t).toContain(NOMBRE_FIRMA);
-    expect(t).not.toMatch(/www\.|https?:/);
+    expect(t).toContain(SITIO_WEB);
+    expect(t).not.toContain("www.montes-a.com");
     expect(t).toContain("claudia@montes-a.com");
   });
 });

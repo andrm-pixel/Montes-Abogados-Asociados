@@ -44,7 +44,7 @@ const PREGUNTAS_VIDEO: { clave: string; pregunta: string }[] = [
 ];
 
 const URL_VIDEO =
-  (import.meta as unknown as { env?: Record<string, string> }).env?.VITE_N8N_WEBHOOK_URL || "";
+  (import.meta as unknown as { env?: Record<string, string> }).env?.VITE_VIDEO_URL || "";
 
 export interface EstadoAgente {
   conversaciones: Conversacion[];
@@ -214,7 +214,7 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
   const generarVideo = useCallback(
     async (payload: Record<string, unknown>, etiqueta: string, pedido: Pedido, previos: MensajeNuevo[] = []) => {
       if (!URL_VIDEO) {
-        setAviso("Falta configurar VITE_N8N_WEBHOOK_URL (la función generar-prompt-video).");
+        setAviso("Falta configurar VITE_VIDEO_URL (la función generar-prompt-video).");
         return;
       }
       setVideoPidiendo(true);
