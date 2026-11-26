@@ -43,8 +43,8 @@ const PREGUNTAS_VIDEO: { clave: string; pregunta: string }[] = [
   },
 ];
 
-const URL_VIDEO =
-  (import.meta as unknown as { env?: Record<string, string> }).env?.VITE_VIDEO_URL || "";
+const ENV = (import.meta as unknown as { env?: Record<string, string> }).env;
+const URL_VIDEO = ENV?.VITE_VIDEO_URL || (ENV?.VITE_SUPABASE_URL || "https://rhqtldpiuasrwcwaqrtl.supabase.co") + "/functions/v1/generar-prompt-video";
 
 export interface EstadoAgente {
   conversaciones: Conversacion[];
