@@ -38,8 +38,7 @@ const PREGUNTAS_VIDEO: { clave: string; pregunta: string }[] = [
   {
     clave: "tema",
     pregunta:
-      "🎬 ¡Vamos! Cuéntame qué video quieres y yo hago el resto: guion por escenas, prompts de 15 s listos para pegar (parte 1 y sus continuaciones) y texto para redes. " +
-      "Puedes decir la duración y cuántos videos, por ejemplo: «2 videos de 1 minuto presentando cada uno de nuestros servicios». Sin duración, el video sale de 60 s.",
+      "🎬 ¡Vamos! Cuéntame qué video quieres y yo hago el resto: guion por escenas, prompts de 15 s listos para pegar (parte 1 y sus continuaciones) y texto para redes.",
   },
 ];
 
@@ -256,7 +255,7 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
                 "\n\nPROMPT PARA LA HERRAMIENTA DE VIDEO\n" + normaliza(datos.prompt_dreamina || "—") +
                 "\n\nTEXTO PARA REDES\n" + normaliza(datos.texto_redes || "—") +
                 (datos.notas_revision ? "\n\nNOTAS DE REVISIÓN\n" + normaliza(datos.notas_revision) : "") +
-                "\n\nQuedó en Pendientes de aprobación. (Nota: actualiza la función generar-prompt-video en Supabase para recibir los bloques de 15 s.)",
+                "\n\nQuedó en Pendientes de aprobación.",
             ];
             setBorrador({ pedido, videos: [{ numero: 1, texto: textos[0] }] });
           }
