@@ -25,27 +25,23 @@ import {
   nuevaConversacion,
 } from "./servicioConversaciones";
 import { contextoAprendido, marcarUso, registrarIdeas, valorarIdea } from "./aprendizaje";
+import { esPedidoNuevo, interpretarPedido, numeroDeVideoEnAjuste } from "./pedidoVideo";
+import type { Pedido } from "./pedidoVideo";
+import { mensajesDeVideos, textoDeVideo } from "./formatoVideo";
+import type { VideoRespuesta } from "./formatoVideo";
 
 /** Un mensaje nuevo antes de guardarlo. */
 type MensajeNuevo = { id: string; rol: "usuario" | "asistente"; texto: string; creadoEn: number };
 
-/** Preguntas guiadas para crear un video, en este orden. */
+/** Preguntas guiadas para crear un video: solo se pide el tema (y, si quieres, duración y cantidad). */
 const PREGUNTAS_VIDEO: { clave: string; pregunta: string }[] = [
   {
     clave: "tema",
     pregunta:
-      "🎬 ¡Vamos! ¿De qué tema quieres el video? Escríbelo y yo armo el guion completo de 60 segundos por escenas, con voz en off, prompt para la herramienta de video y texto para redes. Por ejemplo: liquidación de prestaciones, despido sin justa causa o recaudo de cartera.",
+      "🎬 ¡Vamos! Cuéntame qué video quieres y yo hago el resto: guion por escenas, prompts de 15 s listos para pegar (parte 1 y sus continuaciones) y texto para redes. " +
+      "Puedes decir la duración y cuántos videos, por ejemplo: «2 videos de 1 minuto presentando cada uno de nuestros servicios». Sin duración, el video sale de 60 s.",
   },
 ];
-
-/** Valores por defecto: el administrador solo da el tema. */
-const DEFECTOS_VIDEO = {
-  duracion: "60",
-  puntos_clave: "",
-  quien_habla: "",
-  tono: "",
-  llamada_accion: "",
-};
 
 const URL_VIDEO =
   (import.meta as unknown as { env?: Record<string, string> }).env?.VITE_N8N_WEBHOOK_URL || "";
@@ -121,7 +117,7 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
   const [propuestas, setPropuestas] = useState<Propuesta[]>(() => cargarPropuestas());
   const [videoPidiendo, setVideoPidiendo] = useState(false);
   /** Último prompt generado; mientras exista, lo que se escriba es una corrección. */
-  const [borrador, setBorrador] = useState<{ tema: string; texto: string } | null>(null);
+  const [borrador, setBorrador] = useState<{ pedido: Pedido; videos: { numero: number; texto: string }[] } | null>(null);
   /** Entrevista guiada del video: paso actual y respuestas dadas. */
   const [entrevista, setEntrevista] = useState<{ paso: number; datos: Record<string, string> } | null>(null);
   const refCaja = useRef<HTMLTextAreaElement | null>(null);
@@ -216,7 +212,7 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
 
   /** Llama a la función de video y muestra el resultado en el chat. */
   const generarVideo = useCallback(
-    async (payload: Record<string, string>, etiqueta: string, previos: MensajeNuevo[] = []) => {
+    async (payload: Record<string, unknown>, etiqueta: string, pedido: Pedido, previos: MensajeNuevo[] = []) => {
       if (!URL_VIDEO) {
         setAviso("Falta configurar VITE_N8N_WEBHOOK_URL (la función generar-prompt-video).");
         return;
@@ -242,34 +238,42 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
         });
         const datos = await respuesta.json().catch(() => ({}));
 
-        let textoRespuesta: string;
+        let textos: string[];
         if (respuesta.ok && datos.ok) {
-          const cuerpoBorrador =
-            (datos.guion || "") +
-            "\n\nPROMPT PARA LA HERRAMIENTA DE VIDEO\n" + (datos.prompt_dreamina || "") +
-            "\n\nTEXTO PARA REDES\n" + (datos.texto_redes || "");
-          setBorrador({ tema: payload.tema, texto: cuerpoBorrador });
-          textoRespuesta =
-            (datos.guion || datos.guion_voz || "(no se recibió el guion; pide el video de nuevo)") +
-            "\n\nPROMPT PARA LA HERRAMIENTA DE VIDEO\n" + (datos.prompt_dreamina || "—") +
-            "\n\nTEXTO PARA REDES\n" + (datos.texto_redes || "—") +
-            (datos.notas_revision ? "\n\nNOTAS DE REVISIÓN\n" + datos.notas_revision : "") +
-            "\n\nQuedó en Pendientes de aprobación.\n\n" +
-            "¿Quieres cambiar algo? Dime qué ajustar (por ejemplo: el tono, una escena o el cierre) " +
-            "y pulsa Enviar. Para un video nuevo, pulsa 🎬 Generar prompt.";
+          const videos: VideoRespuesta[] = Array.isArray(datos.videos) ? datos.videos : [];
+          if (videos.length) {
+            // Un ajuste cambia solo ese video; un pedido nuevo reemplaza todos.
+            const previos = payload.correccion && borrador ? borrador.videos : [];
+            const nuevos = videos.map((v) => ({ numero: v.numero, texto: textoDeVideo(v) }));
+            const unidos = [...previos.filter((p) => !nuevos.some((n) => n.numero === p.numero)), ...nuevos].sort((x, y) => x.numero - y.numero);
+            setBorrador({ pedido: pedido, videos: unidos });
+            textos = mensajesDeVideos(videos);
+            if (Array.isArray(datos.avisos) && datos.avisos.length) textos.push("⚠️ No se pudo generar: " + datos.avisos.join("; ") + ". Pídelo de nuevo.");
+          } else {
+            // Respuesta de la versión anterior de la función (un solo texto).
+            textos = [
+              (datos.guion || datos.guion_voz || "(no se recibió el guion; pide el video de nuevo)") +
+                "\n\nPROMPT PARA LA HERRAMIENTA DE VIDEO\n" + (datos.prompt_dreamina || "—") +
+                "\n\nTEXTO PARA REDES\n" + (datos.texto_redes || "—") +
+                (datos.notas_revision ? "\n\nNOTAS DE REVISIÓN\n" + datos.notas_revision : "") +
+                "\n\nQuedó en Pendientes de aprobación.",
+            ];
+            setBorrador({ pedido, videos: [{ numero: 1, texto: textos[0] }] });
+          }
           setAviso("✅ Listo. Revisa el guion o pide un ajuste.");
         } else {
-          textoRespuesta =
+          textos = [
             "No pude generar el prompt: " + (datos.error || "error " + respuesta.status) +
-            ". Intenta de nuevo en unos segundos.";
+              ". Intenta de nuevo en unos segundos.",
+          ];
           setAviso("");
         }
         const ahora = Date.now();
-        const mensajeIA: MensajeNuevo = { id: nuevoId(), rol: "asistente", texto: textoRespuesta, creadoEn: ahora };
+        const mensajesIA: MensajeNuevo[] = textos.map((t, i) => ({ id: nuevoId(), rol: "asistente", texto: t, creadoEn: ahora + i }));
         persistir(
           conversaciones.map((c) =>
             c.id === activa.id
-              ? { ...c, mensajes: [...c.mensajes, ...previos, mensajeUsuario, mensajeIA], actualizadaEn: ahora }
+              ? { ...c, mensajes: [...c.mensajes, ...previos, mensajeUsuario, ...mensajesIA], actualizadaEn: ahora }
               : c
           )
         );
@@ -279,8 +283,18 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
         setVideoPidiendo(false);
       }
     },
-    [conversaciones, activa.id, persistir]
+    [conversaciones, activa.id, persistir, borrador]
   );
+
+  /** Datos que recibe la función a partir de lo que pidió la persona. */
+  const cargaDe = (p: Pedido) => ({
+    tema: p.tema,
+    duracion: p.duracion,
+    cantidad_videos: p.cantidad,
+    incluir_servicios: p.incluirServicios,
+  });
+  const etiquetaDe = (p: Pedido) =>
+    "🎬 " + (p.cantidad > 1 ? p.cantidad + " videos" : "Video") + " de " + p.duracion + " s (" + p.duracion / 15 + " prompts de 15 s) sobre: " + p.tema;
 
   /** Empieza la entrevista del video. Si ya trae un tema, salta esa pregunta. */
   const iniciarVideo = useCallback(
@@ -288,10 +302,8 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
       setBorrador(null);
       if (temaInicial) {
         setEntrevista(null);
-        void generarVideo(
-          { tema: temaInicial, ...DEFECTOS_VIDEO },
-          "🎬 Video de " + DEFECTOS_VIDEO.duracion + " s sobre: " + temaInicial
-        );
+        const pedido = interpretarPedido(temaInicial);
+        void generarVideo(cargaDe(pedido), etiquetaDe(pedido), pedido);
         return;
       }
       const ahora = Date.now();
@@ -309,20 +321,11 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
     async (respuesta: string) => {
       if (!entrevista) return;
       const clave = PREGUNTAS_VIDEO[entrevista.paso].clave;
-      let limpio = filtrarDatosPersonales(respuesta).texto.trim();
-      if (clave === "duracion") {
-        const numero = Number(limpio);
-        // Sin respuesta o un valor no válido: 15 segundos por defecto.
-        limpio = [15, 30, 60].includes(numero) ? String(numero) : "15";
-      }
+      const limpio = filtrarDatosPersonales(respuesta).texto.trim();
       if (!limpio) return;
       const ahora = Date.now();
       const datos = { ...entrevista.datos, [clave]: limpio };
-      const etiqueta =
-        clave === "duracion" && limpio === "15" && !respuesta.trim()
-          ? "15 segundos (por defecto)"
-          : limpio;
-      const usuario: MensajeNuevo = { id: nuevoId(), rol: "usuario", texto: etiqueta, creadoEn: ahora };
+      const usuario: MensajeNuevo = { id: nuevoId(), rol: "usuario", texto: limpio, creadoEn: ahora };
       const siguiente = entrevista.paso + 1;
       setTexto("");
 
@@ -336,14 +339,8 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
       }
 
       setEntrevista(null);
-      await generarVideo(
-        {
-          tema: datos.tema,
-          ...DEFECTOS_VIDEO,
-        },
-        "🎬 Video de " + DEFECTOS_VIDEO.duracion + " s sobre: " + datos.tema,
-        [usuario]
-      );
+      const pedido = interpretarPedido(datos.tema);
+      await generarVideo(cargaDe(pedido), etiquetaDe(pedido), pedido, [usuario]);
     },
     [entrevista, agregarMensajes, generarVideo]
   );
@@ -357,17 +354,43 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
     [iniciarVideo]
   );
 
-  /** Una corrección del prompt anterior (el texto escrito es la instrucción). */
+  /** Un ajuste a un video ya generado (el texto escrito es la instrucción). */
   const pedirCorreccion = useCallback(
     async (instruccion: string) => {
       const limpio = filtrarDatosPersonales(instruccion).texto.trim();
       if (!limpio || !borrador) return;
+
+      // Con varios videos hay que saber cuál se ajusta.
+      let numero = numeroDeVideoEnAjuste(limpio);
+      if (!numero && borrador.videos.length === 1) numero = borrador.videos[0].numero;
+      const video = borrador.videos.find((v) => v.numero === numero);
+      if (!video) {
+        agregarMensajes([
+          { id: nuevoId(), rol: "usuario", texto: limpio, creadoEn: Date.now() },
+          {
+            id: nuevoId(),
+            rol: "asistente",
+            texto: "¿A cuál video va ese ajuste? Escríbelo empezando por el número, por ejemplo «video 2: " + limpio.slice(0, 40) + "».",
+            creadoEn: Date.now() + 1,
+          },
+        ]);
+        setTexto("");
+        return;
+      }
+
+      // Si el ajuste trae otra duración («hazlo de 30 segundos»), el video se rehace con esa duración.
+      const nueva = interpretarPedido(limpio);
+      const pedido: Pedido = {
+        ...borrador.pedido,
+        duracion: nueva.duracionExplicita ? nueva.duracion : borrador.pedido.duracion,
+      };
       await generarVideo(
-        { tema: borrador.tema, correccion: limpio, borrador: borrador.texto },
-        "✏️ Ajuste: " + limpio
+        { ...cargaDe(pedido), tema: borrador.pedido.tema, cantidad_videos: borrador.videos.length, numero_video: video.numero, correccion: limpio, borrador: video.texto },
+        "✏️ Ajuste al video " + video.numero + ": " + limpio,
+        pedido
       );
     },
-    [borrador, generarVideo]
+    [borrador, generarVideo, agregarMensajes]
   );
 
   /* ------------------------- enviar ------------------------- */
@@ -378,6 +401,11 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
 
     if (entrevista) {
       void avanzarEntrevista(bruto);
+      return;
+    }
+    // Un pedido claro de video («2 videos de 1 minuto sobre…») va directo al generador, haya o no un video anterior.
+    if (esPedidoNuevo(bruto)) {
+      void pedirPrompt(bruto);
       return;
     }
     if (borrador) {
@@ -454,7 +482,7 @@ export function useChatAgente(): EstadoAgente & AccionesAgente {
     } finally {
       setEnviando(false);
     }
-  }, [texto, enviando, activa, conversaciones, persistir, propuestas, entrevista, avanzarEntrevista, borrador, pedirCorreccion]);
+  }, [texto, enviando, activa, conversaciones, persistir, propuestas, entrevista, avanzarEntrevista, borrador, pedirCorreccion, pedirPrompt]);
 
   /* ------------------- ideas y propuestas ------------------- */
 

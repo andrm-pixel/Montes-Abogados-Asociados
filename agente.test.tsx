@@ -123,7 +123,7 @@ describe("interfaz del asistente", () => {
     render(<ChatAgente />);
     fireEvent.click(screen.getByText(/Generar prompt/, { selector: "button" }));
     await waitFor(() => {
-      expect(screen.getByText(/¿De qué tema quieres el video/)).toBeTruthy();
+      expect(screen.getByText(/Cuéntame qué video quieres/)).toBeTruthy();
     });
   });
 

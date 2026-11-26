@@ -225,3 +225,11 @@ Subir el código a GitHub **no** lo pone en Google. Hacen falta dos pasos más:
   las consultas.
 - **Imágenes del carrusel** se guardan dentro de `datos.json`. Con muchas
   imágenes conviene migrar a archivos sueltos.
+
+---
+
+## Autores
+
+Andrea Carolina Merlano Paternina – 20252020064 · Juan Felipe Gallego Chaves – 20251020016 · Roger Steward Arenales Sanabria – 20251020056
+
+Programación Avanzada · Universidad Distrital Francisco José de Caldas. El agente de video está explicado en `supabase/AGENTE-IA.md` y en `docs/PROMPTS-VIDEOS.md` (los prompts de los dos videos).

@@ -4,8 +4,10 @@ No usa n8n ni herramientas externas de automatización. Son dos funciones de
 Supabase (Deno) que llaman a OpenRouter con una sola petición y devuelven el resultado.
 
 - `functions/agente-ia/`: chat del panel de administración.
-- `functions/generar-prompt-video/`: prompt de video (30 s, 3 escenas) para Dreamina/HeyGen.
-  Guarda el resultado como propuesta pendiente de aprobación.
+- `functions/generar-prompt-video/`: guion y prompts de video por escenas, partidos en bloques de 15 s
+  (parte 1 y sus continuaciones) para Dreamina/HeyGen. Guarda cada video como propuesta pendiente.
+- `functions/_shared/video.ts`: lógica pura compartida (duración, cantidad de videos, reparto de servicios,
+  partición en 15 s, limpieza del cierre). La usan la función y el chat; se prueba con `npm test`.
 
 ## Puesta en marcha (una sola vez)
 
@@ -22,7 +24,6 @@ Supabase (Deno) que llaman a OpenRouter con una sola petición y devuelven el re
 3. En Cloudflare Pages → Settings → Environment variables:
 
    VITE_IA_URL          = https://rhqtldpiuasrwcwaqrtl.supabase.co/functions/v1/agente-ia
-   (Opcional) SITIO_WEB en Supabase: por defecto https://montes-abogados-asociados.pages.dev. Cámbialo cuando montes-a.com esté activo.
    VITE_N8N_WEBHOOK_URL = https://rhqtldpiuasrwcwaqrtl.supabase.co/functions/v1/generar-prompt-video
 
    (El nombre VITE_N8N_WEBHOOK_URL se conserva por compatibilidad; apunta a la función de Supabase.)
@@ -47,7 +48,7 @@ Supabase (Deno) que llaman a OpenRouter con una sola petición y devuelven el re
 2. El chat pregunta qué quieres corregir o adaptar. Escribe el ajuste (por ejemplo "cambia el tono
    a más formal" o "la escena 2 que hable de liquidación") y pulsa **Enviar**.
 3. La función recibe el borrador anterior y tu corrección, y devuelve la versión corregida.
-   El cierre es fijo: la voz en off dice la frase de asesoría preventiva y en pantalla se lee «Visite ABOGADOS COLOMBIA - Montes Abogados Asociados S.A.S. (sitio) o al WhatsApp +57 300 725 7266». El sitio sale de SITIO_WEB.
+   El cierre es fijo y no lleva dirección web (ver «Video completo»).
 4. Para un tema nuevo, usa de nuevo **🎬 Generar prompt**.
 
 ## Por qué no se usa un framework de agentes
@@ -63,8 +64,26 @@ lineal: una petición por cada prompt o corrección, sin herramientas ni bucles.
 - Revisa que `OPENROUTER_MODEL` sea `openrouter/free`.
 
 
-## Video completo
+## Video completo (versión 3)
 
-El video ahora sale por escenas con tiempos (15 s por defecto; también 30 o 60), con visual, voz en off
-y texto en pantalla. El prompt para la herramienta de video describe cada escena. El sitio web
-que usa el asistente sale de SITIO_WEB.
+Solo hay que dar el tema; el resto se entiende del texto:
+
+| Escribes | El agente hace |
+|---|---|
+| `liquidación de prestaciones` | 1 video de 60 s = 4 prompts de 15 s |
+| `un video de 30 s sobre recaudo` | 1 video de 30 s = 2 prompts |
+| `2 videos de 1 minuto presentando cada uno de nuestros servicios` | 2 videos distintos (enfoque diferente), cada uno de 4 prompts; la voz en off nombra los 7 servicios repartidos entre las partes |
+
+- Duración válida: múltiplos de 15 s hasta 120 s. Máximo 3 videos por pedido.
+- En el chat sale un mensaje por parte: «ESTE ES EL PROMPT DEL VIDEO 1 — PARTE 1 de 4» y luego
+  «ESTA ES LA CONTINUACIÓN DEL VIDEO 1 — PARTE 2 de 4», etc. Cada parte se copia sola en la herramienta de video.
+- El cierre es fijo y ya no lleva dirección web: la voz dice la frase de asesoría preventiva y en pantalla se lee
+  «Visite ABOGADOS COLOMBIA - Montes Abogados Asociados S.A.S. o escríbanos al WhatsApp +57 300 725 7266».
+- Ajustes: escribe «video 2: más formal» (con varios videos hay que decir cuál) o «hazlo de 30 segundos».
+  Las peticiones de funciones nuevas no van en la caja de ajustes: son cambios de código.
+- Si el modelo gratuito no escribe bien las partes, el servidor las arma con las escenas del guion.
+- Tras actualizar el código hay que volver a publicar: `supabase functions deploy generar-prompt-video --no-verify-jwt`.
+
+## Autores
+
+Andrea Carolina Merlano Paternina – 20252020064 · Juan Felipe Gallego Chaves – 20251020016 · Roger Steward Arenales Sanabria – 20251020056
